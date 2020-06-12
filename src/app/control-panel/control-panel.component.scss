@@ -1,0 +1,49 @@
+.controlPanel{
+  margin-top: 10rem;
+  .controlPanel-header{
+    font-weight: bold;
+  }
+  .controlPanel-nav{
+    ul{
+      list-style: none;
+      padding: 0;
+      li{
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+        a{
+          text-decoration: none;
+        }
+        a:visited{
+          color: inherit;
+        }
+        a:active{
+          color: #3cae59;
+        }
+        i{
+          background-repeat: no-repeat;
+          display: inline-block;
+          background-position: center;
+          background-size: contain;
+        }
+        .groupIcon{
+          background-image: url('src/assets/icons/group-black-18dp.svg');
+          width: 2rem;
+          height: 2rem;
+
+        }
+        .unitIcon{
+          background-image: url('src/assets/icons/apartment-24px.svg');
+          width: 2rem;
+          height: 2rem;
+        }
+        .usersIcon{
+          background-image: url('src/assets/icons/people_alt-24px.svg');
+          width: 2rem;
+          height: 2rem;
+        }
+      }
+    }
+
+  }
+}

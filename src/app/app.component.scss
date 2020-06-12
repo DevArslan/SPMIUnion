@@ -1,0 +1,15 @@
+.wrapper{
+  display: flex;
+  padding-left: 2%;
+  nav{
+    width: 20%;
+  }
+  .content{
+    width: 80%;
+    .content-header{
+      color: #ffffff;
+      padding: 1rem 0 1rem 3rem;
+      background-color: #3cae59;
+    }
+  }
+}

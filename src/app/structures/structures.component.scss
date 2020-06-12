@@ -1,0 +1,45 @@
+.structures {
+  margin: 1rem 0rem 0rem 1rem;
+  .structures-cards{
+    display: flex;
+  }
+  .structures-control {
+    position: fixed;
+    bottom: 9%;
+    right: 5%;
+    div{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    i {
+      background-repeat: no-repeat;
+      display: inline-block;
+      background-position: center;
+      background-size: contain;
+    }
+    .filter{
+      border-radius: 50px;
+      background-color: #344DAA;
+      width: 3.5rem;
+      height: 3.5rem;
+      .filterIcon {
+        background-image: url("src/assets/icons/filter_alt-24px.svg");
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+    .add{
+      margin-top: 2rem;
+      border-radius: 50px;
+      background-color: #3cae59;
+      width: 3.5rem;
+      height: 3.5rem;
+      .addIcon {
+        background-image: url("src/assets/icons/add-black-18dp.svg");
+        width: 2rem;
+        height: 2rem;
+      }
+    }
+  }
+}

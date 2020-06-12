@@ -1,0 +1,53 @@
+.structureCard {
+  -webkit-box-shadow: 0px 0px 16px -5px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 16px -5px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 16px -5px rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  padding: 1rem 3rem 0 1rem;
+  p {
+    margin: 0px;
+  }
+  .structureCard-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+  }
+  .structureCard-nav {
+    margin-top: 1rem;
+    width: 40%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .structureCard-nav-edit {
+      height: 1rem;
+      width: 1rem;
+      display: inline-block;
+      background-image: url("src/assets/icons/create-24px.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+    .structureCard-nav-delete {
+      height: 1rem;
+      width: 1rem;
+      display: inline-block;
+      background-image: url("src/assets/icons/delete-24px.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
+  .structureCard-info {
+    margin-top: 2rem;
+    .departmentsInfo {
+      margin-top: 1rem;
+    }
+  }
+  .dropdown {
+    margin-top: 1rem;
+    height: 1rem;
+    background-image: url("src/assets/icons/keyboard_arrow_down-24px.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  .structureCard-dropDown {
+    margin-top: 1rem;
+  }
+}
