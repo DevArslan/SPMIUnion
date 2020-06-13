@@ -10,13 +10,12 @@ import { StructuresComponent } from './structures/structures.component';
 import { StructuresCardComponent } from './structures-card/structures-card.component';
 import { MembersComponent } from './members/members.component';
 import { StructuresAddModalComponent } from './structures-add-modal/structures-add-modal.component';
+// import { AuthService } from "./shared/auth.service";
+import { MainComponent } from './main/main.component';
+import { AuthGuard } from "src/app/auth-guard/auth.guard";
+import { FormsModule } from '@angular/forms';
 
-
-const appRouter: Routes = [
-  {
-    path: 'auth',
-    component: AuthorizationComponent
-  },
+const itemRoutes: Routes = [
   {
     path: 'structures',
     component: StructuresComponent
@@ -25,6 +24,19 @@ const appRouter: Routes = [
     path: 'members',
     component: MembersComponent
   },
+]
+
+const appRouter: Routes = [
+  {
+    path: 'main',
+    component: MainComponent, children: itemRoutes,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: 'auth',
+    component: AuthorizationComponent
+  },
+
 ]
 
 @NgModule({
@@ -36,13 +48,18 @@ const appRouter: Routes = [
     StructuresComponent,
     StructuresCardComponent,
     MembersComponent,
-    StructuresAddModalComponent
+    StructuresAddModalComponent,
+    MainComponent
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRouter),
+    FormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+
+}

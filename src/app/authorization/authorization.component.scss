@@ -30,10 +30,15 @@
         input[type="checkbox"] {
           width: auto;
         }
-        input[type="submit"] {
+        .submitButton {
           background-color: #3cae59;
           color: #ffffff;
           padding: 0.5rem;
+          border: none;
+        }
+        .formError{
+          color: red;
+          font-weight: bold;
         }
       }
       .remember {
