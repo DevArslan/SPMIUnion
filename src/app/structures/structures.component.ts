@@ -11,5 +11,10 @@ export class StructuresComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  active: boolean = false;
+  showModal(){
+    this.active = !this.active
+    console.log('asda')
+  }
 
 }

@@ -1,5 +1,16 @@
 .structures {
   margin: 1rem 0rem 0rem 1rem;
+  .showAddModal{
+    display: block;
+  }
+  app-structures-add-modal{
+    display: none;
+    width: 45%;
+    z-index: 1;
+    position: absolute;
+    top:30%;
+    margin: 0 auto;
+  }
   .structures-cards{
     display: flex;
   }

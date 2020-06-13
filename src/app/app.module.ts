@@ -9,6 +9,7 @@ import { ControlPanelComponent } from './control-panel/control-panel.component';
 import { StructuresComponent } from './structures/structures.component';
 import { StructuresCardComponent } from './structures-card/structures-card.component';
 import { MembersComponent } from './members/members.component';
+import { StructuresAddModalComponent } from './structures-add-modal/structures-add-modal.component';
 
 
 const appRouter: Routes = [
@@ -34,7 +35,8 @@ const appRouter: Routes = [
     ControlPanelComponent,
     StructuresComponent,
     StructuresCardComponent,
-    MembersComponent
+    MembersComponent,
+    StructuresAddModalComponent
   ],
   imports: [
     BrowserModule,
