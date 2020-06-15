@@ -8,8 +8,23 @@ import { Component, OnInit } from '@angular/core';
 export class MembersComponent implements OnInit {
 
   constructor() { }
+  proxy: string
+  url: string
+  data: {id: string, name: string, structure: string, status: string}[] = [
+    {'id':'1', 'name':'Ivan','structure':'Gorniy','status':'admin'},
+    {'id':'2', 'name':'Ivan','structure':'Gorniy','status':'admin'},
+    {'id':'3', 'name':'Ivan','structure':'Gorniy','status':'admin'}
+  ]
+
 
   ngOnInit(): void {
+    // this.proxy = 'https://cors-anywhere.herokuapp.com/'
+
+    // this.url = `${this.proxy}https://jsonplaceholder.typicode.com/todos/10`;
+
+    // fetch(this.url)
+    //   .then(response => response.json())
+    //   .then(json => console.log(json))
   }
 
 }

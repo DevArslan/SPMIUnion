@@ -14,6 +14,7 @@ import { StructuresAddModalComponent } from './structures-add-modal/structures-a
 import { MainComponent } from './main/main.component';
 import { AuthGuard } from "src/app/auth-guard/auth.guard";
 import { FormsModule } from '@angular/forms';
+import { MembersTableComponent } from './members-table/members-table.component';
 
 const itemRoutes: Routes = [
   {
@@ -36,6 +37,11 @@ const appRouter: Routes = [
     path: 'auth',
     component: AuthorizationComponent
   },
+  {
+    path: '',
+    redirectTo: '/main',
+    pathMatch: 'full'
+  },
 
 ]
 
@@ -49,7 +55,8 @@ const appRouter: Routes = [
     StructuresCardComponent,
     MembersComponent,
     StructuresAddModalComponent,
-    MainComponent
+    MainComponent,
+    MembersTableComponent
   ],
   imports: [
     BrowserModule,
