@@ -1,5 +1,43 @@
-.members-nav{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.members{
+  padding: 1rem;
+  .membersAddModal{
+    display: none;
+  }
+  .showMembersAddModal{
+    display: block;
+  }
+  .members-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 20%;
+    .searchInput{
+      background-image: url('src/assets/icons/search-24px.svg');
+      background-repeat: no-repeat;
+      background-position: right;
+      border: 1px solid #ccc;
+      padding: 0.5rem;
+    }
+    i{
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 2rem;
+      width: 2rem;
+      display: block;
+    }
+    .plusIcon{
+      cursor: pointer;
+      background-image: url('src/assets/icons/add_circle_outline-24px.svg');
+    }
+    .editIcon{
+      cursor: pointer;
+      background-image: url('src/assets/icons/create-24px.svg');
+    }
+    .removeIcon{
+      cursor: pointer;
+      background-image: url('src/assets/icons/remove_circle_outline-24px.svg');
+    }
+  }
+
 }
+

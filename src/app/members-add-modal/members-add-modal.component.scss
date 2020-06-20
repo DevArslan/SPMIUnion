@@ -1,0 +1,94 @@
+.closeModal{
+  display: none;
+}
+.modalWrapper {
+  background-color: #aaaaaa;
+  opacity: 0.8;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  .modal {
+    -webkit-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.75);
+    border-radius: 3px;
+    background-color: white;
+    width: 20%;
+    margin: 40vh auto 0 auto;
+    p{
+      margin: 0;
+    }
+    .modal-header{
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .modal-content {
+      width: 80%;
+
+      padding: 0rem 1rem 1rem 1rem;
+      form {
+        width: 100%;
+        input{
+          padding: 0.5rem;
+          display: block;
+          width: 100%;
+          margin-top: 1rem;
+          border: 1px solid #ccc;
+          border-radius: 3px;
+        }
+      }
+      .arrowIcon {
+        background-image: url('src/assets/icons/keyboard_arrow_down-24px.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 1rem;
+        width: 1rem;
+      }
+      .faculty {
+        padding: 0.5rem;
+        margin-top: 1rem;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .structure{
+        padding: 0.5rem;
+        margin-top: 1rem;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .checkStudent{
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        input{
+          width: 1rem;
+          height: 1rem;
+        }
+        p{
+          margin-left: 0.5rem;
+        }
+      }
+      .addButton{
+        display: block;
+        outline: none;
+        margin: 1rem auto 0 auto;
+        padding: 0.5rem;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+      }
+    }
+  }
+}

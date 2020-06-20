@@ -15,6 +15,8 @@ import { MainComponent } from './main/main.component';
 import { AuthGuard } from "src/app/auth-guard/auth.guard";
 import { FormsModule } from '@angular/forms';
 import { MembersTableComponent } from './members-table/members-table.component';
+import { MembersAddModalComponent } from './members-add-modal/members-add-modal.component';
+import { CloseButtonComponent } from './ui-components/close-button/close-button.component';
 
 const itemRoutes: Routes = [
   {
@@ -56,7 +58,9 @@ const appRouter: Routes = [
     MembersComponent,
     StructuresAddModalComponent,
     MainComponent,
-    MembersTableComponent
+    MembersTableComponent,
+    MembersAddModalComponent,
+    CloseButtonComponent
   ],
   imports: [
     BrowserModule,

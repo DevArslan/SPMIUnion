@@ -1,6 +1,7 @@
 <table>
   <thead>
     <tr>
+      <th></th>
       <th>id</th>
       <th>ФИО</th>
       <th>Подразделения</th>
@@ -9,6 +10,9 @@
   </thead>
   <tbody>
     <tr *ngFor="let item of data">
+      <td>
+        <input type="checkbox">
+      </td>
       <td>{{item.id}}</td>
       <td>{{item.name}}</td>
       <td>{{item.structure}}</td>

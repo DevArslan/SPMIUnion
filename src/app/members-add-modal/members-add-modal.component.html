@@ -1,0 +1,27 @@
+<div class="modalWrapper" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <p>Добавить участника</p>
+      <app-close-button (click)="closeModal()"></app-close-button>
+    </div>
+    <div class="modal-content">
+      <form action="">
+        <input type="text" name="name" placeholder="ФИО">
+        <input type="text" name="" placeholder="№ чип карты">
+      </form>
+      <div class="faculty">
+        <p class="faculty-placeholder">{{faculty}}</p>
+        <i class="arrowIcon"></i>
+      </div>
+      <div class="structure">
+        <p class="structure-placeholder">{{structure}}</p>
+        <i class="arrowIcon"></i>
+      </div>
+      <div class="checkStudent">
+        <input type="checkbox" name="" id="">
+        <p>Обучающийся</p>
+      </div>
+      <button class="addButton">Добавить</button>
+    </div>
+  </div>
+</div>

@@ -1,11 +1,21 @@
 <div class="members">
-
+  <app-members-add-modal class="membersAddModal" id="membersAddModal"></app-members-add-modal>
   <div class="members-nav">
-    <div class="members-nav-refresh"></div>
-    <div class="members-nav-add"></div>
+    <div class="members-search">
+      <input class="searchInput" type="text" placeholder="Поиск">
+    </div>
+    <div class="members-nav-add" (click) = "showAddModal()">
+      <i class="plusIcon"></i>
+    </div>
+    <div class="members-nav-edit">
+      <i class="editIcon"></i>
+    </div>
+    <div class="members-nav-remove">
+      <i class="removeIcon"></i>
+    </div>
     <div class="members-nav-excel"></div>
     <div class="members-nav-pdf"></div>
-    <div class="members-nav-edit"></div>
+
   </div>
 
   <app-members-table [data]='data'></app-members-table>

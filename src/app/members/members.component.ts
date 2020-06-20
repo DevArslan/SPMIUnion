@@ -26,5 +26,9 @@ export class MembersComponent implements OnInit {
     //   .then(response => response.json())
     //   .then(json => console.log(json))
   }
+  showAddModal(){
+    const modal = document.getElementById('membersAddModal')
+    modal.style.display = "block";
+  }
 
 }
