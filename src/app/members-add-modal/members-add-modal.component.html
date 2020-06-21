@@ -9,9 +9,14 @@
         <input type="text" name="name" placeholder="ФИО">
         <input type="text" name="" placeholder="№ чип карты">
       </form>
-      <div class="faculty">
+      <div class="faculty"  (click) = 'dropDownFaculty()'>
         <p class="faculty-placeholder">{{faculty}}</p>
-        <i class="arrowIcon"></i>
+        <i class="arrowIcon" [ngClass]="{'dropdownIcon': facultyDropdown}"></i>
+      </div>
+      <div class="facultyDropdown" [ngClass]="{'dropdown': facultyDropdown}">
+        <ul>
+          <li *ngFor="let item of faculties">{{item}}</li>
+        </ul>
       </div>
       <div class="structure">
         <p class="structure-placeholder">{{structure}}</p>

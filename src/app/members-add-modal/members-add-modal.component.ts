@@ -11,11 +11,16 @@ export class MembersAddModalComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  facultyDropdown: boolean = false
   faculty: string = 'Факультет'
   structure: string = 'Подразделение'
+  faculties: string[] = ['Геологоразведочный факультет', 'Горный факультет', 'Механико-машиностроительный факультет', 'Нефтегазовый факультет', 'Факультет переработки минерального сырья']
 
   closeModal(){
     const modal = document.getElementById('membersAddModal')
     modal.style.display = "none";
+  }
+  dropDownFaculty(){
+    this.facultyDropdown = !this.facultyDropdown
   }
 }
