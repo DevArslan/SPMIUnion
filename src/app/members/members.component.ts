@@ -10,6 +10,7 @@ export class MembersComponent implements OnInit {
   constructor() { }
   proxy: string
   url: string
+  username: string = ''
   data: {id: string, name: string, structure: string, status: string}[] = [
     {'id':'1', 'name':'Ivan','structure':'Gorniy','status':'admin'},
     {'id':'2', 'name':'Ivan','structure':'Gorniy','status':'admin'},

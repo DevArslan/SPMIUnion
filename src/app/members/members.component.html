@@ -2,7 +2,7 @@
   <app-members-add-modal class="membersAddModal" id="membersAddModal"></app-members-add-modal>
   <div class="members-nav">
     <div class="members-search">
-      <input class="searchInput" type="text" placeholder="Поиск">
+      <input class="searchInput" type="text" placeholder="Поиск" [(ngModel)]="username">
     </div>
     <div class="members-nav-add" (click) = "showAddModal()">
       <i class="plusIcon"></i>
@@ -18,6 +18,6 @@
 
   </div>
 
-  <app-members-table [data]='data'></app-members-table>
+  <app-members-table [data]='data | filter:username '></app-members-table>
 
 </div>

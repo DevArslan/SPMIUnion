@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { MembersTableComponent } from './members-table/members-table.component';
 import { MembersAddModalComponent } from './members-add-modal/members-add-modal.component';
 import { CloseButtonComponent } from './ui-components/close-button/close-button.component';
+import { FilterPipe } from './pipes/filter.pipe';
 
 const itemRoutes: Routes = [
   {
@@ -60,7 +61,8 @@ const appRouter: Routes = [
     MainComponent,
     MembersTableComponent,
     MembersAddModalComponent,
-    CloseButtonComponent
+    CloseButtonComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
