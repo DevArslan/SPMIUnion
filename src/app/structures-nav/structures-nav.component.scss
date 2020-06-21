@@ -1,0 +1,27 @@
+.structuresNav{
+  margin-left: 0.5rem;
+  width: 80%;
+  .searchInput{
+    margin-top: 0.5rem;
+    color: white;
+    background-color: inherit;
+    background-image: url('src/assets/icons/search-24pxWhite.svg');
+    background-repeat: no-repeat;
+    background-position: right;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    padding: 0.3rem;
+    font-size: 0.8rem;
+  }
+  ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li{
+      margin-top: 1rem;
+      font-size: 0.8rem;
+    }
+  }
+}
+

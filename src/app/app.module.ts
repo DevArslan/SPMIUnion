@@ -18,6 +18,8 @@ import { MembersTableComponent } from './members-table/members-table.component';
 import { MembersAddModalComponent } from './members-add-modal/members-add-modal.component';
 import { CloseButtonComponent } from './ui-components/close-button/close-button.component';
 import { FilterPipe } from './pipes/filter.pipe';
+import { StructuresNavComponent } from './structures-nav/structures-nav.component';
+import { StructuresNavFilterPipe } from './pipes/structures-nav-filter.pipe';
 
 const itemRoutes: Routes = [
   {
@@ -62,7 +64,9 @@ const appRouter: Routes = [
     MembersTableComponent,
     MembersAddModalComponent,
     CloseButtonComponent,
-    FilterPipe
+    FilterPipe,
+    StructuresNavComponent,
+    StructuresNavFilterPipe
   ],
   imports: [
     BrowserModule,

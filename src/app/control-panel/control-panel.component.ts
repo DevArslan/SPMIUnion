@@ -11,5 +11,8 @@ export class ControlPanelComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  structureDropdown: boolean = false
+  dropDownStructure(){
+    this.structureDropdown = !this.structureDropdown
+  }
 }

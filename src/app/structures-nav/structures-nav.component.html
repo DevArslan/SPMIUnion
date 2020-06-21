@@ -1,0 +1,6 @@
+<div class="structuresNav">
+  <input class="searchInput" type="text" placeholder="Поиск" [(ngModel)]="structureName">
+  <ul>
+    <li *ngFor="let item of faculties | structuresNavFilter:structureName">{{item}}</li>
+  </ul>
+</div>

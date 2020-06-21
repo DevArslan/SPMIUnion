@@ -1,49 +1,66 @@
-.controlPanel{
-  margin-top: 10rem;
-  .controlPanel-header{
+.controlPanel {
+  margin-top: 3rem;
+  color: white;
+  .controlPanel-header {
     font-weight: bold;
   }
-  .controlPanel-nav{
-    ul{
+  .controlPanel-nav {
+    ul {
       list-style: none;
       padding: 0;
-      li{
+      .appStructuresNav{
+        display: none;
+      }
+      .dropdown{
+        display: block !important;
+      }
+      .navItem-title {
         display: flex;
         align-items: center;
         margin-top: 1rem;
-        a{
+        color: #ffffff;
+        opacity: 0.7;
+        a {
           text-decoration: none;
         }
-        a:visited{
+        a:visited {
           color: inherit;
         }
-        a:active{
-          color: #3cae59;
-        }
-        i{
+        i {
           background-repeat: no-repeat;
           display: inline-block;
           background-position: center;
           background-size: contain;
         }
-        .groupIcon{
-          background-image: url('src/assets/icons/group-black-18dp.svg');
-          width: 2rem;
-          height: 2rem;
-
-        }
-        .unitIcon{
-          background-image: url('src/assets/icons/apartment-24px.svg');
+        .groupIcon {
+          background-image: url("src/assets/icons/group-black-18dp.svg");
           width: 2rem;
           height: 2rem;
         }
-        .usersIcon{
-          background-image: url('src/assets/icons/people_alt-24px.svg');
+        .unitIcon {
+          background-image: url("src/assets/icons/apartment-24px.svg");
           width: 2rem;
           height: 2rem;
+        }
+        .usersIcon {
+          background-image: url("src/assets/icons/people_alt-24px.svg");
+          width: 2rem;
+          height: 2rem;
+        }
+        .arrowIcon {
+          background-image: url('src/assets/icons/keyboard_arrow_down-24pxWhite.svg');
+          height: 1rem;
+          width: 1rem;
+          transform: rotate(0deg);
+          justify-self: right;
+        }
+        .dropdownIcon{
+          transform: rotate(-180deg);
         }
       }
+      .navItem-title:hover {
+        opacity: 1;
+      }
     }
-
   }
 }

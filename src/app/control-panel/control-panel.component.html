@@ -4,17 +4,25 @@
   </div>
   <div class="controlPanel-nav">
     <ul>
-      <li>
-        <i class="groupIcon"></i>
-        <a [routerLink]="['members']">Участники</a>
+      <li class="navItem">
+        <div class="navItem-title">
+          <i class="groupIcon"></i>
+          <a [routerLink]="['members']">Участники</a>
+        </div>
       </li>
-      <li>
-        <i class="unitIcon"></i>
-        <a [routerLink]="['structures']">Структуры и поздразделения</a>
+      <li class="navItem">
+        <div class="navItem-title" (click)="dropDownStructure()">
+          <i class="unitIcon"></i>
+          <a [routerLink]="['structures']">Структуры</a>
+          <i class="arrowIcon" [ngClass]="{'dropdownIcon': structureDropdown}"></i>
+        </div>
+        <app-structures-nav class="appStructuresNav" [ngClass]="{'dropdown': structureDropdown}"></app-structures-nav>
       </li>
-      <li>
-        <i class="usersIcon"></i>
-        <a>Пользователи</a>
+      <li class="navItem">
+        <div class="navItem-title">
+          <i class="usersIcon"></i>
+          <a>Пользователи</a>
+        </div>
       </li>
     </ul>
   </div>
