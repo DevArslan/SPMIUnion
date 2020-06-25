@@ -1,24 +1,31 @@
 <div class="structureCard">
   <p class="structureCard-name">Горный факультет</p>
-  <div class="structureCard-nav">
-    <i class="structureCard-nav-edit"></i>
-    <i class="structureCard-nav-delete"></i>
-  </div>
+
   <div class="structureCard-info">
-    <p class="structureCard-organizer">Проф.орг: Иванов И.И.</p>
+    <p class="structureCard-organizer">Профорг: Иванов И.И.</p>
     <div class="departmentsInfo">
-      <p class="departmentsInfo-count">Подразделений: 1</p>
-      <p class="departmentsInfo-usersCount">Всего в профсоюзе: 2</p>
+      <div class="departmentsInfo-usersCount">
+        <p>Всего участников: 2</p>
+      </div>
+      <div class="departmentsInfo-count">
+        <i class="dropdown"></i>
+        <p>Подразделения (2)</p>
+      </div>
+      <app-structures-table></app-structures-table>
     </div>
-    <div class="dropdown"></div>
+    <!-- <div class="dropdown"></div>
     <div class="structureCard-dropDown">
       <i>Плюс</i>
       <div class="department">
         <p class="department-title">Кафедра взрывного дела</p>
         <p class="department-usersCount">Всего: 2</p>
       </div>
-    </div>
+    </div> -->
+    <canvas id="structureChart" width="300" height="100"></canvas>
   </div>
-
+  <div class="structureCard-nav">
+    <div class="structureCard-nav-add">Добавить подразделение</div>
+    <div class="structureCard-nav-del">Удалить подразделение</div>
+  </div>
 
 </div>

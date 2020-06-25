@@ -13,6 +13,10 @@
   }
   .structures-cards{
     display: flex;
+    width: 100%;
+    app-structures-card{
+      width: 90%;
+    }
   }
   .structures-control {
     position: fixed;

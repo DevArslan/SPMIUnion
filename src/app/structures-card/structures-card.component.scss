@@ -1,22 +1,34 @@
 .structureCard {
-  -webkit-box-shadow: 0px 0px 16px -5px rgba(0, 0, 0, 0.75);
-  -moz-box-shadow: 0px 0px 16px -5px rgba(0, 0, 0, 0.75);
-  box-shadow: 0px 0px 16px -5px rgba(0, 0, 0, 0.75);
-  border-radius: 4px;
-  padding: 1rem 3rem 0 1rem;
+  width: 100%;
+  // -webkit-box-shadow: 0px 0px 16px -5px rgba(0, 0, 0, 0.75);
+  // -moz-box-shadow: 0px 0px 16px -5px rgba(0, 0, 0, 0.75);
+  // box-shadow: 0px 0px 16px -5px rgba(0, 0, 0, 0.75);
+  // border-radius: 4px;
+  padding: 1rem 3rem 1rem 1rem;
   p {
     margin: 0px;
   }
   .structureCard-name {
-    font-size: 1.3rem;
+    font-size: 2rem;
     font-weight: bold;
   }
   .structureCard-nav {
-    margin-top: 1rem;
+    margin: 1rem auto 0 auto;
     width: 40%;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    color: #ffffff;
+    .structureCard-nav-add {
+      padding: 1rem;
+      border-radius: 3px;
+      background-color: #3cae59;
+    }
+    .structureCard-nav-del {
+      padding: 1rem;
+      border-radius: 3px;
+      background-color: #E96250;
+    }
     .structureCard-nav-edit {
       height: 1rem;
       width: 1rem;
@@ -36,16 +48,33 @@
   }
   .structureCard-info {
     margin-top: 2rem;
+    padding-left: 0.7rem;
+    font-weight: 500;
     .departmentsInfo {
       margin-top: 1rem;
+      .departmentsInfo-count{
+        margin-top: 1rem;
+        margin-left: -0.7rem;
+        display: flex;
+        align-items: center;
+        p{
+          // font-weight: bolder;
+          // margin-left: 0.5rem;
+        }
+        .dropdown {
+          height: 0.7rem;
+          width: 0.7rem;
+          background-image: url("src/assets/icons/keyboard_arrow_down-24px.svg");
+          background-repeat: no-repeat;
+          background-position: center;
+          transform: rotate(-90deg);
+          opacity: 0.4;
+        }
+      }
+      .departmentsInfo-usersCount{
+        margin-top: 1rem;
+      }
     }
-  }
-  .dropdown {
-    margin-top: 1rem;
-    height: 1rem;
-    background-image: url("src/assets/icons/keyboard_arrow_down-24px.svg");
-    background-repeat: no-repeat;
-    background-position: center;
   }
   .structureCard-dropDown {
     margin-top: 1rem;

@@ -20,6 +20,7 @@ import { CloseButtonComponent } from './ui-components/close-button/close-button.
 import { FilterPipe } from './pipes/filter.pipe';
 import { StructuresNavComponent } from './structures-nav/structures-nav.component';
 import { StructuresNavFilterPipe } from './pipes/structures-nav-filter.pipe';
+import { StructuresTableComponent } from './structures-table/structures-table.component';
 
 const itemRoutes: Routes = [
   {
@@ -66,7 +67,8 @@ const appRouter: Routes = [
     CloseButtonComponent,
     FilterPipe,
     StructuresNavComponent,
-    StructuresNavFilterPipe
+    StructuresNavFilterPipe,
+    StructuresTableComponent
   ],
   imports: [
     BrowserModule,
