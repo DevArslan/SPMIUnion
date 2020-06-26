@@ -10,6 +10,8 @@ export class StructuresCardComponent implements OnInit {
 
   constructor() { }
 
+  dropdown: boolean = false;
+
   ngOnInit(): void {
     var structureChart = new Chart('structureChart', {
       type: 'bar',
@@ -47,6 +49,10 @@ export class StructuresCardComponent implements OnInit {
         }
       }
     });
+  }
+
+  dropdownStructureTable(){
+    this.dropdown = !this.dropdown
   }
 
 }

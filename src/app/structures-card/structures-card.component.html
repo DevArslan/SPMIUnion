@@ -7,11 +7,11 @@
       <div class="departmentsInfo-usersCount">
         <p>Всего участников: 2</p>
       </div>
-      <div class="departmentsInfo-count">
-        <i class="dropdown"></i>
+      <div class="departmentsInfo-count" (click) = "dropdownStructureTable()">
+        <i class="dropdown" [ngClass]="{'dropdownIconActive': dropdown}"></i>
         <p>Подразделения (2)</p>
       </div>
-      <app-structures-table></app-structures-table>
+      <app-structures-table [ngClass]="{'dropdownTableActive': dropdown}"></app-structures-table>
     </div>
     <!-- <div class="dropdown"></div>
     <div class="structureCard-dropDown">

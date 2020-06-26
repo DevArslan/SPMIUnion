@@ -27,7 +27,7 @@
     .structureCard-nav-del {
       padding: 1rem;
       border-radius: 3px;
-      background-color: #E96250;
+      background-color: #e96250;
     }
     .structureCard-nav-edit {
       height: 1rem;
@@ -52,12 +52,13 @@
     font-weight: 500;
     .departmentsInfo {
       margin-top: 1rem;
-      .departmentsInfo-count{
+      .departmentsInfo-count {
         margin-top: 1rem;
         margin-left: -0.7rem;
         display: flex;
         align-items: center;
-        p{
+        cursor: pointer;
+        p {
           // font-weight: bolder;
           // margin-left: 0.5rem;
         }
@@ -70,9 +71,23 @@
           transform: rotate(-90deg);
           opacity: 0.4;
         }
+        .dropdownIconActive {
+          transform: rotate(0);
+        }
       }
-      .departmentsInfo-usersCount{
+      .departmentsInfo-usersCount {
         margin-top: 1rem;
+      }
+      app-structures-table {
+        transition: all 0.3s;
+        max-height: 0;
+        display: block;
+        overflow: hidden;
+        opacity: 0;
+      }
+      .dropdownTableActive {
+        max-height: 300px;
+        opacity: 1;
       }
     }
   }

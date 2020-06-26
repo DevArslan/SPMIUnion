@@ -9,10 +9,15 @@
       list-style: none;
       padding: 0;
       .appStructuresNav{
-        display: none;
+        transition: all 0.3s;
+        max-height: 0;
+        display: block;
+        overflow: hidden;
+        opacity: 0;
       }
       .dropdown{
-        display: block !important;
+        max-height: 300px;
+        opacity: 1;
       }
       .navItem-title {
         display: flex;
