@@ -9,7 +9,7 @@
       </div>
       <div class="departmentsInfo-count" (click) = "dropdownStructureTable()">
         <i class="dropdown" [ngClass]="{'dropdownIconActive': dropdown}"></i>
-        <p>Подразделения (2)</p>
+        <p>Подразделения ({{selectedDataStructures.length}})</p>
       </div>
       <app-structures-table [ngClass]="{'dropdownTableActive': dropdown}"></app-structures-table>
     </div>

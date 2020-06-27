@@ -8,10 +8,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of data ">
-      <td>{{item.name}}</td>
+    <tr *ngFor="let item of selectedData.structures">
+      <td>{{item.structureName}}</td>
       <td>{{item.structure}}</td>
-      <td>{{item.users}}</td>
+      <td>{{item.structureUsers}}</td>
       <td>{{item.dynamic}}</td>
     </tr>
   </tbody>
