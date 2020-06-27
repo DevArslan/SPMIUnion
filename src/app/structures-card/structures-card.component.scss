@@ -50,6 +50,17 @@
     margin-top: 2rem;
     padding-left: 0.7rem;
     font-weight: 500;
+    .structureCharts{
+      margin-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      .structureCharts-1{
+        width: 47%;
+      }
+      .structureCharts-2{
+        width: 47%;
+      }
+    }
     .departmentsInfo {
       margin-top: 1rem;
       .departmentsInfo-count {
