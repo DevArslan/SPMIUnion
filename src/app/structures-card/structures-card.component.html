@@ -1,11 +1,11 @@
 <div class="structureCard">
-  <p class="structureCard-name">Горный факультет</p>
+  <p class="structureCard-name">{{selectedData.faculty}}</p>
 
   <div class="structureCard-info">
-    <p class="structureCard-organizer">Профорг: Иванов И.И.</p>
+    <p class="structureCard-organizer">Профорг: {{selectedData.name}}</p>
     <div class="departmentsInfo">
       <div class="departmentsInfo-usersCount">
-        <p>Всего участников: 2</p>
+        <p>Всего участников: {{selectedData.users}}</p>
       </div>
       <div class="departmentsInfo-count" (click) = "dropdownStructureTable()">
         <i class="dropdown" [ngClass]="{'dropdownIconActive': dropdown}"></i>
@@ -13,14 +13,6 @@
       </div>
       <app-structures-table [ngClass]="{'dropdownTableActive': dropdown}"></app-structures-table>
     </div>
-    <!-- <div class="dropdown"></div>
-    <div class="structureCard-dropDown">
-      <i>Плюс</i>
-      <div class="department">
-        <p class="department-title">Кафедра взрывного дела</p>
-        <p class="department-usersCount">Всего: 2</p>
-      </div>
-    </div> -->
     <canvas id="structureChart" width="300" height="100"></canvas>
   </div>
   <div class="structureCard-nav">

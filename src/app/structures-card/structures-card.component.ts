@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
+import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
 
 @Component({
   selector: 'app-structures-card',
@@ -8,11 +9,28 @@ import Chart from 'chart.js';
 })
 export class StructuresCardComponent implements OnInit {
 
-  constructor() { }
+  constructor(private structureRouting: StructuresRoutingService) { }
+
+  selectedData: { faculty: string, name: string, users: string, status: string } = {'faculty':'Геологоразведочный факультет', 'name':'Ivan','users':'Gorniy','status':'admin'}
+  data: { faculty: string, name: string, users: string, status: string }[] = [
+    { 'faculty': 'Геологоразведочный факультет', 'name': 'Иванов', 'users': '12', 'status': 'admin' },
+    { 'faculty': 'Горный факультет', 'name': 'Петров', 'users': '32', 'status': 'admin' },
+    { 'faculty': 'Механико-машиностроительный факультет', 'name': 'Сидоров', 'users': '17', 'status': 'admin' },
+    { 'faculty': 'Нефтегазовый факультет', 'name': 'Иванов', 'users': '92', 'status': 'admin' },
+    { 'faculty': 'Факультет переработки минерального сырья', 'name': 'Петров', 'users': '132', 'status': 'admin' }
+  ]
 
   dropdown: boolean = false;
 
   ngOnInit(): void {
+    this.structureRouting.postData$.subscribe((faculty) => {
+      this.data.forEach(element => {
+        if (faculty == element.faculty) {
+          this.selectedData = element;
+        }
+      })
+    })
+
     var structureChart = new Chart('structureChart', {
       type: 'bar',
       data: {
@@ -51,7 +69,7 @@ export class StructuresCardComponent implements OnInit {
     });
   }
 
-  dropdownStructureTable(){
+  dropdownStructureTable() {
     this.dropdown = !this.dropdown
   }
 
