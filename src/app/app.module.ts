@@ -21,6 +21,8 @@ import { FilterPipe } from './pipes/filter.pipe';
 import { StructuresNavComponent } from './structures-nav/structures-nav.component';
 import { StructuresNavFilterPipe } from './pipes/structures-nav-filter.pipe';
 import { StructuresTableComponent } from './structures-table/structures-table.component';
+import { UsersComponent } from './users/users.component';
+import { UsersTableComponent } from './users-table/users-table.component';
 
 const itemRoutes: Routes = [
   {
@@ -30,6 +32,10 @@ const itemRoutes: Routes = [
   {
     path: 'members',
     component: MembersComponent
+  },
+  {
+    path: 'users',
+    component: UsersComponent
   },
 ]
 
@@ -68,7 +74,9 @@ const appRouter: Routes = [
     FilterPipe,
     StructuresNavComponent,
     StructuresNavFilterPipe,
-    StructuresTableComponent
+    StructuresTableComponent,
+    UsersComponent,
+    UsersTableComponent
   ],
   imports: [
     BrowserModule,

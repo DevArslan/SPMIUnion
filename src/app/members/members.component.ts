@@ -8,8 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class MembersComponent implements OnInit {
 
   constructor() { }
-  proxy: string
-  url: string
+
   username: string = ''
   data: {id: string, name: string, structure: string, status: string}[] = [
     {'id':'1', 'name':'Ivan','structure':'Gorniy','status':'admin'},
@@ -20,13 +19,7 @@ export class MembersComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // this.proxy = 'https://cors-anywhere.herokuapp.com/'
 
-    // this.url = `${this.proxy}https://jsonplaceholder.typicode.com/todos/10`;
-
-    // fetch(this.url)
-    //   .then(response => response.json())
-    //   .then(json => console.log(json))
   }
   showAddModal(){
     const modal = document.getElementById('membersAddModal')
