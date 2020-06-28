@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import { AuthService } from 'src/app/shared/auth.service'
 
 @Component({
   selector: 'app-authorization',
@@ -9,25 +9,60 @@ import { Router } from '@angular/router';
 })
 export class AuthorizationComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private authService: AuthService) { }
 
   ngOnInit(): void {
   }
 
   login: string = ''
   password: string = ''
+  remember: boolean = false
   error: string = ''
 
-  auth(){
+  auth() {
+    if (this.login && this.password) {
+      const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/login'
 
-    if(this.login == 'admin' && this.password == 'admin'){
-      localStorage.setItem('token','token')
-      this.router.navigate(['main/members']);
-    }else{
-      this.error = 'Введен неверный пароль или логин'
+      const data = {
+        login: this.login,
+        password: this.password,
+        remember: this.remember
+      }
+
+      const token = window.btoa(`${data.login}:${data.password}`);
+      fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${token}`
+        },
+      })
+        .then(res => res.json())
+        .catch(() => this.error = 'Введен неверный пароль или логин')
+        .then(jsonData => {
+          if (data.remember == true) {
+            this.authService.profileData = jsonData
+            localStorage.setItem('jsonData',JSON.stringify(jsonData))
+            sessionStorage.setItem('jsonData',JSON.stringify(jsonData))
+            localStorage.setItem('token',token)
+            sessionStorage.setItem('token',token)
+          } else {
+            this.authService.profileData = jsonData
+            sessionStorage.setItem('jsonData',JSON.stringify(jsonData))
+            sessionStorage.setItem('token',token)
+          }
+        })
+        .then(() => {
+          if (this.authService.profileData.role == 'Administrator') {
+            this.router.navigate(['main/members']);
+          }
+        })
     }
-
+    if (!this.login) {
+      alert('Требуется указать имя');
+    }
+    if (!this.password) {
+      alert('Требуется указать пароль');
+    }
   }
-
-
 }
