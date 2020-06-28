@@ -78,9 +78,11 @@
           margin: 0;
           li{
             margin-top: 0.5rem;
+            cursor: pointer;
           }
         }
       }
+
       .dropdown{
         display: block !important;
       }
@@ -95,6 +97,26 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+      }
+      .structureDropdown{
+        z-index: 9999 !important;
+        background-color: white;
+        position: absolute;
+        margin-top: 0.2rem;
+        margin-right: 1rem;
+        padding: 0.5rem;
+        border-radius: 3px;
+        border: 1px solid #ccc;
+        display: none;
+        ul{
+          list-style: none;
+          padding: 0;
+          margin: 0;
+          li{
+            margin-top: 0.5rem;
+            cursor: pointer;
+          }
+        }
       }
       .checkStudent{
         margin-top: 1rem;

@@ -1,1 +1,21 @@
-<app-users-table [data]='data'></app-users-table>
+<div class="users">
+  <div class="users-nav">
+    <div class="users-search">
+      <input class="searchInput" type="text" placeholder="Поиск" [(ngModel)]="username">
+    </div>
+    <div class="users-nav-add" (click) = "showAddModal()">
+      <i class="plusIcon"></i>
+    </div>
+    <div class="users-nav-edit">
+      <i class="editIcon"></i>
+    </div>
+    <div class="users-nav-remove">
+      <i class="removeIcon"></i>
+    </div>
+    <div class="users-nav-excel"></div>
+    <div class="users-nav-pdf"></div>
+
+  </div>
+  <app-users-table class="users-table" [data]='data | filter:username'></app-users-table>
+</div>
+

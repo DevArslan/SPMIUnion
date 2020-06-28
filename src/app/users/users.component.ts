@@ -9,6 +9,8 @@ export class UsersComponent implements OnInit {
 
   constructor() { }
 
+  username: string = ''
+
   data: {id: string, name: string, login: string, role: string, date: string}[] = [
     {'id':'1', 'name':'Ivan','login':'petya','role':'admin','date':'20.06.2020'},
     {'id':'2', 'name':'Ivan','login':'vanya','role':'admin','date':'21.06.2020'},
@@ -17,6 +19,10 @@ export class UsersComponent implements OnInit {
   ]
 
   ngOnInit(): void {
+  }
+
+  showAddModal(){
+    console.log('add user')
   }
 
 }
