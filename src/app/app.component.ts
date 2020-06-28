@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/shared/auth.service'
+import { ApiServiceService } from "src/app/shared/api-service.service";
+
 
 @Component({
   selector: 'app-root',
@@ -9,26 +10,9 @@ import { AuthService } from 'src/app/shared/auth.service'
 export class AppComponent {
   title = 'SPMIUnion';
 
-  constructor(private authService: AuthService) { }
-
-  async getDepartments() {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments'
-    const token = this.authService.getToken()
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${token}`
-      },
-    })
-      .then((res) => res.json())
-      .then(data => console.log(data))
-  }
+  constructor(private apiServiceService: ApiServiceService) {}
 
   ngOnInit(): void {
-    this.getDepartments()
+    this.apiServiceService.getDepartments()
   }
-
-
-
 }

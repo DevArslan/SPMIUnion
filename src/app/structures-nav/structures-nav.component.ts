@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
+import { ApiServiceService } from "src/app/shared/api-service.service";
 
 @Component({
   selector: 'app-structures-nav',
@@ -8,11 +9,11 @@ import { StructuresRoutingService } from "src/app/shared/structures-routing.serv
 })
 export class StructuresNavComponent implements OnInit {
 
-  constructor(private structureRouting: StructuresRoutingService) {}
+  constructor(private structureRouting: StructuresRoutingService,private apiServiceService: ApiServiceService) {}
   faculty: string = ''
-  // selectStructure(event) {
-  //   this.structureRouting.selectStructureService(event)
-  // }
+  structureName: string = ''
+  departmentsTitle: string[] = []
+  departmentsData: {}[]
 
   selectStructure(event) {
     this.faculty =  event.target.dataset.selectNumber
@@ -20,10 +21,18 @@ export class StructuresNavComponent implements OnInit {
     console.log(this.faculty)
   }
   ngOnInit(): void {
+
+    this.apiServiceService.postData$.subscribe((faculty) =>{
+      this.departmentsData =  this.apiServiceService.departments
+      this.departmentsData.forEach(element => {
+        this.departmentsTitle.push(element.title)
+        console.log(this.departmentsTitle)
+    })
+  })
+
+
+  // faculties: string[] = ['Геологоразведочный факультет', 'Горный факультет', 'Механико-машиностроительный факультет', 'Нефтегазовый факультет', 'Факультет переработки минерального сырья']
+
+
   }
-  structureName: string = ''
-  faculties: string[] = ['Геологоразведочный факультет', 'Горный факультет', 'Механико-машиностроительный факультет', 'Нефтегазовый факультет', 'Факультет переработки минерального сырья']
-
-
-
 }
