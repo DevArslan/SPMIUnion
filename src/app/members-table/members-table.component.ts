@@ -10,14 +10,12 @@ import { ApiServiceService } from "src/app/shared/api-service.service";
 })
 export class MembersTableComponent implements OnInit {
 
-  // @Input() data: {}[] = []
-  data: {}[] =[]
+  @Input() data: {}[] = []
+
   constructor(private apiServiceService: ApiServiceService) { }
 
   ngOnInit(): void {
-    this.apiServiceService.members$.subscribe((dataFromApi)=>{
-      this.data =  dataFromApi.members
-    })
+
 
   }
 

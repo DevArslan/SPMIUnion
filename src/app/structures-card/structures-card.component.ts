@@ -32,10 +32,10 @@ export class StructuresCardComponent implements OnInit {
     this.selectedDataStructuresUsers.length = 0
 
     // Получение массивов с данным подразделений
-    // this.subDepartmentsForCharts.forEach(element => {
-    //   this.selectedDataStructures.push(element.title)
-    //   this.selectedDataStructuresUsers.push(element.members_total)
-    // });
+    this.selectedSubDepartments.forEach(element => {
+      this.selectedDataStructures.push(element.title)
+      this.selectedDataStructuresUsers.push(element.members_total)
+    });
     structureChart.update()
     structureChart2.update()
 
@@ -63,23 +63,20 @@ export class StructuresCardComponent implements OnInit {
       this.subDepartmentsForCharts.length = 0
       this.selectedSubDepartments.length = 0
       this.data = this.apiServiceService.departments
-      // console.log(this.data)
       this.data.forEach(async(element) => {
         if (faculty == element.title) {
           this.selectedData = element;
-          this.subDepartmentsForCharts = await this.getDepartmentDataById(this.selectedData.id)
           // Фильтрация подразделения под конкретную структуру
           this.subDepartments = await this.getSubDepartmentsData()
           this.subDepartments.subdepartments.forEach(element => {
             if(element.head_department_id == this.selectedData.id){
               this.selectedSubDepartments.push(element)
             }
-
           });
-          console.log(this.selectedSubDepartments)
           this.updateCharts(structureChart, structureChart2)
         }
       })
+
     })
 
     var structureChart = new Chart('structureChart', {

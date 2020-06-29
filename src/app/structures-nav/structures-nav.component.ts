@@ -30,7 +30,7 @@ export class StructuresNavComponent implements OnInit {
         this.departmentsTitle.push(element.title)
     })
   })
-
+  console.log(this.departmentsTitle)
 
   // faculties: string[] = ['Геологоразведочный факультет', 'Горный факультет', 'Механико-машиностроительный факультет', 'Нефтегазовый факультет', 'Факультет переработки минерального сырья']
 

@@ -45,7 +45,7 @@ export class ApiServiceService {
     })
       .then((res) => res.json())
       .then(data => {
-        console.log(data)
+
         return data
       }
       )
@@ -64,7 +64,7 @@ export class ApiServiceService {
     })
       .then((res) => res.json())
       .then(data => {
-        console.log(data)
+
         return data
       }
       )
@@ -78,7 +78,7 @@ export class ApiServiceService {
       title: title,
       head_department_id: departmentID
     }
-    console.log(data)
+
     return fetch(url, {
       method: 'POST',
       headers: {
@@ -112,6 +112,7 @@ export class ApiServiceService {
 
   ngOnInit(): void {
     this.getDepartments()
+
   }
 
 }

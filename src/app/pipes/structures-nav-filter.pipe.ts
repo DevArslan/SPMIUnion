@@ -6,6 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class StructuresNavFilterPipe implements PipeTransform {
 
   transform(faculties: any, structureName: any): any {
+
     if (structureName === "") return faculties;
 
 
@@ -14,10 +15,10 @@ export class StructuresNavFilterPipe implements PipeTransform {
       else {
         try {
           return (
-            dataItem.toUpperCase().indexOf(structureName.toUpperCase()) > -1
+            dataItem.title.toUpperCase().indexOf(structureName.toUpperCase()) > -1
           );
         } catch (error) {
-          console.log("error");
+          console.log(error);
         }
       }
     });
