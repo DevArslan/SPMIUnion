@@ -24,15 +24,14 @@ export class StructuresNavComponent implements OnInit {
   }
   ngOnInit(): void {
 
-    this.apiServiceService.postData$.subscribe(() =>{
+    this.apiServiceService.departments$.subscribe(() =>{
       this.departmentsData =  this.apiServiceService.departments
       this.departmentsData.forEach(element => {
         this.departmentsTitle.push(element.title)
     })
   })
-  console.log(this.departmentsTitle)
 
-  // faculties: string[] = ['Геологоразведочный факультет', 'Горный факультет', 'Механико-машиностроительный факультет', 'Нефтегазовый факультет', 'Факультет переработки минерального сырья']
+
 
 
   }

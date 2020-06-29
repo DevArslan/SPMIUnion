@@ -15,29 +15,36 @@ export class MembersComponent implements OnInit {
   username: string = ''
 
   data: {}[] = []
+  dataForModal: {}[] = []
 
-  showAddModal(){
+  showAddModal() {
     const modal = document.getElementById('membersAddModal')
     modal.style.display = "block";
   }
-  showEditModal(){
+  showEditModal() {
     const modal = document.getElementById('membersEditModal')
     modal.style.display = "block";
   }
-  showDelModal(){
+  showDelModal() {
     const modal = document.getElementById('membersDelModal')
     modal.style.display = "block";
   }
 
-  getMembersData(){
-    return  this.apiServiceService.getMembers()
-  }
+  // getMembersData() {
+  //   return this.apiServiceService.getMembers()
+  // }
 
-  ngOnInit():void {
-    this.data = this.getMembersData()
-    this.apiServiceService.members$.subscribe((dataFromApi)=>{
-        this.data =  dataFromApi.members
-      })
+  ngOnInit(): void {
+    this.apiServiceService.getMembers()
+    this.apiServiceService.members$.subscribe((dataFromApi) => {
+      this.data = dataFromApi.members
+    })
+
+    this.apiServiceService.getDepartments()
+    this.apiServiceService.departments$.subscribe((dataFromApi) => {
+      this.dataForModal = dataFromApi
+      console.log(this.dataForModal)
+    })
 
 
 

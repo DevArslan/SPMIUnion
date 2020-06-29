@@ -11,6 +11,7 @@ export class ApiServiceService {
   selectedDepartment: string
   departments: {}[]
   members: {}[]
+  departments$ = new Subject<{}[]>();
   members$ = new Subject<{}[]>();
   postData$ = new Subject<{}[]>();
   // Получение данных о структурах
@@ -27,7 +28,7 @@ export class ApiServiceService {
       .then((res) => res.json())
       .then(data => {
         this.departments = data.departments;
-        this.postData$.next(this.departments);
+        this.departments$.next(this.departments);
       }
       )
   }
@@ -110,9 +111,30 @@ export class ApiServiceService {
       )
   }
 
+  // Создание нового участника профсоюза
+  async createMember(name, card, subdepartment,student) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members'
+    const token = this.authService.getToken()
+    const data = {
+      name: name,
+      card: card,
+      is_student: student,
+      subdepartment_id : subdepartment
+    }
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => console.log(res.json()))
+  }
+
   ngOnInit(): void {
     this.getDepartments()
-
   }
 
 }
