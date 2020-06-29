@@ -11,7 +11,7 @@ export class SubDepartmentsAddModalComponent implements OnInit {
   constructor(private apiServiceService: ApiServiceService) { }
 
   subDepartmentDropdown: boolean = false
-  departmentID:string = this.apiServiceService.selectedDepartment
+  departmentID:string
   title: string = ''
 
   dropDownSubDepartment(){
@@ -22,6 +22,7 @@ export class SubDepartmentsAddModalComponent implements OnInit {
     modal.style.display = "none";
   }
   addSubDepartment(){
+    // this.departmentID = this.apiServiceService.selectedDepartment
     this.apiServiceService.createSubDepartment(this.title,this.departmentID)
   }
   ngOnInit(): void {

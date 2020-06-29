@@ -9,9 +9,9 @@
       </div>
       <div class="departmentsInfo-count" (click)="dropdownStructureTable()">
         <i class="dropdown" [ngClass]="{'dropdownIconActive': dropdown}"></i>
-        <p>Подразделения ({{subDepartments.length}})</p>
+        <p>Подразделения ({{selectedSubDepartments.length}})</p>
       </div>
-      <app-structures-table [subDepartments]='subDepartments' [ngClass]="{'dropdownTableActive': dropdown}">
+      <app-structures-table [selectedSubDepartments]='selectedSubDepartments' [ngClass]="{'dropdownTableActive': dropdown}">
       </app-structures-table>
     </div>
     <div class="structureCharts">

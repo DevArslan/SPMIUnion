@@ -8,7 +8,7 @@ import { Subject } from 'rxjs';
 export class ApiServiceService {
 
   constructor(private authService: AuthService) { }
-  selectedDepartment: string = ''
+  selectedDepartment: string
   departments: {}[]
   postData$ = new Subject<{}[]>();
   // Получение данных о структурах
@@ -30,9 +30,9 @@ export class ApiServiceService {
       )
   }
 
-  // Получение данных по подразделениях
-  async getSubDepartments(departmentID) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments/' + departmentID
+  // Получение данных структрах по ID
+  async getDepartmentById(departmentID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments/' + departmentID
     const token = this.authService.getToken()
     return fetch(url, {
       method: 'GET',
@@ -43,23 +43,47 @@ export class ApiServiceService {
     })
       .then((res) => res.json())
       .then(data => {
+        console.log(data)
         return data
       }
       )
   }
 
-  async createSubDepartment(title, departmentID) {
-    // const proxy = 'https://cors-anywhere.herokuapp.com/';
-    // const url = `${proxy}https://digital.spmi.ru/profsouz_test/api/v1/subdepartments`;
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments/'
+  // Получение списка подразделений
+  async getSubDepartments() {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments'
     const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+    })
+      .then((res) => res.json())
+      .then(data => {
+        console.log(data)
+        return data
+      }
+      )
+  }
+
+
+  async createSubDepartment(title, departmentID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments'
+    const token = this.authService.getToken()
+    const data = {
+      title : title,
+      head_department_id : departmentID
+    }
+    console.log(data)
     return fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Basic ${token}`
       },
-      body: JSON.stringify(title, departmentID),
+      body: JSON.stringify(data),
     })
       .then((res) => console.log(res.json()))
   }

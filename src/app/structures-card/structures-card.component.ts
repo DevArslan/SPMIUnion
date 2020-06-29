@@ -15,7 +15,9 @@ export class StructuresCardComponent implements OnInit {
   selectedDataStructures: string[] = []
   selectedDataStructuresUsers: string[] = []
   data: {}[] = []
-  subDepartments: {}[] = []
+  subDepartmentsForCharts: {}[] = []
+  subDepartments: {}
+  selectedSubDepartments: {}[] = []
 
   dropdown: boolean = false;
 
@@ -30,11 +32,10 @@ export class StructuresCardComponent implements OnInit {
     this.selectedDataStructuresUsers.length = 0
 
     // Получение массивов с данным подразделений
-    this.subDepartments.forEach(element => {
-      this.selectedDataStructures.push(element.title)
-      this.selectedDataStructuresUsers.push(element.members_total)
-      console.log(element)
-    });
+    // this.subDepartmentsForCharts.forEach(element => {
+    //   this.selectedDataStructures.push(element.title)
+    //   this.selectedDataStructuresUsers.push(element.members_total)
+    // });
     structureChart.update()
     structureChart2.update()
 
@@ -44,10 +45,11 @@ export class StructuresCardComponent implements OnInit {
     this.dropdown = !this.dropdown
   }
 
-  async getSubDepartmentsData(id){
-    this.subDepartments.length = 0
-    this.subDepartments.push(await this.apiServiceService.getSubDepartments(id));
-    console.log(this.subDepartments)
+  async getDepartmentDataById(id){
+    return await this.apiServiceService.getDepartmentById(id);
+  }
+  async getSubDepartmentsData(){
+    return await this.apiServiceService.getSubDepartments();
   }
 
   ngOnChanges(): void{
@@ -58,13 +60,23 @@ export class StructuresCardComponent implements OnInit {
 
     // Подписка на меню навигации
     this.structureRouting.postData$.subscribe((faculty) => {
+      this.subDepartmentsForCharts.length = 0
+      this.selectedSubDepartments.length = 0
       this.data = this.apiServiceService.departments
       // console.log(this.data)
       this.data.forEach(async(element) => {
         if (faculty == element.title) {
           this.selectedData = element;
-          await this.getSubDepartmentsData(this.selectedData.id)
-          console.log(this.subDepartments)
+          this.subDepartmentsForCharts = await this.getDepartmentDataById(this.selectedData.id)
+          // Фильтрация подразделения под конкретную структуру
+          this.subDepartments = await this.getSubDepartmentsData()
+          this.subDepartments.subdepartments.forEach(element => {
+            if(element.head_department_id == this.selectedData.id){
+              this.selectedSubDepartments.push(element)
+            }
+
+          });
+          console.log(this.selectedSubDepartments)
           this.updateCharts(structureChart, structureChart2)
         }
       })

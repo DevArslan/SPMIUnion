@@ -1,6 +1,6 @@
 <div class="structuresNav">
   <input class="searchInput" type="text" placeholder="Поиск" [(ngModel)]="structureName">
   <ul>
-    <li [routerLink]="['structures']" *ngFor="let item of departmentsData | structuresNavFilter:structureName" attr.data-select-id="{{item.id}}" attr.data-select-number="{{item.title}}"(click)="selectStructure($event)">{{item.title}}</li>
+    <li [routerLink]="['structures']" *ngFor="let item of departmentsData | structuresNavFilter:structureName" attr.data-select-id="{{item.head_department_id}}" attr.data-select-number="{{item.title}}"(click)="selectStructure($event)">{{item.title}}</li>
   </ul>
 </div>

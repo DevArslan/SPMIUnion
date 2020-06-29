@@ -13,13 +13,14 @@ export class StructuresNavComponent implements OnInit {
   faculty: string = ''
   structureName: string = ''
   departmentsTitle: string[] = []
-  departmentsData: {}[]
+  departmentsData: {}[] = []
 
   selectStructure(event) {
     this.faculty =  event.target.dataset.selectNumber
-    this.apiServiceService.selectedDepartment = event.target.dataset.selectID
+    // this.apiServiceService.selectedDepartment = this.departmentsData[0].head_department_id
+    // console.log(this.apiServiceService.selectedDepartment)
     this.structureRouting.postData$.next(this.faculty);
-    console.log(this.faculty)
+
   }
   ngOnInit(): void {
 
@@ -27,7 +28,6 @@ export class StructuresNavComponent implements OnInit {
       this.departmentsData =  this.apiServiceService.departments
       this.departmentsData.forEach(element => {
         this.departmentsTitle.push(element.title)
-        console.log(element)
     })
   })
 
