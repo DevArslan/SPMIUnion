@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
+import { Input } from "@angular/core";
 
 @Component({
   selector: 'app-structures-table',
@@ -7,7 +8,7 @@ import { StructuresRoutingService } from "src/app/shared/structures-routing.serv
   styleUrls: ['./structures-table.component.scss']
 })
 export class StructuresTableComponent implements OnInit {
-
+  @Input() subDepartments: {}[]
   // data: {id: string, name: string, structure: string, users: string, dynamic: string}[] = [
   //   {'id':'1', 'name':'Кафедра разработки месторождений полезных ископаемых','structure':'Горный факультет','users':'12','dynamic':'+12'},
   //   {'id':'2', 'name':'Кафедра безопасности производств','structure':'Горный факультет','users':'53','dynamic':'+12'},

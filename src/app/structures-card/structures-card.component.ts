@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
 import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
-
+import { ApiServiceService } from "src/app/shared/api-service.service";
 @Component({
   selector: 'app-structures-card',
   templateUrl: './structures-card.component.html',
@@ -9,21 +9,13 @@ import { StructuresRoutingService } from "src/app/shared/structures-routing.serv
 })
 export class StructuresCardComponent implements OnInit {
 
-  constructor(private structureRouting: StructuresRoutingService) { }
+  constructor(private structureRouting: StructuresRoutingService, private apiServiceService: ApiServiceService) { }
 
-  selectedData: { faculty: string, name: string, users: string, structures: { structureName: string, structureUsers: number }[] } = {
-    'faculty': 'Геологоразведочный факультет', 'name': 'Ivan', 'users': '212', 'structures': [
-      { 'structureName': 'Кафедра геофизических и геохимических методов поисков и разведки месторождений полезных ископаемых', 'structureUsers': 11 },
-      { 'structureName': 'Кафедра геологии и разведки месторождений полезных ископаемых', 'structureUsers': 21 },
-      { 'structureName': 'Кафедра минералогии, кристаллографии и петрографии', 'structureUsers': 11 },
-      { 'structureName': 'Кафедра исторической и динамической геологии', 'structureUsers': 3 },
-      { 'structureName': 'Кафедра гидрогеологии и инженерной геологии', 'structureUsers': 1 },
-      { 'structureName': 'Кафедра геологии нефти и газа', 'structureUsers': 14 },
-    ]
-  }
+  selectedData: {} = {}
   selectedDataStructures: string[] = []
   selectedDataStructuresUsers: number[] = []
-  data: { faculty: string, name: string, users: string, structures: { structureName: string, structureUsers: number }[] }[]
+  data: {}[] = []
+  subDepartments: {}[] = []
 
   dropdown: boolean = false;
 
@@ -31,24 +23,43 @@ export class StructuresCardComponent implements OnInit {
     // Обнуление массивов с данными подразделений
     this.selectedDataStructures.length = 0
     this.selectedDataStructuresUsers.length = 0
-    console.log(this.selectedDataStructuresUsers)
+
     // Получение массивов с данным подразделений
-    this.selectedData.structures.forEach(element => {
+    this.selectedData.sub_departments.forEach(element => {
       this.selectedDataStructures.push(element.structureName)
       this.selectedDataStructuresUsers.push(element.structureUsers)
     });
     structureChart.update()
     structureChart2.update()
-    console.log(this.selectedDataStructuresUsers)
+
+  }
+
+  dropdownStructureTable() {
+    this.dropdown = !this.dropdown
+  }
+
+  async getSubDepartmentsData(id){
+    this.subDepartments.length = 0
+    this.subDepartments.push(await this.apiServiceService.getSubDepartments(id));
+    console.log(this.subDepartments)
+  }
+
+  ngOnChanges(): void{
+
   }
 
   ngOnInit(): void {
+
     // Подписка на меню навигации
     this.structureRouting.postData$.subscribe((faculty) => {
-      this.data = this.structureRouting.data
-      this.data.forEach(element => {
-        if (faculty == element.faculty) {
+      this.data = this.apiServiceService.departments
+      // console.log(this.data)
+      this.data.forEach(async(element) => {
+        if (faculty == element.title) {
           this.selectedData = element;
+          await this.getSubDepartmentsData(this.selectedData.id)
+          // this.subDepartments = this.getSubDepartmentsData(this.selectedData.id)
+          console.log(this.subDepartments)
           this.updateCharts(structureChart, structureChart2)
         }
       })
@@ -123,8 +134,6 @@ export class StructuresCardComponent implements OnInit {
 
 
 
-  dropdownStructureTable() {
-    this.dropdown = !this.dropdown
-  }
+
 
 }

@@ -22,11 +22,11 @@ export class StructuresNavComponent implements OnInit {
   }
   ngOnInit(): void {
 
-    this.apiServiceService.postData$.subscribe((faculty) =>{
+    this.apiServiceService.postData$.subscribe(() =>{
       this.departmentsData =  this.apiServiceService.departments
       this.departmentsData.forEach(element => {
         this.departmentsTitle.push(element.title)
-        console.log(this.departmentsTitle)
+        console.log(element)
     })
   })
 
