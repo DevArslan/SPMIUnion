@@ -13,11 +13,16 @@ export class StructuresCardComponent implements OnInit {
 
   selectedData: {} = {}
   selectedDataStructures: string[] = []
-  selectedDataStructuresUsers: number[] = []
+  selectedDataStructuresUsers: string[] = []
   data: {}[] = []
   subDepartments: {}[] = []
 
   dropdown: boolean = false;
+
+  showAddModal(){
+    const modal = document.getElementById('subDepartmentAddModal')
+    modal.style.display = 'block'
+  }
 
   updateCharts(structureChart, structureChart2) {
     // Обнуление массивов с данными подразделений
@@ -25,9 +30,10 @@ export class StructuresCardComponent implements OnInit {
     this.selectedDataStructuresUsers.length = 0
 
     // Получение массивов с данным подразделений
-    this.selectedData.sub_departments.forEach(element => {
-      this.selectedDataStructures.push(element.structureName)
-      this.selectedDataStructuresUsers.push(element.structureUsers)
+    this.subDepartments.forEach(element => {
+      this.selectedDataStructures.push(element.title)
+      this.selectedDataStructuresUsers.push(element.members_total)
+      console.log(element)
     });
     structureChart.update()
     structureChart2.update()
@@ -58,7 +64,6 @@ export class StructuresCardComponent implements OnInit {
         if (faculty == element.title) {
           this.selectedData = element;
           await this.getSubDepartmentsData(this.selectedData.id)
-          // this.subDepartments = this.getSubDepartmentsData(this.selectedData.id)
           console.log(this.subDepartments)
           this.updateCharts(structureChart, structureChart2)
         }
@@ -71,7 +76,7 @@ export class StructuresCardComponent implements OnInit {
         labels: [12, 19, 3, 5, 2, 3],
         datasets: [{
           label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
+          data: [12, 19, 3, 5, -2, 3],
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',

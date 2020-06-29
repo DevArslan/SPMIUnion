@@ -7,54 +7,26 @@
       <div class="departmentsInfo-usersCount">
         <p>Всего участников: {{selectedData.members_total}}</p>
       </div>
-      <div class="departmentsInfo-count" (click) = "dropdownStructureTable()">
+      <div class="departmentsInfo-count" (click)="dropdownStructureTable()">
         <i class="dropdown" [ngClass]="{'dropdownIconActive': dropdown}"></i>
         <p>Подразделения ({{subDepartments.length}})</p>
       </div>
-      <app-structures-table [subDepartments]='subDepartments' [ngClass]="{'dropdownTableActive': dropdown}"></app-structures-table>
+      <app-structures-table [subDepartments]='subDepartments' [ngClass]="{'dropdownTableActive': dropdown}">
+      </app-structures-table>
     </div>
     <div class="structureCharts">
       <div class="structureCharts-1">
-        <canvas id="structureChart" ></canvas>
+        <canvas id="structureChart"></canvas>
       </div>
       <div class="structureCharts-2">
-        <canvas id="structureChart2" ></canvas>
+        <canvas id="structureChart2"></canvas>
       </div>
     </div>
   </div>
   <div class="structureCard-nav">
-    <div class="structureCard-nav-add">Добавить подразделение</div>
+    <div class="structureCard-nav-add" (click)="showAddModal()">Добавить подразделение</div>
     <div class="structureCard-nav-del">Удалить подразделение</div>
   </div>
+  <app-sub-departments-add-modal class="subDepartmentAddModal" id="subDepartmentAddModal"></app-sub-departments-add-modal>
 
 </div>
-<!-- <div class="structureCard">
-  <p class="structureCard-name">123</p>
-
-  <div class="structureCard-info">
-    <p class="structureCard-organizer">Профорг: 123</p>
-    <div class="departmentsInfo">
-      <div class="departmentsInfo-usersCount">
-        <p>Всего участников:123</p>
-      </div>
-      <div class="departmentsInfo-count" (click) = "dropdownStructureTable()">
-        <i class="dropdown" [ngClass]="{'dropdownIconActive': dropdown}"></i>
-        <p>Подразделения (123)</p>
-      </div>
-      <app-structures-table [ngClass]="{'dropdownTableActive': dropdown}"></app-structures-table>
-    </div>
-    <div class="structureCharts">
-      <div class="structureCharts-1">
-        <canvas id="structureChart" ></canvas>
-      </div>
-      <div class="structureCharts-2">
-        <canvas id="structureChart2" ></canvas>
-      </div>
-    </div>
-  </div>
-  <div class="structureCard-nav">
-    <div class="structureCard-nav-add">Добавить подразделение</div>
-    <div class="structureCard-nav-del">Удалить подразделение</div>
-  </div>
-
-</div> -->

@@ -17,6 +17,7 @@ export class StructuresNavComponent implements OnInit {
 
   selectStructure(event) {
     this.faculty =  event.target.dataset.selectNumber
+    this.apiServiceService.selectedDepartment = event.target.dataset.selectID
     this.structureRouting.postData$.next(this.faculty);
     console.log(this.faculty)
   }

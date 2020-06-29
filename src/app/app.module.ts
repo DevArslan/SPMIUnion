@@ -23,6 +23,7 @@ import { StructuresNavFilterPipe } from './pipes/structures-nav-filter.pipe';
 import { StructuresTableComponent } from './structures-table/structures-table.component';
 import { UsersComponent } from './users/users.component';
 import { UsersTableComponent } from './users-table/users-table.component';
+import { SubDepartmentsAddModalComponent } from './sub-departments-add-modal/sub-departments-add-modal.component';
 
 const itemRoutes: Routes = [
   {
@@ -76,7 +77,8 @@ const appRouter: Routes = [
     StructuresNavFilterPipe,
     StructuresTableComponent,
     UsersComponent,
-    UsersTableComponent
+    UsersTableComponent,
+    SubDepartmentsAddModalComponent
   ],
   imports: [
     BrowserModule,
