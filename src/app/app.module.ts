@@ -24,6 +24,11 @@ import { StructuresTableComponent } from './structures-table/structures-table.co
 import { UsersComponent } from './users/users.component';
 import { UsersTableComponent } from './users-table/users-table.component';
 import { SubDepartmentsAddModalComponent } from './sub-departments-add-modal/sub-departments-add-modal.component';
+import { MembersDeleteModalComponent } from './members-delete-modal/members-delete-modal.component';
+import { MembersEditModalComponent } from './members-edit-modal/members-edit-modal.component';
+import { UsersAddModalComponent } from './users-add-modal/users-add-modal.component';
+import { UsersDeleteModalComponent } from './users-delete-modal/users-delete-modal.component';
+import { UsersEditModalComponent } from './users-edit-modal/users-edit-modal.component';
 
 const itemRoutes: Routes = [
   {
@@ -78,7 +83,12 @@ const appRouter: Routes = [
     StructuresTableComponent,
     UsersComponent,
     UsersTableComponent,
-    SubDepartmentsAddModalComponent
+    SubDepartmentsAddModalComponent,
+    MembersDeleteModalComponent,
+    MembersEditModalComponent,
+    UsersAddModalComponent,
+    UsersDeleteModalComponent,
+    UsersEditModalComponent
   ],
   imports: [
     BrowserModule,
