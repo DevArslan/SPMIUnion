@@ -1,1 +1,12 @@
-<p>members-delete-modal works!</p>
+<div class="modalWrapper" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <p>Удалить участника</p>
+      <app-close-button (click)="closeModal()"></app-close-button>
+    </div>
+    <div class="modal-content">
+      <button class="deleteButton" (click)="deleteMember()">Удалить</button>
+      <button class="cancelButton" (click)="cancel()">Отмена</button>
+    </div>
+  </div>
+</div>

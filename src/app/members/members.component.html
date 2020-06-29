@@ -1,5 +1,7 @@
 <div class="members">
   <app-members-add-modal class="membersAddModal" id="membersAddModal"></app-members-add-modal>
+  <app-members-delete-modal class="membersDelModal" id="membersDelModal"></app-members-delete-modal>
+  <app-members-edit-modal class="membersEditModal" id="membersEditModal"></app-members-edit-modal>
   <div class="members-nav">
     <div class="members-search">
       <input class="searchInput" type="text" placeholder="Поиск" [(ngModel)]="username">
@@ -7,10 +9,10 @@
     <div class="members-nav-add" (click) = "showAddModal()">
       <i class="plusIcon"></i>
     </div>
-    <div class="members-nav-edit">
+    <div class="members-nav-edit" (click) = "showEditModal()">
       <i class="editIcon"></i>
     </div>
-    <div class="members-nav-remove">
+    <div class="members-nav-remove" (click) = "showDelModal()">
       <i class="removeIcon"></i>
     </div>
     <div class="members-nav-excel"></div>

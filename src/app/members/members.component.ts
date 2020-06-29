@@ -25,5 +25,13 @@ export class MembersComponent implements OnInit {
     const modal = document.getElementById('membersAddModal')
     modal.style.display = "block";
   }
+  showEditModal(){
+    const modal = document.getElementById('membersEditModal')
+    modal.style.display = "block";
+  }
+  showDelModal(){
+    const modal = document.getElementById('membersDelModal')
+    modal.style.display = "block";
+  }
 
 }

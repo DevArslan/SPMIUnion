@@ -11,5 +11,8 @@ export class MembersDeleteModalComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
+  closeModal(){
+    const modal = document.getElementById('membersDelModal')
+    modal.style.display = "none";
+  }
 }
