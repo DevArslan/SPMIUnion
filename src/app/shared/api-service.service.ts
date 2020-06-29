@@ -10,6 +10,8 @@ export class ApiServiceService {
   constructor(private authService: AuthService) { }
   selectedDepartment: string
   departments: {}[]
+  members: {}[]
+  members$ = new Subject<{}[]>();
   postData$ = new Subject<{}[]>();
   // Получение данных о структурах
   async getDepartments() {
@@ -68,13 +70,13 @@ export class ApiServiceService {
       )
   }
 
-
+  // Создать подразделение
   async createSubDepartment(title, departmentID) {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments'
     const token = this.authService.getToken()
     const data = {
-      title : title,
-      head_department_id : departmentID
+      title: title,
+      head_department_id: departmentID
     }
     console.log(data)
     return fetch(url, {
@@ -86,6 +88,26 @@ export class ApiServiceService {
       body: JSON.stringify(data),
     })
       .then((res) => console.log(res.json()))
+  }
+
+  // Получение списка участников
+  async getMembers() {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members'
+    const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+    })
+      .then((res) => res.json())
+      .then(data => {
+        this.members = data
+        this.members$.next(this.members);
+        return data
+      }
+      )
   }
 
   ngOnInit(): void {

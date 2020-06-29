@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from "@angular/core";
-
+import { ApiServiceService } from "src/app/shared/api-service.service";
 
 
 @Component({
@@ -10,11 +10,15 @@ import { Input } from "@angular/core";
 })
 export class MembersTableComponent implements OnInit {
 
-  @Input() data: {id: string, name: string, structure: string, status: string}[]
-  constructor() { }
+  // @Input() data: {}[] = []
+  data: {}[] =[]
+  constructor(private apiServiceService: ApiServiceService) { }
 
   ngOnInit(): void {
-    console.log(this.data)
+    this.apiServiceService.members$.subscribe((dataFromApi)=>{
+      this.data =  dataFromApi.members
+    })
+
   }
 
 
