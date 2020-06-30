@@ -11,8 +11,10 @@ export class ApiServiceService {
   selectedDepartment: string
   departments: {}[]
   members: {}[]
+  roles: []
   departments$ = new Subject<{}[]>();
   members$ = new Subject<{}[]>();
+  roles$ = new Subject<[]>();
   postData$ = new Subject<{}[]>();
   // Получение данных о структурах
   async getDepartments() {
@@ -152,11 +154,75 @@ export class ApiServiceService {
   }
 
   // Редактирование участника профсоюза
+  // async editMember(name, card, subdepartment, student) {
+  //   const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members'
+  //   const token = this.authService.getToken()
+  //   const data = {
+  //     name: name,
+  //     card: card,
+  //     is_student: student,
+  //     subdepartment_id: subdepartment
+  //   }
+
+  //   return fetch(url, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': `Basic ${token}`
+  //     },
+  //     body: JSON.stringify(data),
+  //   })
+  //     .then((res) => console.log(res.json()))
+  // }
 
 
+  // Создание пользователя
 
-  ngOnInit(): void {
-    this.getDepartments()
+  async createUser(username, login, password) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/register'
+    const token = this.authService.getToken()
+    const data = {
+      user_name: username,
+      login: login,
+      password: password,
+    }
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => console.log(res.json()))
   }
+
+  // Редактирование пользователя
+
+  // Удаление пользователей
+
+  // Получение ролей
+
+  async getRoles() {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/roles'
+    const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+    })
+      .then((res) => res.json())
+      .then(data => {
+        this.roles = data
+        this.roles$.next(this.roles);
+        return data
+      }
+      )
+  }
+
+
 
 }

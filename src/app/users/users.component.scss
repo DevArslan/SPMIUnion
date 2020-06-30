@@ -1,5 +1,8 @@
 .users{
   padding: 1rem;
+  .usersAddModal{
+    display: none;
+  }
   .users-nav{
     display: flex;
     justify-content: space-between;

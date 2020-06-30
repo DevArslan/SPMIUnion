@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ApiServiceService } from "src/app/shared/api-service.service";
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -7,8 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UsersComponent implements OnInit {
 
-  constructor() { }
-
+  constructor(private apiServiceService: ApiServiceService) { }
+  roles: {}
   username: string = ''
 
   data: {id: string, name: string, login: string, role: string, date: string}[] = [
@@ -19,10 +19,17 @@ export class UsersComponent implements OnInit {
   ]
 
   ngOnInit(): void {
+    this.apiServiceService.getRoles()
+    this.apiServiceService.roles$.subscribe((dataFromApi) => {
+      this.roles = dataFromApi.roles
+      console.log(this.roles)
+    })
+
   }
 
-  showAddModal(){
-    console.log('add user')
+  showAddModal() {
+    const modal = document.getElementById('usersAddModal')
+    modal.style.display = "block";
   }
 
 }

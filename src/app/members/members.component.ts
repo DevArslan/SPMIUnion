@@ -43,7 +43,6 @@ export class MembersComponent implements OnInit {
     this.apiServiceService.getDepartments()
     this.apiServiceService.departments$.subscribe((dataFromApi) => {
       this.dataForModal = dataFromApi
-      console.log(this.dataForModal)
     })
 
 
