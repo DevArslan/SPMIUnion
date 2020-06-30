@@ -112,14 +112,14 @@ export class ApiServiceService {
   }
 
   // Создание нового участника профсоюза
-  async createMember(name, card, subdepartment,student) {
+  async createMember(name, card, subdepartment, student) {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members'
     const token = this.authService.getToken()
     const data = {
       name: name,
       card: card,
       is_student: student,
-      subdepartment_id : subdepartment
+      subdepartment_id: subdepartment
     }
 
     return fetch(url, {
@@ -132,6 +132,28 @@ export class ApiServiceService {
     })
       .then((res) => console.log(res.json()))
   }
+
+  // Удаление участников из профсоюза
+  async deleteMember(membersID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members'
+    const token = this.authService.getToken()
+    const data = {
+      members: membersID
+    }
+    return fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => console.log(res.json()))
+  }
+
+  // Редактирование участника профсоюза
+
+
 
   ngOnInit(): void {
     this.getDepartments()
