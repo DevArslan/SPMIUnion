@@ -12,6 +12,8 @@ export class ApiServiceService {
   departments: {}[]
   members: {}[]
   roles: []
+  users: []
+  users$ = new Subject<{}[]>()
   departments$ = new Subject<{}[]>();
   members$ = new Subject<{}[]>();
   roles$ = new Subject<[]>();
@@ -154,30 +156,49 @@ export class ApiServiceService {
   }
 
   // Редактирование участника профсоюза
-  // async editMember(name, card, subdepartment, student) {
-  //   const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members'
-  //   const token = this.authService.getToken()
-  //   const data = {
-  //     name: name,
-  //     card: card,
-  //     is_student: student,
-  //     subdepartment_id: subdepartment
-  //   }
+  async editMember(name, card, subdepartment, student, memberID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/'+memberID
+    const token = this.authService.getToken()
+    const data = {
+      name: name,
+      card: card,
+      is_student: student,
+      subdepartment_id: subdepartment
+    }
 
-  //   return fetch(url, {
-  //     method: 'PUT',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': `Basic ${token}`
-  //     },
-  //     body: JSON.stringify(data),
-  //   })
-  //     .then((res) => console.log(res.json()))
-  // }
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => console.log(res.json()))
+  }
+
+  // Получение списка пользователей
+  async getUsers() {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users'
+    const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+    })
+      .then((res) => res.json())
+      .then(data => {
+        this.users = data
+        this.users$.next(this.users);
+        return data
+      }
+      )
+  }
 
 
   // Создание пользователя
-
   async createUser(username, login, password) {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/register'
     const token = this.authService.getToken()

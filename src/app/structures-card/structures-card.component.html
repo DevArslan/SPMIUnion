@@ -27,6 +27,6 @@
     <div class="structureCard-nav-add" (click)="showAddModal()">Добавить подразделение</div>
     <div class="structureCard-nav-del">Удалить подразделение</div>
   </div>
-  <app-sub-departments-add-modal class="subDepartmentAddModal" id="subDepartmentAddModal"></app-sub-departments-add-modal>
+  <app-sub-departments-add-modal [department]='selectedData' class="subDepartmentAddModal" id="subDepartmentAddModal"></app-sub-departments-add-modal>
 
 </div>

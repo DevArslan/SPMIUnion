@@ -7,17 +7,7 @@
     <div class="modal-content">
       <form action="">
         <input type="text" name="name" placeholder="Название" [(ngModel)]="title">
-        <input type="text" name="name" placeholder="ID структуры" [(ngModel)]="departmentID">
       </form>
-      <!-- <div class="subDepartment"  (click) = 'dropDownSubDepartment()'>
-        <p id="faculty-placeholder" class="subDepartment-placeholder">{{faculty}}</p>
-        <i class="arrowIcon" [ngClass]="{'dropdownIcon': facultyDropdown}"></i>
-      </div>
-      <div class="subDepartmentDropdown" [ngClass]="{'dropdown': subDepartmentDropdown}">
-        <ul>
-          <li *ngFor="let item of faculties" attr.data-select-faculty="{{item}}" (click)="selectFaculty($event)">{{item}}</li>
-        </ul>
-      </div> -->
       <button class="addButton" (click)="addSubDepartment()">Добавить</button>
     </div>
   </div>

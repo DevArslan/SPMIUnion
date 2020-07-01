@@ -5,14 +5,16 @@
       <th>Логин</th>
       <th>Роль</th>
       <th>Дата регистрации</th>
+      <th>Удалить</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of data ">
+    <tr *ngFor="let item of users ">
       <td>{{item.name}}</td>
       <td>{{item.login}}</td>
       <td>{{item.role}}</td>
-      <td>{{item.date}}</td>
+      <td>{{item.registered}}</td>
+      <th>Удалить</th>
     </tr>
   </tbody>
 </table>

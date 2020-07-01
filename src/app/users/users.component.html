@@ -17,6 +17,6 @@
 
   </div>
   <app-users-add-modal [roles]='roles' id="usersAddModal" class="usersAddModal"></app-users-add-modal>
-  <app-users-table class="users-table" [data]='data | filter:username'></app-users-table>
+  <app-users-table class="users-table" [users]='users | filter:username'></app-users-table>
 </div>
 

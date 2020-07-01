@@ -9,11 +9,11 @@ import { Input } from "@angular/core";
 export class UsersTableComponent implements OnInit {
 
 
-  @Input() data: {id: string, name: string, login: string, role: string, date: string}[]
+  @Input() users:{}[] = []
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.data)
+    console.log(this.users)
   }
 
 }

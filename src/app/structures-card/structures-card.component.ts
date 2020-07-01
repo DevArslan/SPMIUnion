@@ -66,6 +66,7 @@ export class StructuresCardComponent implements OnInit {
       this.data.forEach(async(element) => {
         if (faculty == element.title) {
           this.selectedData = element;
+          console.log(this.selectedData)
           // Фильтрация подразделения под конкретную структуру
           this.subDepartments = await this.getSubDepartmentsData()
           this.subDepartments.subdepartments.forEach(element => {

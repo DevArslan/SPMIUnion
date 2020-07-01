@@ -9,6 +9,7 @@ export class UsersComponent implements OnInit {
 
   constructor(private apiServiceService: ApiServiceService) { }
   roles: {}
+  users: {}[]
   username: string = ''
 
   data: {id: string, name: string, login: string, role: string, date: string}[] = [
@@ -24,6 +25,13 @@ export class UsersComponent implements OnInit {
       this.roles = dataFromApi.roles
       console.log(this.roles)
     })
+
+    this.apiServiceService.getUsers()
+    this.apiServiceService.users$.subscribe((dataFromApi) => {
+      this.users = dataFromApi.users
+      console.log(this.users)
+    })
+
 
   }
 
