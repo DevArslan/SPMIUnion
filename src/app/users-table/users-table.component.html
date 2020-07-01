@@ -1,20 +1,22 @@
 <table>
   <thead>
     <tr>
+      <th></th>
       <th>ФИО</th>
       <th>Логин</th>
       <th>Роль</th>
       <th>Дата регистрации</th>
-      <th>Удалить</th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let item of users ">
+      <td>
+        <input class="userCheckbox" type="checkbox" value="{{item.id}}">
+      </td>
       <td>{{item.name}}</td>
       <td>{{item.login}}</td>
       <td>{{item.role}}</td>
       <td>{{item.registered}}</td>
-      <th>Удалить</th>
     </tr>
   </tbody>
 </table>

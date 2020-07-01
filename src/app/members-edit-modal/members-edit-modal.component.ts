@@ -30,12 +30,14 @@ export class MembersEditModalComponent implements OnInit {
 
   editMember(){
     const checkboxes = document.querySelectorAll('.memberCheckbox')
-    checkboxes.forEach(element => {
+
+    for (let index = 0; index < checkboxes.length; index++) {
+      const element = <HTMLInputElement>checkboxes[index];
       if(element.checked){
         this.memberID = Number(element.value)
-        console.log(typeof(this.memberID))
       }
-    });
+    }
+
     this.API.editMember(this.name,this.card,this.subdepartmentID,this.isStudent,this.memberID)
   }
 

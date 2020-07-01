@@ -21,13 +21,14 @@ export class MembersDeleteModalComponent implements OnInit {
   deleteMember(){
     this.membersID.length = 0
     const checkboxes = document.querySelectorAll('.memberCheckbox')
-    checkboxes.forEach(element => {
+    for (let index = 0; index < checkboxes.length; index++) {
+      const element = <HTMLInputElement>checkboxes[index];
       if(element.checked){
-        this.membersID.push(element.value)
+        this.membersID.push(Number(element.value))
       }
-    });
+    }
+
     console.log(this.membersID)
     this.apiServiceService.deleteMember(this.membersID)
-
   }
 }

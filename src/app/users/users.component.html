@@ -6,10 +6,10 @@
     <div class="users-nav-add" (click) = "showAddModal()">
       <i class="plusIcon"></i>
     </div>
-    <div class="users-nav-edit">
+    <div class="users-nav-edit" (click) = "showEditModal()">
       <i class="editIcon"></i>
     </div>
-    <div class="users-nav-remove">
+    <div class="users-nav-remove" (click) = "showDelModal()">
       <i class="removeIcon"></i>
     </div>
     <div class="users-nav-excel"></div>
@@ -17,6 +17,8 @@
 
   </div>
   <app-users-add-modal [roles]='roles' id="usersAddModal" class="usersAddModal"></app-users-add-modal>
+  <app-users-delete-modal id="usersDelModal" class="usersDelModal"></app-users-delete-modal>
+  <app-users-edit-modal id="usersEditModal" class="usersEditModal"></app-users-edit-modal>
   <app-users-table class="users-table" [users]='users | filter:username'></app-users-table>
 </div>
 

@@ -222,6 +222,19 @@ export class ApiServiceService {
   // Редактирование пользователя
 
   // Удаление пользователей
+  async deleteUser(userID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/'+userID
+    const token = this.authService.getToken()
+
+    return fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+    })
+      .then((res) => console.log(res.json()))
+  }
 
   // Получение ролей
 

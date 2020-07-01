@@ -9,7 +9,7 @@ export class ProfileComponent implements OnInit {
 
   constructor(private authService: AuthService) { }
 
-  loginData: {'id':string, 'login': string, 'name': string, 'registered': string, 'role': string} = this.authService.profileData
+  loginData: {'id':string, 'login': string, 'name': string, 'registered': string, 'role': string} = this.authService.loginData
 
   ngOnInit(): void {
 

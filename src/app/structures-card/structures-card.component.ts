@@ -16,7 +16,7 @@ export class StructuresCardComponent implements OnInit {
   selectedDataStructuresUsers: string[] = []
   data: {}[] = []
   subDepartmentsForCharts: {}[] = []
-  subDepartments: {}
+  subDepartments: {'head_department_id':number}[]
   selectedSubDepartments: {}[] = []
 
   dropdown: boolean = false;
@@ -68,8 +68,8 @@ export class StructuresCardComponent implements OnInit {
           this.selectedData = element;
           console.log(this.selectedData)
           // Фильтрация подразделения под конкретную структуру
-          this.subDepartments = await this.getSubDepartmentsData()
-          this.subDepartments.subdepartments.forEach(element => {
+          this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
+          this.subDepartments.forEach(element => {
             if(element.head_department_id == this.selectedData.id){
               this.selectedSubDepartments.push(element)
             }
