@@ -1,6 +1,19 @@
 .structuresNav{
   margin-left: 0.5rem;
   width: 80%;
+  .structuresAddModal{
+    display: none;
+  }
+  .addStructureButton{
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    border-radius: 3px;
+    background-color: #3cae59;
+  }
   .searchInput{
     margin-top: 0.5rem;
     color: white;

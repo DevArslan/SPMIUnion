@@ -55,6 +55,25 @@ export class ApiServiceService {
       }
       )
   }
+  // Создание структуры
+  async createDepartment(title, proforg) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments'
+    const token = this.authService.getToken()
+    const data = {
+      title: title,
+      proforg: proforg
+    }
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => console.log(res.json()))
+  }
 
   // Получение списка подразделений
   async getSubDepartments() {

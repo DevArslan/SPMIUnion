@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ApiServiceService } from "src/app/shared/api-service.service";
 @Component({
   selector: 'app-structures-add-modal',
   templateUrl: './structures-add-modal.component.html',
@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StructuresAddModalComponent implements OnInit {
 
-  constructor() { }
+  title: string;
+  proforg: string;
+
+  constructor(private api: ApiServiceService) { }
 
   ngOnInit(): void {
   }
-
+  closeModal(){
+    const modal = document.getElementById('structuresAddModal')
+    modal.style.display = "none";
+  }
+  createDepartment(){
+    this.api.createDepartment(this.title, this.proforg)
+  }
 }

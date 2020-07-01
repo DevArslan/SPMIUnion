@@ -22,6 +22,11 @@ export class StructuresNavComponent implements OnInit {
     this.structureRouting.postData$.next(this.faculty);
 
   }
+  showAddModal() {
+    const modal = document.getElementById('structuresAddModal')
+    modal.style.display = "block";
+  }
+  
   ngOnInit(): void {
 
     this.apiServiceService.departments$.subscribe(() =>{
