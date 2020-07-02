@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ApiServiceService } from "src/app/shared/api-service.service";
 
 
 @Component({
@@ -9,11 +9,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StructuresComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  constructor(private apiServiceService: ApiServiceService) { }
   active: boolean = false;
+  loadingCompleted: boolean = false;
+  ngOnInit(): void {
+    // this.apiServiceService.loadingCompleted$.subscribe(()=>{
+    //   console.log(this.loadingCompleted)
+    //   this.loadingCompleted = true
+    //   console.log(this.loadingCompleted)
+    // })
+  }
+  
+  
   showModal(){
     this.active = !this.active
     console.log('asda')

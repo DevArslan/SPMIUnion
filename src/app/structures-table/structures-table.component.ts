@@ -9,16 +9,20 @@ import { Input } from "@angular/core";
 })
 export class StructuresTableComponent implements OnInit {
   @Input() selectedSubDepartments: {}[]
-
+  subDepartmentId: number
   data: {}[]
 
   constructor(private structureRouting: StructuresRoutingService) {}
 
+  showDelModal(event){
+    console.log(event.target.parentElement)
+    this.subDepartmentId =  event.target.parentElement.dataset.subdepartmentId
+    const modal = document.getElementById('subDepartmentDelModal')
+    modal.style.display = 'block'
+  }
+
   ngOnInit(): void {
-
-
-
-
+    console.log(this.selectedSubDepartments)
   }
 
 

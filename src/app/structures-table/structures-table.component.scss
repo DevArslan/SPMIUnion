@@ -2,11 +2,24 @@ table{
   margin-top: 1rem;
   width: 100%;
   border-collapse: collapse;
+  .subDepartmentDelModal{
+    display: none;
+  }
   th{
     text-align: left;
   }
   td{
     padding: 1rem 0 1rem 0;
     font-weight: normal;
+    border-bottom: 1px solid #ccc;
+  }
+  .delButton{
+    background-image: url('src/assets/icons/clear-24pxRed.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+
   }
 }

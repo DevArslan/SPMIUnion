@@ -5,14 +5,19 @@
       <th>Структура</th>
       <th>Участников</th>
       <th>Динамика</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of selectedSubDepartments">
+    <tr *ngFor="let item of selectedSubDepartments" attr.data-subdepartment-id="{{item.id}}">
       <td>{{item.title}}</td>
       <td>{{item.head_department_title}}</td>
       <td>{{item.members_total}}</td>
       <!-- <td>{{item.dynamic}}</td> -->
       <td>+12</td>
+      <td class="delButton" (click)="showDelModal($event)"></td>
     </tr>
   </tbody>
+  <app-sub-departments-del-modal class="subDepartmentDelModal" id="subDepartmentDelModal" [subDepartmentId]=subDepartmentId></app-sub-departments-del-modal>
+  </table>
+

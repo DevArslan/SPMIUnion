@@ -25,6 +25,10 @@ export class StructuresCardComponent implements OnInit {
     const modal = document.getElementById('subDepartmentAddModal')
     modal.style.display = 'block'
   }
+  showDelModal(){
+    const modal = document.getElementById('departmentDelModal')
+    modal.style.display = 'block'
+  }
 
   updateCharts(structureChart, structureChart2) {
     // Обнуление массивов с данными подразделений
@@ -69,6 +73,7 @@ export class StructuresCardComponent implements OnInit {
           console.log(this.selectedData)
           // Фильтрация подразделения под конкретную структуру
           this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
+         
           this.subDepartments.forEach(element => {
             if(element.head_department_id == this.selectedData.id){
               this.selectedSubDepartments.push(element)

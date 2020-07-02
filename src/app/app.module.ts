@@ -29,6 +29,8 @@ import { MembersEditModalComponent } from './members-edit-modal/members-edit-mod
 import { UsersAddModalComponent } from './users-add-modal/users-add-modal.component';
 import { UsersDeleteModalComponent } from './users-delete-modal/users-delete-modal.component';
 import { UsersEditModalComponent } from './users-edit-modal/users-edit-modal.component';
+import { StructuresDeleteModalComponent } from './structures-delete-modal/structures-delete-modal.component';
+import { SubDepartmentsDelModalComponent } from './sub-departments-del-modal/sub-departments-del-modal.component';
 
 const itemRoutes: Routes = [
   {
@@ -88,7 +90,9 @@ const appRouter: Routes = [
     MembersEditModalComponent,
     UsersAddModalComponent,
     UsersDeleteModalComponent,
-    UsersEditModalComponent
+    UsersEditModalComponent,
+    StructuresDeleteModalComponent,
+    SubDepartmentsDelModalComponent
   ],
   imports: [
     BrowserModule,

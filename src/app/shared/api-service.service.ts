@@ -13,11 +13,14 @@ export class ApiServiceService {
   members: {}[]
   roles: []
   users: []
+  loadingCompleted: boolean
+
   users$ = new Subject<{}[]>()
   departments$ = new Subject<{}[]>();
   members$ = new Subject<{}[]>();
   roles$ = new Subject<[]>();
   postData$ = new Subject<{}[]>();
+  loadingCompleted$ = new Subject<{}>()
   // Получение данных о структурах
   async getDepartments() {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments'
@@ -75,6 +78,20 @@ export class ApiServiceService {
       .then((res) => console.log(res.json()))
   }
 
+  // Удаление структуры
+  async deleteDepartment(departmentID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments/' + departmentID
+    const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+    })
+      .then((res) => console.log(res.json()))
+  }
+
   // Получение списка подразделений
   async getSubDepartments() {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments'
@@ -88,7 +105,8 @@ export class ApiServiceService {
     })
       .then((res) => res.json())
       .then(data => {
-
+        this.loadingCompleted = true
+        
         return data
       }
       )
@@ -110,6 +128,20 @@ export class ApiServiceService {
         'Authorization': `Basic ${token}`
       },
       body: JSON.stringify(data),
+    })
+      .then((res) => console.log(res.json()))
+  }
+
+  // Удаление подразделения
+  async deleteSubDepartment(subDepartmentID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments/' + subDepartmentID
+    const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
     })
       .then((res) => console.log(res.json()))
   }

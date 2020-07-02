@@ -8,6 +8,9 @@
   .subDepartmentAddModal{
     display: none;
   }
+  .departmentDelModal{
+    display: none;
+  }
   p {
     margin: 0px;
   }
@@ -102,7 +105,7 @@
         opacity: 0;
       }
       .dropdownTableActive {
-        max-height: 300px;
+        max-height: 600px;
         opacity: 1;
       }
     }
