@@ -43,9 +43,7 @@ export class AuthorizationComponent implements OnInit {
           if (data.remember == true) {
             this.authService.profileData = jsonData
             localStorage.setItem('jsonData',JSON.stringify(jsonData))
-            sessionStorage.setItem('jsonData',JSON.stringify(jsonData))
             localStorage.setItem('token',token)
-            sessionStorage.setItem('token',token)
           } else {
             this.authService.profileData = jsonData
             sessionStorage.setItem('jsonData',JSON.stringify(jsonData))

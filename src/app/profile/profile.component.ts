@@ -11,6 +11,9 @@ export class ProfileComponent implements OnInit {
 
   loginData: {'id':string, 'login': string, 'name': string, 'registered': string, 'role': string} = this.authService.loginData
 
+  quit(){
+    this.authService.quit()
+  }
   ngOnInit(): void {
 
 
