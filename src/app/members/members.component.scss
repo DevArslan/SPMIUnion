@@ -17,6 +17,23 @@
     justify-content: space-between;
     align-items: center;
     width: 20%;
+    .activateButton{
+      margin-left: 1rem;
+      color: #ffffff;
+      background-color: #3cae59;
+      border:none;
+      outline: none;
+      border-radius: 3px;
+      padding: 0.5rem 1rem;
+    }
+    .blockButton{
+      color: #ffffff;
+      background-color: #e96250;
+      border:none;
+      outline: none;
+      border-radius: 3px;
+      padding: 0.5rem 1rem;
+    }
     .searchInput{
       background-image: url('src/assets/icons/search-24px.svg');
       background-repeat: no-repeat;

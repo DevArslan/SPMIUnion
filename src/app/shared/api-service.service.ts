@@ -228,6 +228,41 @@ export class ApiServiceService {
       .then((res) => console.log(res.json()))
   }
 
+  // Активация участников в профсоюзе
+  async activateMembers(membersID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/enter'
+    const token = this.authService.getToken()
+    const data = {
+      members: membersID
+    }
+    return fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => console.log(res.json()))
+  }
+  // Блокировка участников в профсоюзе
+  async blockMembers(membersID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/quit'
+    const token = this.authService.getToken()
+    const data = {
+      members: membersID
+    }
+    return fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => console.log(res.json()))
+  }
+
   // Получение списка пользователей
   async getUsers() {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users'

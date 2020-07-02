@@ -15,8 +15,8 @@
     <div class="members-nav-remove" (click) = "showDelModal()">
       <i class="removeIcon"></i>
     </div>
-    <button>Заблокировать в профсоюзе</button>
-    <button>Активировать в профсоюзе</button>
+    <button (click)="blockMember()" class="blockButton">Заблокировать</button>
+    <button (click)="activateMember()" class="activateButton">Активировать</button>
     <div class="members-nav-excel"></div>
     <div class="members-nav-pdf"></div>
 
