@@ -17,6 +17,9 @@ export class MembersComponent implements OnInit {
   data: {}[] = []
   dataForModal: {}[] = []
 
+  downloadExcel(){
+    this.apiServiceService.downloadExcel()
+  }
   blockMember(){
     this.membersID.length = 0
     const checkboxes = document.querySelectorAll('.memberCheckbox')

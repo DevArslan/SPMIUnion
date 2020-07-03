@@ -41,6 +41,7 @@ export class AuthorizationComponent implements OnInit {
         .catch(() => this.error = 'Введен неверный пароль или логин')
         .then(jsonData => {
           if (data.remember == true) {
+            console.log(data.remember)
             this.authService.profileData = jsonData
             localStorage.setItem('jsonData',JSON.stringify(jsonData))
             localStorage.setItem('token',token)

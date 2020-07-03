@@ -11,15 +11,34 @@ export class StructuresCardComponent implements OnInit {
 
   constructor(private structureRouting: StructuresRoutingService, private apiServiceService: ApiServiceService) { }
 
-  selectedData: any
+  selectedData: any = ''
   selectedDataStructures: string[] = []
   selectedDataStructuresUsers: string[] = []
   data: {}[] = []
   subDepartmentsForCharts: {}[] = []
   subDepartments: {'head_department_id':number}[]
   selectedSubDepartments: {}[] = []
+  structureNameInputDrop: boolean = false
+  structureName: string
+  proforgNameInputDrop: boolean = false
+  proforgName: string
 
   dropdown: boolean = false;
+
+  saveStructureName(){
+    this.apiServiceService.editStructure(this.structureName,this.selectedData.proforg,this.selectedData.id)
+    this.showEditStructureNameForm()
+  }
+  saveProforgName(){
+    this.apiServiceService.editStructure(this.selectedData.title,this.proforgName,this.selectedData.id)
+    this.showEditProforgNameForm()
+  }
+  showEditStructureNameForm(){
+    this.structureNameInputDrop = !this.structureNameInputDrop
+  }
+  showEditProforgNameForm(){
+    this.proforgNameInputDrop = !this.proforgNameInputDrop
+  }
 
   showAddModal(){
     const modal = document.getElementById('subDepartmentAddModal')

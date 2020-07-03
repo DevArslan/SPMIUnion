@@ -92,6 +92,26 @@ export class ApiServiceService {
       .then((res) => console.log(res.json()))
   }
 
+  // Редактирование структуры
+  async editStructure(structureName, proforgName, departmentID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments/' + departmentID
+    const token = this.authService.getToken()
+    const data = {
+      title: structureName,
+      proforg: proforgName,
+    }
+
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => console.log(res.json()))
+  }
+
   // Получение списка подразделений
   async getSubDepartments() {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments'
@@ -106,7 +126,7 @@ export class ApiServiceService {
       .then((res) => res.json())
       .then(data => {
         this.loadingCompleted = true
-        
+
         return data
       }
       )
@@ -208,7 +228,7 @@ export class ApiServiceService {
 
   // Редактирование участника профсоюза
   async editMember(name, card, subdepartment, student, memberID) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/'+memberID
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/' + memberID
     const token = this.authService.getToken()
     const data = {
       name: name,
@@ -309,7 +329,7 @@ export class ApiServiceService {
 
   // Удаление пользователей
   async deleteUser(userID) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/'+userID
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/' + userID
     const token = this.authService.getToken()
 
     return fetch(url, {
@@ -339,6 +359,28 @@ export class ApiServiceService {
         this.roles = data
         this.roles$.next(this.roles);
         return data
+      }
+      )
+  }
+  async downloadExcel() {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/xlsx'
+    const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+    })
+      .then((res) => (res.blob()))
+      .then(blob => {
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = "filename.xlsx";
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
       }
       )
   }

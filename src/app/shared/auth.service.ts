@@ -30,10 +30,12 @@ export class AuthService {
     }
   }
   getToken(){
+    console.log('token')
     if(sessionStorage.getItem('token')){
       this.token = sessionStorage.getItem('token')
-    }else if(localStorage.getItem('token')){
+    }else if(localStorage.getItem('token')){   
       this.token = localStorage.getItem('token')
+      console.log(this.token)
     }
     
     return this.token

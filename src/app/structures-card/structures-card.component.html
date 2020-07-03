@@ -1,8 +1,22 @@
 <div class="structureCard">
-  <p class="structureCard-name">{{selectedData.title}}</p>
-
+  <div class="structureCard-name">
+    <p >{{selectedData.title}}</p>
+    <i class="editIcon" (click)="showEditStructureNameForm()"></i>
+  </div>
+  <div class="saveForm" id="structureNameInput" action="" [ngClass]="{dropdown: structureNameInputDrop}">
+    <input type="text"  placeholder="Введите название структуры" [(ngModel)]="structureName">
+    <button class="saveButton" (click)="saveStructureName()">Сохранить</button>
+  </div>
   <div class="structureCard-info">
-    <p class="structureCard-organizer">Профорг: {{selectedData.proforg}}</p>
+    <div class="structureCard-organizer">
+      <p>Профорг: {{selectedData.proforg}}</p>
+      <i class="editIcon" (click)="showEditProforgNameForm()"></i>
+    </div>
+    <div class="saveForm" id="proforgNameInput" action="" [ngClass]="{dropdown: proforgNameInputDrop}">
+      <input type="text"  placeholder="Введите ФИО профорга" [(ngModel)]="proforgName">
+      <button class="saveButton" (click)="saveProforgName()">Сохранить</button>
+    </div>
+    
     <div class="departmentsInfo">
       <div class="departmentsInfo-usersCount">
         <p>Всего участников: {{selectedData.members_total}}</p>
