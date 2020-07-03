@@ -45,7 +45,7 @@ export class MembersEditModalComponent implements OnInit {
     this.structures.length = 0
     this.faculty =  event.target.dataset.selectFaculty
     this.dropDownFaculty()
-    this.dataForModal.forEach(element => {
+    this.dataForModal.forEach((element: any) => {
       if (this.faculty == element.title) {
         element.sub_departments.forEach(item => {
           this.structures.push(item)

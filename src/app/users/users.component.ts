@@ -9,20 +9,20 @@ export class UsersComponent implements OnInit {
 
   constructor(private apiServiceService: ApiServiceService) { }
   roles: {}
-  users: {}[]
+  users: any
   username: string = ''
 
 
 
   ngOnInit(): void {
     this.apiServiceService.getRoles()
-    this.apiServiceService.roles$.subscribe((dataFromApi) => {
+    this.apiServiceService.roles$.subscribe((dataFromApi: any) => {
       this.roles = dataFromApi.roles
 
     })
 
     this.apiServiceService.getUsers()
-    this.apiServiceService.users$.subscribe((dataFromApi) => {
+    this.apiServiceService.users$.subscribe((dataFromApi: any) => {
       this.users = dataFromApi.users
       console.log(this.users)
     })

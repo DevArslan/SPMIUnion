@@ -31,7 +31,7 @@ export class StructuresNavComponent implements OnInit {
 
     this.apiServiceService.departments$.subscribe(() =>{
       this.departmentsData =  this.apiServiceService.departments
-      this.departmentsData.forEach(element => {
+      this.departmentsData.forEach((element: any)  => {
         this.departmentsTitle.push(element.title)
     })
   })

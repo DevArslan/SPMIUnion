@@ -61,7 +61,7 @@ export class MembersComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiServiceService.getMembers()
-    this.apiServiceService.members$.subscribe((dataFromApi) => {
+    this.apiServiceService.members$.subscribe((dataFromApi: any) => {
       this.data = dataFromApi.members
       console.log(this.data)
     })

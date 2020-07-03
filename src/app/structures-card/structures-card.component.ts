@@ -11,7 +11,7 @@ export class StructuresCardComponent implements OnInit {
 
   constructor(private structureRouting: StructuresRoutingService, private apiServiceService: ApiServiceService) { }
 
-  selectedData: {} = {}
+  selectedData: any
   selectedDataStructures: string[] = []
   selectedDataStructuresUsers: string[] = []
   data: {}[] = []
@@ -36,7 +36,7 @@ export class StructuresCardComponent implements OnInit {
     this.selectedDataStructuresUsers.length = 0
 
     // Получение массивов с данным подразделений
-    this.selectedSubDepartments.forEach(element => {
+    this.selectedSubDepartments.forEach((element: any) => {
       this.selectedDataStructures.push(element.title)
       this.selectedDataStructuresUsers.push(element.members_total)
     });
@@ -67,14 +67,14 @@ export class StructuresCardComponent implements OnInit {
       this.subDepartmentsForCharts.length = 0
       this.selectedSubDepartments.length = 0
       this.data = this.apiServiceService.departments
-      this.data.forEach(async(element) => {
+      this.data.forEach(async(element: any) => {
         if (faculty == element.title) {
           this.selectedData = element;
           console.log(this.selectedData)
           // Фильтрация подразделения под конкретную структуру
           this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
          
-          this.subDepartments.forEach(element => {
+          this.subDepartments.forEach((element: any) => {
             if(element.head_department_id == this.selectedData.id){
               this.selectedSubDepartments.push(element)
             }
