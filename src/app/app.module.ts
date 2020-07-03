@@ -31,6 +31,7 @@ import { UsersDeleteModalComponent } from './users-delete-modal/users-delete-mod
 import { UsersEditModalComponent } from './users-edit-modal/users-edit-modal.component';
 import { StructuresDeleteModalComponent } from './structures-delete-modal/structures-delete-modal.component';
 import { SubDepartmentsDelModalComponent } from './sub-departments-del-modal/sub-departments-del-modal.component';
+import { SubDepartmentsEditModalComponent } from './sub-departments-edit-modal/sub-departments-edit-modal.component';
 
 const itemRoutes: Routes = [
   {
@@ -92,7 +93,8 @@ const appRouter: Routes = [
     UsersDeleteModalComponent,
     UsersEditModalComponent,
     StructuresDeleteModalComponent,
-    SubDepartmentsDelModalComponent
+    SubDepartmentsDelModalComponent,
+    SubDepartmentsEditModalComponent
   ],
   imports: [
     BrowserModule,

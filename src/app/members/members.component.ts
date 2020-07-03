@@ -58,10 +58,7 @@ export class MembersComponent implements OnInit {
     modal.style.display = "block";
   }
 
-  // getMembersData() {
-  //   return this.apiServiceService.getMembers()
-  // }
-
+  
   ngOnInit(): void {
     this.apiServiceService.getMembers()
     this.apiServiceService.members$.subscribe((dataFromApi: any) => {
@@ -74,7 +71,7 @@ export class MembersComponent implements OnInit {
       this.dataForModal = dataFromApi
     })
 
-
+    
 
 
   }

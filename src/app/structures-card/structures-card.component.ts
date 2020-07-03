@@ -25,6 +25,10 @@ export class StructuresCardComponent implements OnInit {
 
   dropdown: boolean = false;
 
+  // getStats(fromData,toData,subID){
+  //   this.apiServiceService.getStats(fromData,toData,subID)
+  // }
+
   saveStructureName(){
     this.apiServiceService.editStructure(this.structureName,this.selectedData.proforg,this.selectedData.id)
     this.showEditStructureNameForm()
@@ -103,7 +107,7 @@ export class StructuresCardComponent implements OnInit {
       })
 
     })
-
+    // this.getStats(fromData,toData,subID)
     var structureChart = new Chart('structureChart', {
       type: 'bar',
       data: {

@@ -152,6 +152,26 @@ export class ApiServiceService {
       .then((res) => console.log(res.json()))
   }
 
+  // Изменение подразделения
+  async editSubDepartment(title, departmentID, subDepartmentID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments/' + subDepartmentID
+    const token = this.authService.getToken()
+    const data = {
+      title: title,
+      head_department_id: departmentID,
+    }
+
+    return fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => console.log(res.json()))
+  }
+
   // Удаление подразделения
   async deleteSubDepartment(subDepartmentID) {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments/' + subDepartmentID
@@ -362,6 +382,8 @@ export class ApiServiceService {
       }
       )
   }
+
+  // Скачивание данных участников профсоюза в формате excel
   async downloadExcel() {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/xlsx'
     const token = this.authService.getToken()
@@ -385,6 +407,26 @@ export class ApiServiceService {
       )
   }
 
+  // Статистика по датам
+  async getStats(fromData,toData,subID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/stats'
+    const token = this.authService.getToken()
+    const data = {
+      from_date: fromData,
+      to_date: toData,
+      subdepartment_id: subID,
+    }
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+      body: JSON.stringify(data),
+    })
+      .then((res) => (res.json()))
+      .then(data => console.log(data))
+  }
 
 
 }

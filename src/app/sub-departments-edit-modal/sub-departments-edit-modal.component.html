@@ -1,0 +1,24 @@
+<div class="modalWrapper" id="modal">
+    <div class="modal">
+      <div class="modal-header">
+        <p>Изменить подразделение</p>
+        <app-close-button (click)="closeModal()"></app-close-button>
+      </div>
+      <div class="modal-content">
+        <form action="">
+          <input type="text" name="name" placeholder="Название подразделения" [(ngModel)]="title">
+        </form>
+        <div class="faculty"  (click) = 'dropDownFaculty()'>
+          <p id="faculty-placeholder" class="faculty-placeholder">{{faculty}}</p>
+          <i class="arrowIcon" [ngClass]="{'dropdownIcon': facultyDropdown}"></i>
+        </div>
+        <div class="facultyDropdown" [ngClass]="{'dropdown': facultyDropdown}">
+          <ul>
+            <li *ngFor="let item of dataForModal" attr.data-select-id="{{item.id}}" attr.data-select-faculty="{{item.title}}" (click)="selectFaculty($event)">{{item.title}}</li>
+          </ul>
+        </div>
+        <button class="addButton" (click)="editSubDepartment()">Изменить</button>
+      </div>
+    </div>
+  </div>
+  

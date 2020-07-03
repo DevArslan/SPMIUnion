@@ -5,6 +5,9 @@ table{
   .subDepartmentDelModal{
     display: none;
   }
+  .subDepartmentEditModal{
+    display: none;
+  }
   th{
     text-align: left;
   }
@@ -20,6 +23,13 @@ table{
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
-
+  }
+  .editButton{
+    background-image: url('src/assets/icons/create-24px.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
   }
 }
