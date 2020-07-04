@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
 import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
 import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
+
 @Component({
   selector: 'app-structures-card',
   templateUrl: './structures-card.component.html',
@@ -9,7 +12,13 @@ import { ApiServiceService } from "src/app/shared/api-service.service";
 })
 export class StructuresCardComponent implements OnInit {
 
-  constructor(private structureRouting: StructuresRoutingService, private apiServiceService: ApiServiceService) { }
+
+  id: number;
+
+  constructor(private structureRouting: StructuresRoutingService, private apiServiceService: ApiServiceService, private route: ActivatedRoute) {
+    console.log(this.route)
+    // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
+   }
 
   selectedData: any = ''
   selectedDataStructures: string[] = []
@@ -84,29 +93,55 @@ export class StructuresCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.apiServiceService.departments$.subscribe(()=>{
+      this.route.params.subscribe(params => {
+        console.log(params)
+        this.subDepartmentsForCharts.length = 0
+        this.selectedSubDepartments.length = 0
+        this.data = this.apiServiceService.departments
+        console.log(this.data)
+        this.data.forEach(async(element: any) => {
+          if (params.id == element.id) {
+            this.selectedData = element;
+            // Фильтрация подразделения под конкретную структуру
+            this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
+           
+            this.subDepartments.forEach((element: any) => {
+              if(element.head_department_id == this.selectedData.id){
+                this.selectedSubDepartments.push(element)
+              }
+            });
+            this.updateCharts(structureChart, structureChart2)
+          }
+        })
+      })
+    })
+    // Подписка на изменение параметров (id) в маршруте
+    
 
     // Подписка на меню навигации
-    this.structureRouting.postData$.subscribe((faculty) => {
-      this.subDepartmentsForCharts.length = 0
-      this.selectedSubDepartments.length = 0
-      this.data = this.apiServiceService.departments
-      this.data.forEach(async(element: any) => {
-        if (faculty == element.title) {
-          this.selectedData = element;
-          console.log(this.selectedData)
-          // Фильтрация подразделения под конкретную структуру
-          this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
+    // this.structureRouting.postData$.subscribe((faculty) => {
+    //   this.subDepartmentsForCharts.length = 0
+    //   this.selectedSubDepartments.length = 0
+    //   this.data = this.apiServiceService.departments
+    //   this.data.forEach(async(element: any) => {
+    //     console.log(element.id)
+    //     if (faculty == element.title) {
+    //       this.selectedData = element;
+    //       console.log(this.selectedData)
+    //       // Фильтрация подразделения под конкретную структуру
+    //       this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
          
-          this.subDepartments.forEach((element: any) => {
-            if(element.head_department_id == this.selectedData.id){
-              this.selectedSubDepartments.push(element)
-            }
-          });
-          this.updateCharts(structureChart, structureChart2)
-        }
-      })
+    //       this.subDepartments.forEach((element: any) => {
+    //         if(element.head_department_id == this.selectedData.id){
+    //           this.selectedSubDepartments.push(element)
+    //         }
+    //       });
+    //       this.updateCharts(structureChart, structureChart2)
+    //     }
+    //   })
 
-    })
+    // })
     // this.getStats(fromData,toData,subID)
     var structureChart = new Chart('structureChart', {
       type: 'bar',

@@ -35,8 +35,9 @@ import { SubDepartmentsEditModalComponent } from './sub-departments-edit-modal/s
 
 const itemRoutes: Routes = [
   {
-    path: 'structures',
-    component: StructuresComponent
+    path: 'structures/:id',
+    component: StructuresComponent,
+    data: {breadcrumbs: 'Profile info'},
   },
   {
     path: 'members',
@@ -106,5 +107,6 @@ const appRouter: Routes = [
 })
 export class AppModule {
 
+  
 
 }

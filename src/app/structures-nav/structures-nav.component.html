@@ -3,6 +3,6 @@
   <button class="addStructureButton" (click)="showAddModal()">Добавить структуру</button>
   <app-structures-add-modal class="structuresAddModal" id="structuresAddModal" ></app-structures-add-modal>
   <ul>
-    <li [routerLink]="['structures']" *ngFor="let item of departmentsData | structuresNavFilter:structureName" attr.data-select-id="{{item.head_department_id}}" attr.data-select-number="{{item.title}}"(click)="selectStructure($event)">{{item.title}}</li>
+    <li [routerLink]="['structures',item.id]" *ngFor="let item of departmentsData | structuresNavFilter:structureName" attr.data-select-id="{{item.head_department_id}}" attr.data-select-number="{{item.title}}"(click)="selectStructure($event)">{{item.title}}</li>
   </ul>
 </div>

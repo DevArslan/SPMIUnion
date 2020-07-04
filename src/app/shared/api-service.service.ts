@@ -9,7 +9,7 @@ export class ApiServiceService {
 
   constructor(private authService: AuthService) { }
   selectedDepartment: string
-  departments: {}[]
+  departments: {}[] = []
   members: {}[]
   roles: []
   users: []

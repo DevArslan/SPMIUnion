@@ -13,6 +13,9 @@ export class AppComponent {
   constructor(private apiServiceService: ApiServiceService) {}
 
   ngOnInit(): void {
+    
+  }
+  ngOnChanges(): void {
     this.apiServiceService.getDepartments()
   }
 }
