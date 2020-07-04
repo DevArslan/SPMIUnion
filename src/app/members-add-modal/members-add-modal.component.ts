@@ -19,6 +19,7 @@ export class MembersAddModalComponent implements OnInit {
   structure: string = 'Подразделение'
   structures: string[] = ['Сначала выберите факультет']
   members: any = []
+  preloader: boolean = false
 
   name: string = ''
   card: string
@@ -92,6 +93,9 @@ export class MembersAddModalComponent implements OnInit {
       console.log(this.members)
       this.membersDropdown = true
     })
+    this.apiServiceService.preloader$.subscribe((dataFromAPI)=>{
+      this.preloader = dataFromAPI
+    })
   }
 
   ngAfterViewInit() {
@@ -103,10 +107,10 @@ export class MembersAddModalComponent implements OnInit {
         distinctUntilChanged(),
         tap(async (text) => {
           // console.log(this.input.nativeElement.value)
-          const memberName  = this.input.nativeElement.value
-          await this.searchInAKSP(memberName)
-          
-          console.log(this.members)
+          const memberName  = <HTMLInputElement>this.input.nativeElement.value
+          const preloader = document.getElementById('preloader')
+          const data = await this.searchInAKSP(memberName)
+          console.log(data)
         })
       )
       .subscribe();

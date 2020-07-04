@@ -23,6 +23,7 @@ export class ApiServiceService {
   postData$ = new Subject<{}[]>();
   loadingCompleted$ = new Subject<{}>()
   membersAKPS$ = new Subject<{}[]>()
+  preloader$ = new Subject<boolean>()
   // Получение данных о структурах
   async getDepartments() {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments'
@@ -212,6 +213,7 @@ export class ApiServiceService {
   async getMembersAKPS(query) {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/akps?query='+query
     const token = this.authService.getToken()
+    this.preloader$.next(true)
     return fetch(url, {
       method: 'GET',
       headers: {
@@ -224,6 +226,7 @@ export class ApiServiceService {
         console.log(data)
         this.membersAKPS = data
         this.membersAKPS$.next(this.membersAKPS);
+        this.preloader$.next(false)
         return data
       }
       )
