@@ -14,6 +14,7 @@ export class ApiServiceService {
   roles: []
   users: []
   loadingCompleted: boolean
+  membersAKPS: any
 
   users$ = new Subject<{}[]>()
   departments$ = new Subject<{}[]>();
@@ -21,6 +22,7 @@ export class ApiServiceService {
   roles$ = new Subject<[]>();
   postData$ = new Subject<{}[]>();
   loadingCompleted$ = new Subject<{}>()
+  membersAKPS$ = new Subject<{}[]>()
   // Получение данных о структурах
   async getDepartments() {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments'
@@ -201,6 +203,27 @@ export class ApiServiceService {
       .then(data => {
         this.members = data
         this.members$.next(this.members);
+        return data
+      }
+      )
+  }
+
+  // Получение списка участников в базе АКПС
+  async getMembersAKPS(query) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/akps?query='+query
+    const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then(data => {
+        console.log(data)
+        this.membersAKPS = data
+        this.membersAKPS$.next(this.membersAKPS);
         return data
       }
       )

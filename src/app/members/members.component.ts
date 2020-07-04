@@ -71,8 +71,6 @@ export class MembersComponent implements OnInit {
       this.dataForModal = dataFromApi
     })
 
-    
-
 
   }
 
