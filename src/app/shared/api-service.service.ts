@@ -251,7 +251,14 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res.json()))
+      .then((res) => {
+        if(res.ok){
+          return res.json()
+        }else{
+          return res.json()
+        }
+        
+      })
   }
 
   // Удаление участников из профсоюза

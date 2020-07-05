@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { Input } from "@angular/core";
 import { ApiServiceService } from "src/app/shared/api-service.service";
-import {filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
-import {fromEvent } from 'rxjs';
+import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
+import { table } from 'console';
 @Component({
   selector: 'app-members-add-modal',
   templateUrl: './members-add-modal.component.html',
@@ -21,22 +22,52 @@ export class MembersAddModalComponent implements OnInit {
   members: any = []
   preloader: boolean = false
 
+  error: string = ''
+
   name: string = ''
   card: string
   subdepartmentID: number
   isStudent: boolean
 
+
   @ViewChild('inputName') input: ElementRef;
 
-  
-  
+
+
   searchInAKSP(name) {
     this.apiServiceService.getMembersAKPS(name)
   }
 
-  createMember() {
-    this.apiServiceService.createMember(this.name, this.card, this.subdepartmentID, this.isStudent)
+  async createMember() {
+    let index = 1
+    const promise = await this.apiServiceService.createMember(this.name, this.card, this.subdepartmentID, this.isStudent)
+    if (promise.error) {
+      this.error = promise.message
+    } else {
+      const tableBody = <HTMLElement>document.getElementById('membersTableBody')
+      const tableRowExist = <HTMLElement>document.getElementById('membersTableDataRow')
+      const memberData = {
+        'memberId': promise.member.id,
+        'memberName': promise.member.name,
+        'memberSubDep': promise.member.subdepartment,
+        'memberCard': promise.member.card,
+        'memberIsStudent': promise.member.is_student,
+        'memberActive': promise.member.active,
+      }
+      var tableRow = <HTMLElement>tableRowExist.cloneNode(true)
+      const tableRowChildInput = <HTMLInputElement>tableRow.childNodes[0].firstChild
+      tableRowChildInput.value = memberData.memberId
+
+      for (const item in memberData) {
+        const tableRowChild = <HTMLElement>tableRow.childNodes[index]
+        tableRowChild.innerHTML = memberData[item]
+        index +=1
+        console.log(tableRowChild)
+    }
+    tableBody.appendChild(tableRow)
+    this.closeModal()
   }
+}
 
   selectFaculty(event) {
     this.structures.length = 0
@@ -51,7 +82,7 @@ export class MembersAddModalComponent implements OnInit {
     })
   }
 
-  selectMember(event){
+  selectMember(event) {
     console.log(event)
 
     this.name = event.target.dataset.selectName
@@ -83,17 +114,17 @@ export class MembersAddModalComponent implements OnInit {
   dropDownStructure() {
     this.structureDropdown = !this.structureDropdown
   }
-  dropDownMembers(){
+  dropDownMembers() {
     this.membersDropdown = !this.membersDropdown
   }
 
   ngOnInit(): void {
-    this.apiServiceService.membersAKPS$.subscribe((dataFromAPI)=>{
+    this.apiServiceService.membersAKPS$.subscribe((dataFromAPI) => {
       this.members = dataFromAPI
       console.log(this.members)
       this.membersDropdown = true
     })
-    this.apiServiceService.preloader$.subscribe((dataFromAPI)=>{
+    this.apiServiceService.preloader$.subscribe((dataFromAPI) => {
       this.preloader = dataFromAPI
     })
   }
@@ -107,7 +138,7 @@ export class MembersAddModalComponent implements OnInit {
         distinctUntilChanged(),
         tap(async (text) => {
           // console.log(this.input.nativeElement.value)
-          const memberName  = <HTMLInputElement>this.input.nativeElement.value
+          const memberName = <HTMLInputElement>this.input.nativeElement.value
           const preloader = document.getElementById('preloader')
           const data = await this.searchInAKSP(memberName)
           console.log(data)

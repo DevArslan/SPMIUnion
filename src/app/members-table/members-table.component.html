@@ -10,8 +10,8 @@
       <th>В профсоюзе</th>
     </tr>
   </thead>
-  <tbody>
-    <tr *ngFor="let item of data ">
+  <tbody id="membersTableBody">
+    <tr *ngFor="let item of data" id="membersTableDataRow">
       <td>
         <input class="memberCheckbox" type="checkbox" value="{{item.id}}">
       </td>

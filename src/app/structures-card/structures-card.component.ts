@@ -93,7 +93,9 @@ export class StructuresCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Подписка для того, чтобы дождаться загрузки данных о структурах. Иначе при обновлении страницы, она будет пустой (данные еще не будут подгружены с backend-а)
     this.apiServiceService.departments$.subscribe(()=>{
+      // Подписка на изменение параметров (id) в маршруте
       this.route.params.subscribe(params => {
         console.log(params)
         this.subDepartmentsForCharts.length = 0
@@ -116,7 +118,7 @@ export class StructuresCardComponent implements OnInit {
         })
       })
     })
-    // Подписка на изменение параметров (id) в маршруте
+    
     
 
     // Подписка на меню навигации
