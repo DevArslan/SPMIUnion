@@ -16,73 +16,59 @@ export class MembersComponent implements OnInit {
   membersID: number[] = []
   data: {}[] = []
   dataForModal: {}[] = []
-  
+
   pageNumber: number = 1
-  rows: number[] = [10,20,30,40,50]
+  rows: number[] = [10, 20, 30, 40, 50]
   rowsCount: number = 10
-  maxPageNumber: number 
+  maxPageNumber: number
+  membersCount: number
 
   @ViewChild('inputPage') input: ElementRef;
 
-  changeMaxNumberPage(){
-    this.maxPageNumber = Math.ceil(this.data.length/this.rowsCount)
+  changeMaxNumberPage() {
+    this.maxPageNumber = Math.ceil(this.membersCount / this.rowsCount)
     this.getMembersByPage()
   }
 
-  changePage(event){
-    this.pageNumber = event.target.dataset.pageNumber
-    console.log(event.target.dataset.pageNumber)
-    this.getMembersByPage()
+  changePage(event) {
+    if (this.pageNumber >= 0 && this.pageNumber <= this.maxPageNumber) {
+      this.pageNumber = event.target.dataset.pageNumber
+      console.log(event.target.dataset.pageNumber)
+      this.getMembersByPage()
+    }
   }
 
-  getMembersByPage(){
+  getMembersByPage() {
 
-    this.apiServiceService.getMembersByPage(this.pageNumber,this.rows)
+    this.apiServiceService.getMembersByPage(this.rowsCount, this.pageNumber)
 
-
-
-
-    // console.log(event.target.parentNode)
-    // let navElements  = event.target.parentNode.parentNode.childNodes
-    // console.log(navElements)
-    // navElements.forEach(element => {
-    //   console.log(element)
-    //   try {
-    //     element.classList.remove('selectedPage')
-    //   } catch (error) {
-        
-    //   }
-      
-    // });
-    // event.target.parentNode.className = 'selectedPage'
-    
   }
 
-  downloadExcel(){
+  downloadExcel() {
     this.apiServiceService.downloadExcel()
   }
-  blockMember(){
+  blockMember() {
     this.membersID.length = 0
     const checkboxes = document.querySelectorAll('.memberCheckbox')
     for (let index = 0; index < checkboxes.length; index++) {
       const element = <HTMLInputElement>checkboxes[index];
-      if(element.checked){
+      if (element.checked) {
         this.membersID.push(Number(element.value))
       }
     }
-    
+
     this.apiServiceService.blockMembers(this.membersID)
   }
-  activateMember(){
+  activateMember() {
     this.membersID.length = 0
     const checkboxes = document.querySelectorAll('.memberCheckbox')
     for (let index = 0; index < checkboxes.length; index++) {
       const element = <HTMLInputElement>checkboxes[index];
-      if(element.checked){
+      if (element.checked) {
         this.membersID.push(Number(element.value))
       }
     }
-    
+
     this.apiServiceService.activateMembers(this.membersID)
   }
 
@@ -99,13 +85,18 @@ export class MembersComponent implements OnInit {
     modal.style.display = "block";
   }
 
-  
+
   ngOnInit(): void {
     this.apiServiceService.getMembers()
     this.apiServiceService.members$.subscribe((dataFromApi: any) => {
       this.data = dataFromApi.members
-      this.maxPageNumber =  Math.ceil(this.data.length/this.rowsCount)
-      console.log(this.data)
+      this.membersCount = this.data.length
+
+      if (!this.maxPageNumber) {
+        this.maxPageNumber = Math.ceil(this.membersCount / this.rowsCount)
+      }
+
+
     })
 
     this.apiServiceService.getDepartments()
