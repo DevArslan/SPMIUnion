@@ -1,6 +1,8 @@
 .structuresNav{
   margin-left: 0.5rem;
   width: 80%;
+  max-height: 300px;
+  overflow-y: scroll;
   .structuresAddModal{
     display: none;
   }

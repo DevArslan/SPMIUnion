@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ApiServiceService } from "src/app/shared/api-service.service";
-import { async } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-members',
@@ -16,6 +16,47 @@ export class MembersComponent implements OnInit {
   membersID: number[] = []
   data: {}[] = []
   dataForModal: {}[] = []
+  
+  pageNumber: number = 1
+  rows: number[] = [10,20,30,40,50]
+  rowsCount: number = 10
+  maxPageNumber: number 
+
+  @ViewChild('inputPage') input: ElementRef;
+
+  changeMaxNumberPage(){
+    this.maxPageNumber = Math.ceil(this.data.length/this.rowsCount)
+    this.getMembersByPage()
+  }
+
+  changePage(event){
+    this.pageNumber = event.target.dataset.pageNumber
+    console.log(event.target.dataset.pageNumber)
+    this.getMembersByPage()
+  }
+
+  getMembersByPage(){
+
+    this.apiServiceService.getMembersByPage(this.pageNumber,this.rows)
+
+
+
+
+    // console.log(event.target.parentNode)
+    // let navElements  = event.target.parentNode.parentNode.childNodes
+    // console.log(navElements)
+    // navElements.forEach(element => {
+    //   console.log(element)
+    //   try {
+    //     element.classList.remove('selectedPage')
+    //   } catch (error) {
+        
+    //   }
+      
+    // });
+    // event.target.parentNode.className = 'selectedPage'
+    
+  }
 
   downloadExcel(){
     this.apiServiceService.downloadExcel()
@@ -29,7 +70,7 @@ export class MembersComponent implements OnInit {
         this.membersID.push(Number(element.value))
       }
     }
-    console.log(this.membersID)
+    
     this.apiServiceService.blockMembers(this.membersID)
   }
   activateMember(){
@@ -41,7 +82,7 @@ export class MembersComponent implements OnInit {
         this.membersID.push(Number(element.value))
       }
     }
-    console.log(this.membersID)
+    
     this.apiServiceService.activateMembers(this.membersID)
   }
 
@@ -63,6 +104,7 @@ export class MembersComponent implements OnInit {
     this.apiServiceService.getMembers()
     this.apiServiceService.members$.subscribe((dataFromApi: any) => {
       this.data = dataFromApi.members
+      this.maxPageNumber =  Math.ceil(this.data.length/this.rowsCount)
       console.log(this.data)
     })
 
@@ -72,6 +114,22 @@ export class MembersComponent implements OnInit {
     })
 
 
+  }
+  ngAfterViewInit() {
+    // Обращение к серверу происходит после того, как пользователь не печатает на протяжении 1.5 секунд
+    fromEvent(this.input.nativeElement, 'keyup')
+      .pipe(
+        filter(Boolean),
+        debounceTime(1500),
+        distinctUntilChanged(),
+        tap(async (text) => {
+          // console.log(this.input.nativeElement.value)
+          this.pageNumber = Number(<HTMLInputElement>this.input.nativeElement.value)
+          const data = await this.getMembersByPage()
+          console.log(data)
+        })
+      )
+      .subscribe();
   }
 
 

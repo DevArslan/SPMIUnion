@@ -75,7 +75,7 @@ export class StructuresCardComponent implements OnInit {
 
     // this.datesForDiagram.length = 0
     this.currentValueForDiagram.length = 0
-
+    this.diagramData = {'01': 0 ,'02': 0,'03': 0,'04': 0,'05': 0,'06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
     // Получение массивов с данным подразделений
     this.selectedSubDepartments.forEach((element: any) => {
       this.selectedDataStructures.push(element.title)

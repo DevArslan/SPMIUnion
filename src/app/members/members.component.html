@@ -23,6 +23,29 @@
 
   </div>
 
-  <app-members-table [data]='data | filter:username'></app-members-table>
+  <app-members-table class="membersTable" [data]='data | filter:username'></app-members-table>
+
+  <div class="tableNav">
+    <div class="tableNav-pages">
+      <ul class="tableNav-list">
+        <i class="leftDoubleArrow"  attr.data-page-number = {{1}} (click)=changePage($event)></i>
+        <i class="leftArrow" attr.data-page-number = {{pageNumber-1}} (click)=changePage($event)></i>
+        <!-- <div *ngFor="let item of pageNumbers" class="pageNumbers">
+          <li  attr.data-page-number = "{{item}}" (click)="getMembersByPage($event)">{{item}}</li>
+        </div> -->
+        <p>Page</p>
+        <input type="text" [(ngModel)]="pageNumber" #inputPage>
+        <p>of {{maxPageNumber}}</p>
+        <i class="rightArrow" attr.data-page-number = {{pageNumber-(-1)}} (click)=changePage($event)></i>
+        <i class="rightDoubleArrow" attr.data-page-number = {{maxPageNumber}} (click)=changePage($event)></i>
+      </ul>
+    </div>
+    <div class="tableNav-rows">
+      <select [(ngModel)]="rowsCount" (change)="changeMaxNumberPage()">
+        <option *ngFor="let item of rows" [value]="item" >{{item}}</option>
+      </select>
+    </div>
+  </div>
+  
 
 </div>

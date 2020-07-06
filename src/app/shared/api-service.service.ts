@@ -211,6 +211,27 @@ export class ApiServiceService {
       )
   }
 
+  // Пагинация для таблицы участников
+  async getMembersByPage(rows, page) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members?rows='+rows+'?page='+page
+    const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+    })
+      .then((res) => res.json())
+      .then(data => {
+        console.log(data)
+        this.members = data
+        this.members$.next(this.members);
+        return data
+      }
+      )
+  }
+
   // Получение списка участников в базе АКПС
   async getMembersAKPS(query) {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/akps?query=' + query
