@@ -20,7 +20,7 @@ export class StructuresCardComponent implements OnInit {
     // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
   }
 
-  selectedData: any
+  selectedData: any={}
   selectedDataStructures: string[] = []
   selectedDataStructuresUsers: string[] = []
   data: {}[] = []
