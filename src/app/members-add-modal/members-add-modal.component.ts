@@ -3,7 +3,6 @@ import { Input } from "@angular/core";
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
-import { table } from 'console';
 @Component({
   selector: 'app-members-add-modal',
   templateUrl: './members-add-modal.component.html',
@@ -41,6 +40,7 @@ export class MembersAddModalComponent implements OnInit {
   async createMember() {
     let index = 1
     const promise = await this.apiServiceService.createMember(this.name, this.card, this.subdepartmentID, this.isStudent)
+    // Добавление участника в таблицу без доп.запроса к API
     if (promise.error) {
       this.error = promise.message
     } else {

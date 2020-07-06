@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
 import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
 import { ApiServiceService } from "src/app/shared/api-service.service";
-import { ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription, of } from 'rxjs';
 
 @Component({
   selector: 'app-structures-card',
@@ -18,14 +18,14 @@ export class StructuresCardComponent implements OnInit {
   constructor(private structureRouting: StructuresRoutingService, private apiServiceService: ApiServiceService, private route: ActivatedRoute) {
     console.log(this.route)
     // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
-   }
+  }
 
   selectedData: any = ''
   selectedDataStructures: string[] = []
   selectedDataStructuresUsers: string[] = []
   data: {}[] = []
   subDepartmentsForCharts: {}[] = []
-  subDepartments: {'head_department_id':number}[]
+  subDepartments: { 'head_department_id': number }[]
   selectedSubDepartments: {}[] = []
   structureNameInputDrop: boolean = false
   structureName: string
@@ -34,82 +34,137 @@ export class StructuresCardComponent implements OnInit {
 
   dropdown: boolean = false;
 
+  stats: any
+  datesForDiagram: string[] = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь']
+  currentValueForDiagram: number[] = []
+  diagramData: {'01':number,'02':number,'03':number,'04':number,'05':number,'06':number,'07':number,'08':number,'09':number,'10':number,'11':number,'12':number} = {'01': 0 ,'02': 0,'03': 0,'04': 0,'05': 0,'06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
+
   // getStats(fromData,toData,subID){
   //   this.apiServiceService.getStats(fromData,toData,subID)
   // }
 
-  saveStructureName(){
-    this.apiServiceService.editStructure(this.structureName,this.selectedData.proforg,this.selectedData.id)
+  saveStructureName() {
+    this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
     this.showEditStructureNameForm()
   }
-  saveProforgName(){
-    this.apiServiceService.editStructure(this.selectedData.title,this.proforgName,this.selectedData.id)
+  saveProforgName() {
+    this.apiServiceService.editStructure(this.selectedData.title, this.proforgName, this.selectedData.id)
     this.showEditProforgNameForm()
   }
-  showEditStructureNameForm(){
+  showEditStructureNameForm() {
     this.structureNameInputDrop = !this.structureNameInputDrop
   }
-  showEditProforgNameForm(){
+  showEditProforgNameForm() {
     this.proforgNameInputDrop = !this.proforgNameInputDrop
   }
 
-  showAddModal(){
+  showAddModal() {
     const modal = document.getElementById('subDepartmentAddModal')
     modal.style.display = 'block'
   }
-  showDelModal(){
+  showDelModal() {
     const modal = document.getElementById('departmentDelModal')
     modal.style.display = 'block'
   }
 
   updateCharts(structureChart, structureChart2) {
+    
     // Обнуление массивов с данными подразделений
     this.selectedDataStructures.length = 0
     this.selectedDataStructuresUsers.length = 0
+
+    // this.datesForDiagram.length = 0
+    this.currentValueForDiagram.length = 0
 
     // Получение массивов с данным подразделений
     this.selectedSubDepartments.forEach((element: any) => {
       this.selectedDataStructures.push(element.title)
       this.selectedDataStructuresUsers.push(element.members_total)
     });
+
+    for (let index = 0; index < this.stats.length; index++) {
+
+      // this.datesForDiagram.push(this.stats[index].date_time)
+      // this.currentValueForDiagram.push(this.stats[index].current_total)
+
+      for (const key in this.diagramData) {
+        let month = this.stats[index].date_time.slice(3,5)
+        console.log(month)
+        if(month == key){
+          this.diagramData[key] += (this.stats[index].current_total)
+        }
+      }  
+    }
+    let index = -2
+    for (const key in this.diagramData) {
+      this.currentValueForDiagram[index] = this.diagramData[key]
+      index +=1
+    }
+    
+    console.log(this.currentValueForDiagram)
     structureChart.update()
     structureChart2.update()
 
+  }
+  // Форматирование даты в следующий вид: YYY-MM-DD
+  formatDate(date) {
+
+    var dd = date.getDate();
+    if (dd < 10) dd = '0' + dd;
+
+    var mm = date.getMonth() + 1;
+    if (mm < 10) mm = '0' + mm;
+
+    var yy = date.getFullYear();
+    if (yy < 10) yy = '0' + yy;
+
+    return yy + '-' + mm + '-' + dd;
   }
 
   dropdownStructureTable() {
     this.dropdown = !this.dropdown
   }
 
-  async getDepartmentDataById(id){
+  async getDepartmentDataById(id) {
     return await this.apiServiceService.getDepartmentById(id);
   }
-  async getSubDepartmentsData(){
+  async getSubDepartmentsData() {
     return await this.apiServiceService.getSubDepartments();
   }
 
-  ngOnChanges(): void{
+  async getStats(nowDateMinusOneYear, nowDate, subID) {
+
+    
+
+    this.apiServiceService.getStats(nowDateMinusOneYear, nowDate, subID)
+    this.apiServiceService.stats$.subscribe(() => {
+      this.stats = this.apiServiceService.stats.stats
+    })
 
   }
 
+
+
   ngOnInit(): void {
     // Подписка для того, чтобы дождаться загрузки данных о структурах. Иначе при обновлении страницы, она будет пустой (данные еще не будут подгружены с backend-а)
-    this.apiServiceService.departments$.subscribe(()=>{
+    this.apiServiceService.departments$.subscribe(() => {
       // Подписка на изменение параметров (id) в маршруте
-      this.route.params.subscribe(params => {
-        console.log(params)
+      this.route.params.subscribe(async(params) => {
+        const nowDate = this.formatDate(new Date())
+        const nowDateMinusOneYear = (Number(new Date().getFullYear()) - 1) + this.formatDate(new Date()).slice(4)
+        await this.getStats(nowDateMinusOneYear, nowDate, params.id)
         this.subDepartmentsForCharts.length = 0
         this.selectedSubDepartments.length = 0
+
         this.data = this.apiServiceService.departments
-        console.log(this.data)
-        this.data.forEach(async(element: any) => {
+        this.data.forEach(async (element: any) => {
           if (params.id == element.id) {
             this.selectedData = element;
             // Фильтрация подразделения под конкретную структуру
             this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
-           
+
             this.subDepartments.forEach((element: any) => {
-              if(element.head_department_id == this.selectedData.id){
+              if (element.head_department_id == this.selectedData.id) {
                 this.selectedSubDepartments.push(element)
               }
             });
@@ -118,47 +173,27 @@ export class StructuresCardComponent implements OnInit {
         })
       })
     })
-    
-    
 
-    // Подписка на меню навигации
-    // this.structureRouting.postData$.subscribe((faculty) => {
-    //   this.subDepartmentsForCharts.length = 0
-    //   this.selectedSubDepartments.length = 0
-    //   this.data = this.apiServiceService.departments
-    //   this.data.forEach(async(element: any) => {
-    //     console.log(element.id)
-    //     if (faculty == element.title) {
-    //       this.selectedData = element;
-    //       console.log(this.selectedData)
-    //       // Фильтрация подразделения под конкретную структуру
-    //       this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
-         
-    //       this.subDepartments.forEach((element: any) => {
-    //         if(element.head_department_id == this.selectedData.id){
-    //           this.selectedSubDepartments.push(element)
-    //         }
-    //       });
-    //       this.updateCharts(structureChart, structureChart2)
-    //     }
-    //   })
-
-    // })
-    // this.getStats(fromData,toData,subID)
     var structureChart = new Chart('structureChart', {
       type: 'bar',
       data: {
-        labels: [12, 19, 3, 5, 2, 3],
+        labels: this.datesForDiagram,
         datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, -2, 3],
+          label: 'Диаграмма участников',
+          data: this.currentValueForDiagram,
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
             'rgba(255, 206, 86, 0.2)',
             'rgba(75, 192, 192, 0.2)',
             'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)'
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
           ],
           borderColor: [
             'rgba(255, 99, 132, 1)',
@@ -166,7 +201,13 @@ export class StructuresCardComponent implements OnInit {
             'rgba(255, 206, 86, 1)',
             'rgba(75, 192, 192, 1)',
             'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)'
+            'rgba(255, 159, 64, 1)',
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 99, 132, 0.2)',
           ],
           borderWidth: 1
         }]

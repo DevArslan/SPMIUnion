@@ -33,7 +33,6 @@ export class StructuresNavComponent implements OnInit {
       this.departmentsData =  this.apiServiceService.departments
       this.departmentsData.forEach((element: any)  => {
         this.departmentsTitle.push(element.title)
-        console.log(element.id)
     })
   })
 

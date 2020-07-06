@@ -15,6 +15,7 @@ export class ApiServiceService {
   users: []
   loadingCompleted: boolean
   membersAKPS: any
+  stats: any
 
   users$ = new Subject<{}[]>()
   departments$ = new Subject<{}[]>();
@@ -24,6 +25,7 @@ export class ApiServiceService {
   loadingCompleted$ = new Subject<{}>()
   membersAKPS$ = new Subject<{}[]>()
   preloader$ = new Subject<boolean>()
+  stats$ = new Subject<[]>();
   // Получение данных о структурах
   async getDepartments() {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments'
@@ -211,7 +213,7 @@ export class ApiServiceService {
 
   // Получение списка участников в базе АКПС
   async getMembersAKPS(query) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/akps?query='+query
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/akps?query=' + query
     const token = this.authService.getToken()
     this.preloader$.next(true)
     return fetch(url, {
@@ -252,12 +254,12 @@ export class ApiServiceService {
       body: JSON.stringify(data),
     })
       .then((res) => {
-        if(res.ok){
+        if (res.ok) {
           return res.json()
-        }else{
+        } else {
           return res.json()
         }
-        
+
       })
   }
 
@@ -441,24 +443,22 @@ export class ApiServiceService {
   }
 
   // Статистика по датам
-  async getStats(fromData,toData,subID) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/stats'
+  async getStats(fromData, toData, subID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/stats' + '?from_date=' + fromData + '?to_date' + toData + '?subdepartment_id' + subID
     const token = this.authService.getToken()
-    const data = {
-      from_date: fromData,
-      to_date: toData,
-      subdepartment_id: subID,
-    }
     return fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Basic ${token}`
       },
-      body: JSON.stringify(data),
     })
       .then((res) => (res.json()))
-      .then(data => console.log(data))
+      .then(data => {
+        this.stats = data
+        this.stats$.next(this.stats);
+      }
+      )
   }
 
 
