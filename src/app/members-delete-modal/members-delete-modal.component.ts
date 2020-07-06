@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , Output, EventEmitter} from '@angular/core';
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { Input } from "@angular/core";
 
@@ -8,17 +8,18 @@ import { Input } from "@angular/core";
   styleUrls: ['./members-delete-modal.component.scss']
 })
 export class MembersDeleteModalComponent implements OnInit {
-
+  @Output() childEvent = new EventEmitter();
   constructor(private apiServiceService: ApiServiceService) { }
   membersID: number[] = []
   ngOnInit(): void {
+
   }
   closeModal(){
     const modal = document.getElementById('membersDelModal')
     modal.style.display = "none";
   }
 
-  deleteMember(){
+  async deleteMember(){
     this.membersID.length = 0
     const checkboxes = document.querySelectorAll('.memberCheckbox')
     for (let index = 0; index < checkboxes.length; index++) {
@@ -29,6 +30,9 @@ export class MembersDeleteModalComponent implements OnInit {
     }
 
     console.log(this.membersID)
-    this.apiServiceService.deleteMember(this.membersID)
+    await this.apiServiceService.deleteMember(this.membersID)
+
+    this.childEvent.emit();
+    this.closeModal()
   }
 }

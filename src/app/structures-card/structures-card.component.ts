@@ -134,14 +134,10 @@ export class StructuresCardComponent implements OnInit {
   }
 
   async getStats(nowDateMinusOneYear, nowDate, subID) {
-
-    
-
     this.apiServiceService.getStats(nowDateMinusOneYear, nowDate, subID)
     this.apiServiceService.stats$.subscribe(() => {
       this.stats = this.apiServiceService.stats.stats
     })
-
   }
 
 

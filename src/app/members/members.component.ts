@@ -22,7 +22,7 @@ export class MembersComponent implements OnInit {
   rowsCount: number = 10
   maxPageNumber: number
   membersCount: number
-
+  
   @ViewChild('inputPage') input: ElementRef;
 
   changeMaxNumberPage() {
@@ -90,6 +90,7 @@ export class MembersComponent implements OnInit {
     this.apiServiceService.getMembers()
     this.apiServiceService.members$.subscribe((dataFromApi: any) => {
       this.data = dataFromApi.members
+      console.log(this.data)
       this.membersCount = this.data.length
 
       if (!this.maxPageNumber) {
