@@ -36,6 +36,10 @@
       padding: 0rem 1rem 1rem 1rem;
       form {
         width: 100%;
+        .cardNumber{
+          margin-top: 0.5rem;
+          // text-transform: uppercase;
+        }
         .memberName{
           padding: 0.5rem;
           display: flex;

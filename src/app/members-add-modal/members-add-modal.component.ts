@@ -25,6 +25,7 @@ export class MembersAddModalComponent implements OnInit {
 
   name: string = ''
   card: string
+  cardNumber: string
   subdepartmentID: number
   isStudent: boolean
 
@@ -89,6 +90,7 @@ export class MembersAddModalComponent implements OnInit {
     event.target.placholder = this.name
 
     this.card = event.target.dataset.selectCard
+    this.cardNumber = 'номер карты: ' + String(event.target.dataset.selectCardNumber).toUpperCase()
     const cardInputElement = <HTMLInputElement>document.getElementById('cardNumber')
     cardInputElement.placeholder = this.card
 

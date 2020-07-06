@@ -18,11 +18,13 @@
         <div class="facultyDropdown" [ngClass]="{'dropdown': membersDropdown}">
           <ul>
             <li *ngFor="let item of members.users" attr.data-select-name="{{item.name}}"
-              attr.data-select-card="{{item.card_number}}" (click)="selectMember($event)">{{item.name}}</li>
+              attr.data-select-card="{{item.card}}" attr.data-select-card-number="{{item.card_number}}"
+              (click)="selectMember($event)">{{item.name}}</li>
           </ul>
         </div>
         <input type="text" class="memberCard-input" name="card" id="cardNumber" placeholder="№ чип карты"
           [(ngModel)]="card">
+        <p class="cardNumber">{{cardNumber}}</p>
       </form>
       <div class="faculty" (click)='dropDownFaculty()'>
         <p id="faculty-placeholder" class="faculty-placeholder">{{faculty}}</p>
