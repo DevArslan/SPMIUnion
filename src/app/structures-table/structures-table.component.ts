@@ -9,10 +9,21 @@ import { ApiServiceService } from "src/app/shared/api-service.service";
 })
 export class StructuresTableComponent implements OnInit {
   @Input() selectedSubDepartments: {}[]
+  @Input() dynamics: {'subID':number, 'dynamic':number}[]
   subDepartmentId: number
   data: {}[]
   dataForModal: {}[] = []
+  currentSubDynamic: number
   constructor(private structureRouting: StructuresRoutingService,private apiServiceService: ApiServiceService) {}
+  
+  getDynamic(id){
+    
+    this.dynamics.forEach((item)=>{
+      if(id == item.subID){
+        this.currentSubDynamic =  item.dynamic
+      }
+    })
+  }
 
   showDelModal(event){
     console.log(event.target.parentElement)
@@ -28,7 +39,10 @@ export class StructuresTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.selectedSubDepartments)
+    // this.selectedSubDepartments.forEach((item)=>{
+    //   item.stats = 
+    // })
+    console.log(this.dynamics)
     this.apiServiceService.getDepartments()
     this.apiServiceService.departments$.subscribe((dataFromApi) => {
       this.dataForModal = dataFromApi

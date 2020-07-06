@@ -40,9 +40,39 @@ export class StructuresCardComponent implements OnInit {
   currentValueForDiagram: number[] = []
   diagramData: {'01':number,'02':number,'03':number,'04':number,'05':number,'06':number,'07':number,'08':number,'09':number,'10':number,'11':number,'12':number} = {'01': 0 ,'02': 0,'03': 0,'04': 0,'05': 0,'06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
 
+  dynamics: {'subID':number, 'dynamic':number}[] = []
   // getStats(fromData,toData,subID){
   //   this.apiServiceService.getStats(fromData,toData,subID)
   // }
+
+  getDynamic(subID){
+    let nowMonth = (new Date()).getMonth()+1
+    let prevMonth = (new Date()).getMonth()
+    
+    let dynamic = 0
+    if(nowMonth == 1){
+      prevMonth = 12
+    }
+    
+    let valueNowMonth = 0
+    let valuePrevMonth = 0
+
+    this.stats.forEach((item)=>{
+      if(subID == item.subdepartment_id){
+        if(item.date_time.slice(3,5) == prevMonth){
+          valuePrevMonth = item.current_total
+        }
+        if(item.date_time.slice(3,5) == nowMonth){
+          valueNowMonth = item.current_total
+        }
+      }
+    })
+
+    dynamic = valueNowMonth - valuePrevMonth
+    
+    this.dynamics.push({'subID':subID, 'dynamic':dynamic})
+    console.log(this.dynamics)
+  }
 
   saveStructureName() {
     this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
@@ -90,7 +120,7 @@ export class StructuresCardComponent implements OnInit {
 
       for (const key in this.diagramData) {
         let month = this.stats[index].date_time.slice(3,5)
-        console.log(month)
+  
         if(month == key){
           this.diagramData[key] = (this.stats[index].current_total)
         }
@@ -102,7 +132,6 @@ export class StructuresCardComponent implements OnInit {
       index +=1
     }
     
-    console.log(this.currentValueForDiagram)
     structureChart.update()
     structureChart2.update()
 
@@ -137,7 +166,6 @@ export class StructuresCardComponent implements OnInit {
     this.apiServiceService.getStats(nowDateMinusOneYear, nowDate, subID)
     this.apiServiceService.stats$.subscribe(() => {
       this.stats = this.apiServiceService.stats.stats
-      console.log(this.stats)
     })
   }
 
@@ -148,7 +176,7 @@ export class StructuresCardComponent implements OnInit {
     this.apiServiceService.departments$.subscribe(() => {
       // Подписка на изменение параметров (id) в маршруте
       this.route.params.subscribe(async(params) => {
-        
+        this.dynamics.length = 0
         this.subDepartmentsForCharts.length = 0
         this.selectedSubDepartments.length = 0
 
@@ -168,21 +196,27 @@ export class StructuresCardComponent implements OnInit {
 
             this.selectedSubDepartmentsIds.length = 0
             this.selectedSubDepartments.forEach((element: any) => {
-    
               this.selectedSubDepartmentsIds.push(element.id)
+              
             });
             console.log(this.selectedSubDepartmentsIds)
+
             const nowDate = this.formatDate(new Date())
             const nowDateMinusOneYear = (Number(new Date().getFullYear()) - 1) + this.formatDate(new Date()).slice(4)
             await this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
             this.apiServiceService.stats$.subscribe(()=>{
-              console.log(this.stats)
+              this.selectedSubDepartmentsIds.forEach((id)=>{
+                this.getDynamic(id)
+              })
+              
               this.updateCharts(structureChart, structureChart2)
+
+              
             })
             
           }
         })
-        console.log(this.stats)
+        
        
       })
     })
