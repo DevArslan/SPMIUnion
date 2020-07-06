@@ -27,6 +27,7 @@ export class StructuresCardComponent implements OnInit {
   subDepartmentsForCharts: {}[] = []
   subDepartments: { 'head_department_id': number }[]
   selectedSubDepartments: {}[] = []
+  selectedSubDepartmentsIds: number[] = []
   structureNameInputDrop: boolean = false
   structureName: string
   proforgNameInputDrop: boolean = false
@@ -34,7 +35,7 @@ export class StructuresCardComponent implements OnInit {
 
   dropdown: boolean = false;
 
-  stats: any
+  stats: any[] = []
   datesForDiagram: string[] = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь']
   currentValueForDiagram: number[] = []
   diagramData: {'01':number,'02':number,'03':number,'04':number,'05':number,'06':number,'07':number,'08':number,'09':number,'10':number,'11':number,'12':number} = {'01': 0 ,'02': 0,'03': 0,'04': 0,'05': 0,'06': 0,'07': 0,'08': 0,'09': 0,'10': 0,'11': 0,'12': 0}
@@ -150,13 +151,12 @@ export class StructuresCardComponent implements OnInit {
     this.apiServiceService.departments$.subscribe(() => {
       // Подписка на изменение параметров (id) в маршруте
       this.route.params.subscribe(async(params) => {
-        const nowDate = this.formatDate(new Date())
-        const nowDateMinusOneYear = (Number(new Date().getFullYear()) - 1) + this.formatDate(new Date()).slice(4)
-        await this.getStats(nowDateMinusOneYear, nowDate, params.id)
+        
         this.subDepartmentsForCharts.length = 0
         this.selectedSubDepartments.length = 0
 
         this.data = this.apiServiceService.departments
+        
         this.data.forEach(async (element: any) => {
           if (params.id == element.id) {
             this.selectedData = element;
@@ -168,9 +168,21 @@ export class StructuresCardComponent implements OnInit {
                 this.selectedSubDepartments.push(element)
               }
             });
+            console.log(this.selectedSubDepartments)
+            this.selectedSubDepartmentsIds.length = 0
+            this.selectedSubDepartments.forEach((element: any) => {
+              console.log(element)
+              this.selectedSubDepartmentsIds.push(element.id)
+            });
+            console.log(this.selectedSubDepartmentsIds)
+            const nowDate = this.formatDate(new Date())
+            const nowDateMinusOneYear = (Number(new Date().getFullYear()) - 1) + this.formatDate(new Date()).slice(4)
+            await this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
             this.updateCharts(structureChart, structureChart2)
           }
         })
+        
+       
       })
     })
 
