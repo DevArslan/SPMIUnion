@@ -47,7 +47,7 @@ export class MembersComponent implements OnInit {
   downloadExcel() {
     this.apiServiceService.downloadExcel()
   }
-  blockMember() {
+  async blockMember() {
     this.membersID.length = 0
     const checkboxes = document.querySelectorAll('.memberCheckbox')
     for (let index = 0; index < checkboxes.length; index++) {
@@ -57,9 +57,10 @@ export class MembersComponent implements OnInit {
       }
     }
 
-    this.apiServiceService.blockMembers(this.membersID)
+    await this.apiServiceService.blockMembers(this.membersID)
+    this.getMembersByPage()
   }
-  activateMember() {
+  async activateMember() {
     this.membersID.length = 0
     const checkboxes = document.querySelectorAll('.memberCheckbox')
     for (let index = 0; index < checkboxes.length; index++) {
@@ -69,7 +70,8 @@ export class MembersComponent implements OnInit {
       }
     }
 
-    this.apiServiceService.activateMembers(this.membersID)
+    await this.apiServiceService.activateMembers(this.membersID)
+    this.getMembersByPage()
   }
 
   showAddModal() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , Output, EventEmitter} from '@angular/core';
 import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { Input } from "@angular/core";
@@ -23,12 +23,15 @@ export class MembersEditModalComponent implements OnInit {
   subdepartmentID : number
   isStudent: boolean
   memberID: number
+  
+  error: string = ''
 
+  @Output() childEvent = new EventEmitter();
   ngOnInit(): void {
 
   }
 
-  editMember(){
+  async editMember(){
     const checkboxes = document.querySelectorAll('.memberCheckbox')
 
     for (let index = 0; index < checkboxes.length; index++) {
@@ -37,8 +40,12 @@ export class MembersEditModalComponent implements OnInit {
         this.memberID = Number(element.value)
       }
     }
-
-    this.API.editMember(this.name,this.card,this.subdepartmentID,this.isStudent,this.memberID)
+    if(!this.memberID){
+      this.error = 'Пользователь для редактирования не выбран'
+    }
+    await this.API.editMember(this.name,this.card,this.subdepartmentID,this.isStudent,this.memberID)
+    this.childEvent.emit();
+    this.closeModal()
   }
 
   selectFaculty(event){

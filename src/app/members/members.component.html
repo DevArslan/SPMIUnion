@@ -1,7 +1,7 @@
 <div class="members">
   <app-members-add-modal [dataForModal]='dataForModal' class="membersAddModal" id="membersAddModal"></app-members-add-modal>
   <app-members-delete-modal (childEvent)="getMembersByPage()" class="membersDelModal" id="membersDelModal"></app-members-delete-modal>
-  <app-members-edit-modal [dataForModal]='dataForModal' class="membersEditModal" id="membersEditModal"></app-members-edit-modal>
+  <app-members-edit-modal (childEvent)="getMembersByPage()" [dataForModal]='dataForModal' class="membersEditModal" id="membersEditModal"></app-members-edit-modal>
   <div class="members-nav">
     <div class="members-search">
       <input class="searchInput" type="text" placeholder="Поиск" [(ngModel)]="username">

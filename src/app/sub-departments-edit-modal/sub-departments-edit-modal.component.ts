@@ -30,11 +30,10 @@ export class SubDepartmentsEditModalComponent implements OnInit {
     const modal = document.getElementById('subDepartmentEditModal')
     modal.style.display = "none";
   }
-  editSubDepartment() {
-    console.log(this.title)
-    console.log(this.departmentID)
-    console.log(this.subDepartmentId)
-    this.api.editSubDepartment(this.title, this.departmentID, this.subDepartmentId)
+  async editSubDepartment() {
+    
+    await this.api.editSubDepartment(this.title, this.departmentID, this.subDepartmentId)
+    await this.api.getDepartments()
     this.closeModal()
     // Ниже штука, чтобы сразу отобразить изменения
     // this.structureRouting.postData$.next('')

@@ -18,10 +18,12 @@ export class UsersAddModalComponent implements OnInit {
   ngOnInit(): void {
 
   }
-  createUser(){
+  async createUser(){
     console.log('create')
     console.log(this.roles)
-    this.apiServiceService.createUser(this.username, this.login, this.password)
+    await this.apiServiceService.createUser(this.username, this.login, this.password)
+    await this.apiServiceService.getUsers()
+    this.closeModal()
   }
   closeModal(){
     const modal = document.getElementById('usersAddModal')

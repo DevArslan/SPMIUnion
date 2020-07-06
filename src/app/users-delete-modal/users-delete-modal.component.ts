@@ -15,7 +15,7 @@ export class UsersDeleteModalComponent implements OnInit {
     modal.style.display = "none";
   }
 
-  deleteMember(){
+  async deleteMember(){
     const checkboxes = document.getElementsByClassName('userCheckbox')
 
     for (let index = 0; index < checkboxes.length; index++) {
@@ -24,8 +24,9 @@ export class UsersDeleteModalComponent implements OnInit {
         this.userID = Number(element.value)
       }
     }
-    console.log(checkboxes)
-    this.apiServiceService.deleteUser(this.userID)
+    await this.apiServiceService.deleteUser(this.userID)
+    await this.apiServiceService.getUsers()
+    this.closeModal()
   }
 
   ngOnInit(): void {

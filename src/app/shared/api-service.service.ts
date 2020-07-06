@@ -9,7 +9,7 @@ export class ApiServiceService {
 
   constructor(private authService: AuthService) { }
   selectedDepartment: string
-  departments: {}[] = []
+  departments: any
   members: {}[]
   roles: []
   users: []
@@ -403,7 +403,18 @@ export class ApiServiceService {
   }
 
   // Редактирование пользователя
-
+  async editUser(userID,role) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1//users/change_role/'+userID+'?role='+role
+    const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+    })
+      .then((res) => console.log(res.json()))
+  }
   // Удаление пользователей
   async deleteUser(userID) {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/' + userID
@@ -472,7 +483,7 @@ export class ApiServiceService {
       url +='&subdepartment_id=' + element
     });
     
-    console.log(url)
+    
     const token = this.authService.getToken()
     return fetch(url, {
       method: 'GET',
@@ -483,7 +494,7 @@ export class ApiServiceService {
     })
       .then((res) => (res.json()))
       .then(data => {
-        console.log(data)
+        
         this.stats = data
         this.stats$.next(this.stats);
       }

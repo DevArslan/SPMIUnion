@@ -15,10 +15,11 @@ export class SubDepartmentsDelModalComponent implements OnInit {
     const modal = document.getElementById('subDepartmentDelModal')
     modal.style.display = "none";
   }
-  deleteSubDepartment(){
+  async deleteSubDepartment(){
 
 
-    this.api.deleteSubDepartment(this.subDepartmentId)
+    await this.api.deleteSubDepartment(this.subDepartmentId)
+    await this.api.getDepartments()
     this.closeModal()
 
     // Ниже штука, чтобы сразу отобразить изменения

@@ -23,10 +23,11 @@ export class SubDepartmentsAddModalComponent implements OnInit {
     const modal = document.getElementById('subDepartmentAddModal')
     modal.style.display = "none";
   }
-  addSubDepartment(){
+  async addSubDepartment(){
     // this.departmentID = this.apiServiceService.selectedDepartment
     this.departmentID = this.department.id
-    this.apiServiceService.createSubDepartment(this.title,this.departmentID)
+    await this.apiServiceService.createSubDepartment(this.title,this.departmentID)
+    await this.apiServiceService.getDepartments()
     this.closeModal()
     // Ниже штука, чтобы сразу отобразить изменения
     // this.structureRouting.postData$.next('')

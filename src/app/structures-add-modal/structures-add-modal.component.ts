@@ -18,7 +18,9 @@ export class StructuresAddModalComponent implements OnInit {
     const modal = document.getElementById('structuresAddModal')
     modal.style.display = "none";
   }
-  createDepartment(){
-    this.api.createDepartment(this.title, this.proforg)
+  async createDepartment(){
+    await this.api.createDepartment(this.title, this.proforg)
+    await this.api.getDepartments()
+    this.closeModal()
   }
 }

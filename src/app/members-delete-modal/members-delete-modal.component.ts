@@ -28,7 +28,7 @@ export class MembersDeleteModalComponent implements OnInit {
         this.membersID.push(Number(element.value))
       }
     }
-
+    
     console.log(this.membersID)
     await this.apiServiceService.deleteMember(this.membersID)
 
