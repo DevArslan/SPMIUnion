@@ -466,7 +466,12 @@ export class ApiServiceService {
 
   // Статистика по датам
   async getStats(fromData, toData, subID) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/stats' + '?from_date=' + fromData + '&to_date=' + toData + '&subdepartment_id=' + subID
+    let url = 'https://digital.spmi.ru/profsouz_test/api/v1/stats' + '?from_date=' + fromData + '&to_date=' + toData 
+    
+    subID.forEach(element => {
+      url +='&subdepartment_id=' + element
+    });
+    
     console.log(url)
     const token = this.authService.getToken()
     return fetch(url, {

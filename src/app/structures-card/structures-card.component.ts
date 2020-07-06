@@ -137,6 +137,7 @@ export class StructuresCardComponent implements OnInit {
     this.apiServiceService.getStats(nowDateMinusOneYear, nowDate, subID)
     this.apiServiceService.stats$.subscribe(() => {
       this.stats = this.apiServiceService.stats.stats
+      console.log(this.stats)
     })
   }
 
@@ -164,20 +165,23 @@ export class StructuresCardComponent implements OnInit {
                 this.selectedSubDepartments.push(element)
               }
             });
-            console.log(this.selectedSubDepartments)
+
             this.selectedSubDepartmentsIds.length = 0
             this.selectedSubDepartments.forEach((element: any) => {
-              console.log(element)
+    
               this.selectedSubDepartmentsIds.push(element.id)
             });
             console.log(this.selectedSubDepartmentsIds)
             const nowDate = this.formatDate(new Date())
             const nowDateMinusOneYear = (Number(new Date().getFullYear()) - 1) + this.formatDate(new Date()).slice(4)
             await this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
-            this.updateCharts(structureChart, structureChart2)
+            this.apiServiceService.stats$.subscribe(()=>{
+              this.updateCharts(structureChart, structureChart2)
+            })
+            
           }
         })
-        
+        console.log(this.stats)
        
       })
     })
