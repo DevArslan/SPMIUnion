@@ -92,7 +92,7 @@ export class StructuresCardComponent implements OnInit {
         let month = this.stats[index].date_time.slice(3,5)
         console.log(month)
         if(month == key){
-          this.diagramData[key] += (this.stats[index].current_total)
+          this.diagramData[key] = (this.stats[index].current_total)
         }
       }  
     }
@@ -176,6 +176,7 @@ export class StructuresCardComponent implements OnInit {
             const nowDateMinusOneYear = (Number(new Date().getFullYear()) - 1) + this.formatDate(new Date()).slice(4)
             await this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
             this.apiServiceService.stats$.subscribe(()=>{
+              console.log(this.stats)
               this.updateCharts(structureChart, structureChart2)
             })
             
