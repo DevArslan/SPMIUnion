@@ -31,7 +31,7 @@ export class MembersComponent implements OnInit {
   }
 
   changePage(event) {
-    if (this.pageNumber >= 0 && this.pageNumber <= this.maxPageNumber) {
+    if (this.pageNumber > 0 && event.target.dataset.pageNumber !=0 && event.target.dataset.pageNumber!=this.maxPageNumber+1 ) {
       this.pageNumber = event.target.dataset.pageNumber
       console.log(event.target.dataset.pageNumber)
       this.getMembersByPage()
