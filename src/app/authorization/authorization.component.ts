@@ -18,7 +18,10 @@ export class AuthorizationComponent implements OnInit {
   login: string = ''
   password: string = ''
   remember: boolean = false
+
   error: string = ''
+  loginError: string = ''
+  passwordError: string = ''
 
   auth() {
     if (this.login && this.password) {
@@ -60,10 +63,10 @@ export class AuthorizationComponent implements OnInit {
         })
     }
     if (!this.login) {
-      alert('Требуется указать имя');
+      this.loginError = 'Требуется указать имя'
     }
     if (!this.password) {
-      alert('Требуется указать пароль');
+      this.passwordError = 'Требуется указать пароль'
     }
   }
 }

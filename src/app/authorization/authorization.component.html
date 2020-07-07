@@ -8,8 +8,14 @@
         <input [(ngModel)]="login" type="text" name="login">
       </li>
       <li>
+        <p class="formError">{{loginError}}</p>
+      </li>
+      <li>
         <label for="password">пароль</label>
         <input [(ngModel)]="password" type="password" name="password">
+      </li>
+      <li>
+        <p class="formError">{{passwordError}}</p>
       </li>
       <li class="remember">
         <input type="checkbox" name="remember" [(ngModel)]="remember">
