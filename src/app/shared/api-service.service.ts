@@ -462,12 +462,12 @@ export class ApiServiceService {
         'Authorization': `Basic ${token}`
       },
     })
-      .then((res) => (res.blob()))
+      .then((res) => res.blob())
       .then(blob => {
         var url = window.URL.createObjectURL(blob);
         var a = document.createElement('a');
         a.href = url;
-        a.download = "filename.xlsx";
+        a.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${new Date().getMonth()+1}_${new Date().getFullYear()}.xlsx`;
         document.body.appendChild(a);
         a.click();
         a.remove();
