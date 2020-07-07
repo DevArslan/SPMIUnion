@@ -38,11 +38,13 @@ export class MembersAddModalComponent implements OnInit {
     this.apiServiceService.getMembersAKPS(name)
   }
 
+
   async createMember() {
     let index = 1
     const promise = await this.apiServiceService.createMember(this.name, this.card, this.subdepartmentID, this.isStudent)
     // Добавление участника в таблицу без доп.запроса к API
     if (promise.error) {
+      console.log(promise)
       this.error = promise.message
     } else {
       const tableBody = <HTMLElement>document.getElementById('membersTableBody')
@@ -108,6 +110,13 @@ export class MembersAddModalComponent implements OnInit {
     const modal = document.getElementById('membersAddModal')
     modal.style.display = "none";
     this.faculty = 'Факультет'
+    this.structure = 'Подразделение'
+    this.name = '';
+    this.card = '';
+    this.isStudent = false
+    this.error = ''
+    this.subdepartmentID = null
+    this.structures.length = 0
   }
 
   dropDownFaculty() {
