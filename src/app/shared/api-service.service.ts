@@ -475,6 +475,30 @@ export class ApiServiceService {
       )
   }
 
+  // Скачивание данных участников профсоюза в структуре в формате excel
+  async downloadExcelStructure(structureID) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments/xlsx/'+structureID
+    const token = this.authService.getToken()
+    return fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
+      },
+    })
+      .then((res) => res.blob())
+      .then(blob => {
+        var url = window.URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${new Date().getMonth()+1}_${new Date().getFullYear()}.xlsx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      }
+      )
+  }
+
   // Статистика по датам
   async getStats(fromData, toData, subID) {
     let url = 'https://digital.spmi.ru/profsouz_test/api/v1/stats' + '?from_date=' + fromData + '&to_date=' + toData 

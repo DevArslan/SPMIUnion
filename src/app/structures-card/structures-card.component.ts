@@ -153,6 +153,10 @@ export class StructuresCardComponent implements OnInit {
   dropdownStructureTable() {
     this.dropdown = !this.dropdown
   }
+  downloadExcel(){
+    console.log(this.selectedData.id)
+    this.apiServiceService.downloadExcelStructure(this.selectedData.id)
+  }
 
   async getDepartmentDataById(id) {
     return await this.apiServiceService.getDepartmentById(id);
