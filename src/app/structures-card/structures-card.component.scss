@@ -38,6 +38,9 @@
     font-weight: bold;
     display: flex;
     align-items: center;
+    p{
+      margin-left: 0.7rem;
+    }
     .editIcon{
       margin-left: 0.5rem;
       background-image: url('src/assets/icons/create-24px.svg');
@@ -150,11 +153,11 @@
         transition: all 0.3s;
         max-height: 0;
         display: block;
-        overflow: hidden;
+        overflow-y: scroll;
         opacity: 0;
       }
       .dropdownTableActive {
-        max-height: 600px;
+        max-height: 150px;
         opacity: 1;
       }
     }

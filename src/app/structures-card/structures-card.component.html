@@ -25,7 +25,7 @@
         <i class="dropdown" [ngClass]="{'dropdownIconActive': dropdown}"></i>
         <p>Подразделения ({{selectedSubDepartments.length}})</p>
       </div>
-      <app-structures-table [dynamics]='dynamics' [selectedSubDepartments]='selectedSubDepartments' [ngClass]="{'dropdownTableActive': dropdown}">
+      <app-structures-table class="structuresTable" [dynamics]='dynamics' [selectedSubDepartments]='selectedSubDepartments' [ngClass]="{'dropdownTableActive': dropdown}">
       </app-structures-table>
     </div>
     <div class="structureCharts">
