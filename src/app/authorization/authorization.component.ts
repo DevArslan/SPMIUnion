@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/auth.service'
-
+import * as base64 from "base-64"
+import * as utf8 from "utf8"
 @Component({
   selector: 'app-authorization',
   templateUrl: './authorization.component.html',
@@ -28,8 +29,9 @@ export class AuthorizationComponent implements OnInit {
         password: this.password,
         remember: this.remember
       }
-
-      const token = window.btoa(`${data.login}:${data.password}`);
+      const utf8_info = utf8.encode(`${data.login}:${data.password}`)
+      const token = base64.encode(utf8_info)
+      // const token = window.btoa(`${data.login}:${data.password}`);
       fetch(url, {
         method: 'GET',
         headers: {
