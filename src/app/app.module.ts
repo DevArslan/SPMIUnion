@@ -37,7 +37,6 @@ const itemRoutes: Routes = [
   {
     path: 'structures/:id',
     component: StructuresComponent,
-    data: {breadcrumbs: 'Profile info'},
   },
   {
     path: 'members',
@@ -64,6 +63,11 @@ const appRouter: Routes = [
     redirectTo: '/main',
     pathMatch: 'full'
   },
+  {
+    path: '**',
+    redirectTo: '/main',
+    pathMatch: 'full'
+  }
 
 ]
 

@@ -4,7 +4,7 @@ import { StructuresRoutingService } from "src/app/shared/structures-routing.serv
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, of } from 'rxjs';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-structures-card',
   templateUrl: './structures-card.component.html',
@@ -15,7 +15,7 @@ export class StructuresCardComponent implements OnInit {
 
   id: number;
 
-  constructor(private structureRouting: StructuresRoutingService, private apiServiceService: ApiServiceService, private route: ActivatedRoute) {
+  constructor(private ROUTER: Router, private apiServiceService: ApiServiceService, private route: ActivatedRoute) {
     console.log(this.route)
     // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
   }
@@ -41,9 +41,7 @@ export class StructuresCardComponent implements OnInit {
   diagramData: { '01': number, '02': number, '03': number, '04': number, '05': number, '06': number, '07': number, '08': number, '09': number, '10': number, '11': number, '12': number } = { '01': 0, '02': 0, '03': 0, '04': 0, '05': 0, '06': 0, '07': 0, '08': 0, '09': 0, '10': 0, '11': 0, '12': 0 }
 
   dynamics: { 'subID': number, 'dynamic': number }[] = []
-  // getStats(fromData,toData,subID){
-  //   this.apiServiceService.getStats(fromData,toData,subID)
-  // }
+  equalID: boolean = false
 
   getDynamic(subID) {
     let nowMonth = (new Date()).getMonth() + 1
@@ -182,9 +180,10 @@ export class StructuresCardComponent implements OnInit {
         this.selectedSubDepartments.length = 0
 
         this.data = this.apiServiceService.departments
-
+        
         this.data.forEach(async (element: any) => {
           if (params.id == element.id) {
+            this.equalID = true
             this.selectedData = element;
             // Фильтрация подразделения под конкретную структуру
             this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
@@ -213,12 +212,17 @@ export class StructuresCardComponent implements OnInit {
 
 
             })
-
           }
         })
-
+        
 
       })
+      if(this.equalID == true){
+          
+      }else{
+        this.ROUTER.navigate(['main']);
+        this.equalID = true
+      }
     })
 
     var structureChart = new Chart('structureChart', {
