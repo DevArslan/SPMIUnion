@@ -30,6 +30,7 @@ export class StructuresNavComponent implements OnInit {
   ngOnInit(): void {
 
     this.apiServiceService.departments$.subscribe(() =>{
+      console.log(this.apiServiceService.departments)
       this.departmentsData =  this.apiServiceService.departments
       this.departmentsData.forEach((element: any)  => {
         this.departmentsTitle.push(element.title)
