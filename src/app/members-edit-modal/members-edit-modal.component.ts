@@ -2,6 +2,7 @@ import { Component, OnInit , Output, EventEmitter} from '@angular/core';
 import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { Input } from "@angular/core";
+import { of } from 'rxjs';
 @Component({
   selector: 'app-members-edit-modal',
   templateUrl: './members-edit-modal.component.html',
@@ -10,6 +11,7 @@ import { Input } from "@angular/core";
 export class MembersEditModalComponent implements OnInit {
 
   @Input() dataForModal: {}[] = []
+  @Input() data:{}[] = []
   constructor(private structureRouting: StructuresRoutingService, private API: ApiServiceService) { }
 
   structureDropdown: boolean = false
@@ -30,10 +32,19 @@ export class MembersEditModalComponent implements OnInit {
   ngOnInit(): void {
     this.API.selectedMemberId$.subscribe((id)=>{
       this.memberID = id
+      this.data.forEach((element: any)=> {
+        if(element.id == this.memberID){
+          console.log(element.name)
+          this.name = element.name 
+          console.log(this.name)
+          this.card = element.card 
+        }
+      });
     })
   }
 
   async editMember(){
+
     await this.API.editMember(this.name,this.card,this.subdepartmentID,this.isStudent,this.memberID)
     this.childEvent.emit();
     this.closeModal()
