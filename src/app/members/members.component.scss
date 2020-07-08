@@ -1,5 +1,12 @@
 .members{
   padding: 1rem;
+  .error{
+    color: red;
+    text-transform: uppercase;
+    margin: 0;
+    margin-top: 0.5rem;
+    padding: 0;
+  }
   .tableNav{
     width: 35%;
     display: flex;
@@ -114,6 +121,9 @@
       height: 2rem;
       width: 2rem;
       display: block;
+    }
+    .blockModal{
+      opacity: 0.5;
     }
     .plusIcon{
       cursor: pointer;

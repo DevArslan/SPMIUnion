@@ -9,7 +9,7 @@
     <div class="members-nav-add" (click) = "showAddModal()">
       <i class="plusIcon"></i>
     </div>
-    <div class="members-nav-edit" (click) = "showEditModal()">
+    <div class="members-nav-edit" (click) = "showEditModal()" [ngClass]="{blockModal: !memberID}" title="{{error}}">
       <i class="editIcon"></i>
     </div>
     <div class="members-nav-remove" (click) = "showDelModal()">

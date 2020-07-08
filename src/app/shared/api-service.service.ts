@@ -26,6 +26,13 @@ export class ApiServiceService {
   membersAKPS$ = new Subject<{}[]>()
   preloader$ = new Subject<boolean>()
   stats$ = new Subject<[]>();
+
+
+  // Observable member data
+  selectedMemberId$ = new Subject<number>()
+  selectedMembersId$ = new Subject<number[]>();
+
+
   // Получение данных о структурах
   async getDepartments() {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments'

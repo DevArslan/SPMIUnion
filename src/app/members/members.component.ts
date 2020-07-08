@@ -22,7 +22,11 @@ export class MembersComponent implements OnInit {
   rowsCount: number = 10
   maxPageNumber: number
   membersCount: number
-  
+
+  memberID: number
+
+  error: string = 'Сначала выберите участника'
+
   @ViewChild('inputPage') input: ElementRef;
 
   changeMaxNumberPage() {
@@ -31,7 +35,7 @@ export class MembersComponent implements OnInit {
   }
 
   changePage(event) {
-    if (this.pageNumber > 0 && event.target.dataset.pageNumber !=0 && event.target.dataset.pageNumber!=this.maxPageNumber+1 ) {
+    if (this.pageNumber > 0 && event.target.dataset.pageNumber != 0 && event.target.dataset.pageNumber != this.maxPageNumber + 1) {
       this.pageNumber = event.target.dataset.pageNumber
       console.log(event.target.dataset.pageNumber)
       this.getMembersByPage()
@@ -79,8 +83,13 @@ export class MembersComponent implements OnInit {
     modal.style.display = "block";
   }
   showEditModal() {
-    const modal = document.getElementById('membersEditModal')
-    modal.style.display = "block";
+    if (this.memberID) {
+      this.error = ''
+      const modal = document.getElementById('membersEditModal')
+      modal.style.display = "block";
+      this.error = 'Сначала выберите участника'
+    }
+
   }
   showDelModal() {
     const modal = document.getElementById('membersDelModal')
@@ -90,6 +99,7 @@ export class MembersComponent implements OnInit {
 
   ngOnInit(): void {
     this.apiServiceService.getMembers()
+
     this.apiServiceService.members$.subscribe((dataFromApi: any) => {
       this.data = dataFromApi.members
       console.log(this.data)
@@ -98,8 +108,9 @@ export class MembersComponent implements OnInit {
       if (!this.maxPageNumber) {
         this.maxPageNumber = Math.ceil(this.membersCount / this.rowsCount)
       }
-
-
+    })
+    this.apiServiceService.selectedMemberId$.subscribe((id) => {
+      this.memberID = id
     })
 
     this.apiServiceService.getDepartments()
@@ -107,7 +118,7 @@ export class MembersComponent implements OnInit {
       this.dataForModal = dataFromApi
     })
 
-
+    this.getMembersByPage()
   }
   ngAfterViewInit() {
     // Обращение к серверу происходит после того, как пользователь не печатает на протяжении 1.5 секунд

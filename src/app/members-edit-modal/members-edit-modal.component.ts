@@ -28,21 +28,12 @@ export class MembersEditModalComponent implements OnInit {
 
   @Output() childEvent = new EventEmitter();
   ngOnInit(): void {
-
+    this.API.selectedMemberId$.subscribe((id)=>{
+      this.memberID = id
+    })
   }
 
   async editMember(){
-    const checkboxes = document.querySelectorAll('.memberCheckbox')
-
-    for (let index = 0; index < checkboxes.length; index++) {
-      const element = <HTMLInputElement>checkboxes[index];
-      if(element.checked){
-        this.memberID = Number(element.value)
-      }
-    }
-    if(!this.memberID){
-      this.error = 'Пользователь для редактирования не выбран'
-    }
     await this.API.editMember(this.name,this.card,this.subdepartmentID,this.isStudent,this.memberID)
     this.childEvent.emit();
     this.closeModal()
