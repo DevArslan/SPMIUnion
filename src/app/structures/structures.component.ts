@@ -13,6 +13,7 @@ export class StructuresComponent implements OnInit {
   active: boolean = false;
   loadingCompleted: boolean = false;
   ngOnInit(): void {
+    
     // this.apiServiceService.loadingCompleted$.subscribe(()=>{
     //   console.log(this.loadingCompleted)
     //   this.loadingCompleted = true

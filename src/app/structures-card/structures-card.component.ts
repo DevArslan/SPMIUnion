@@ -197,7 +197,7 @@ export class StructuresCardComponent implements OnInit {
                 this.selectedSubDepartments.push(element)
               }
             });
-
+            
             this.selectedSubDepartmentsIds.length = 0
             this.selectedSubDepartments.forEach((element: any) => {
               this.selectedSubDepartmentsIds.push(element.id)

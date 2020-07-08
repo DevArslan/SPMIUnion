@@ -14,7 +14,7 @@ export class StructuresTableComponent implements OnInit {
   data: {}[]
   dataForModal: {}[] = []
   currentSubDynamic: number
-  constructor(private structureRouting: StructuresRoutingService,private apiServiceService: ApiServiceService) {}
+  constructor(private apiServiceService: ApiServiceService) {}
   
   getDynamic(id){
     
@@ -43,13 +43,10 @@ export class StructuresTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.selectedSubDepartments.forEach((item)=>{
-    //   item.stats = 
-    // })
-    console.log(this.dynamics)
     this.apiServiceService.getDepartments()
     this.apiServiceService.departments$.subscribe((dataFromApi) => {
       this.dataForModal = dataFromApi
+      console.log(this.dataForModal)
     })
   }
 
