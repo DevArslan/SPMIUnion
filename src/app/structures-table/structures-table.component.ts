@@ -24,7 +24,11 @@ export class StructuresTableComponent implements OnInit {
       }
     })
   }
-
+  downloadExcel(event){
+    const subID =  event.target.parentElement.dataset.subdepartmentId
+    const title = event.target.parentElement.dataset.subdepartmentTitle
+    this.apiServiceService.downloadExcelSubDepartment(subID,title)
+  }
   showDelModal(event){
     console.log(event.target.parentElement)
     this.subDepartmentId =  event.target.parentElement.dataset.subdepartmentId

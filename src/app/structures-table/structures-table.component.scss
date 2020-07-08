@@ -16,6 +16,14 @@ table{
     font-weight: normal;
     border-bottom: 1px solid #ccc;
   }
+  .excelButton{
+    background-image: url('src/assets/icons/icons8-microsoft-excel.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 1.5rem;
+    height: 1.5rem;
+    cursor: pointer;
+  }
   .delButton{
     background-image: url('src/assets/icons/clear-24pxRed.svg');
     background-position: center;

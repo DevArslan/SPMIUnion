@@ -7,16 +7,18 @@
       <th>Динамика</th>
       <th></th>
       <th></th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <tr *ngFor="let item of selectedSubDepartments" ng-repeat="dynamic in dynamics"
-      attr.data-subdepartment-id="{{item.id}}">
+      attr.data-subdepartment-id="{{item.id}}" attr.data-subdepartment-title="{{item.head_department_title}}_{{item.title}}">
       <td>{{item.title}}</td>
       <td>{{item.head_department_title}}</td>
       <td>{{item.members_total}}</td>
       <!-- <td>{{item.dynamic}}</td> -->
       <td>{{getDynamic(item.id)}} {{currentSubDynamic}}</td>
+      <td class="excelButton" (click)="downloadExcel($event)"></td>
       <td class="editButton" (click)="showEditModal($event)"></td>
       <td class="delButton" (click)="showDelModal($event)"></td>
     </tr>

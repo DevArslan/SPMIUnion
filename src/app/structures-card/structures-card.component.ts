@@ -155,7 +155,7 @@ export class StructuresCardComponent implements OnInit {
   }
   downloadExcel(){
     console.log(this.selectedData.id)
-    this.apiServiceService.downloadExcelStructure(this.selectedData.id)
+    this.apiServiceService.downloadExcelDepartment(this.selectedData.id,this.selectedData.title)
   }
 
   async getDepartmentDataById(id) {
