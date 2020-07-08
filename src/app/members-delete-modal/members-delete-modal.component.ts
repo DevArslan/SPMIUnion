@@ -12,7 +12,10 @@ export class MembersDeleteModalComponent implements OnInit {
   constructor(private apiServiceService: ApiServiceService) { }
   membersID: number[] = []
   ngOnInit(): void {
-
+    // this.apiServiceService.selectedMembersId$.subscribe((apiData)=>{
+    //   console.log(apiData)
+    //   this.membersID = apiData
+    // })
   }
   closeModal(){
     const modal = document.getElementById('membersDelModal')

@@ -48,7 +48,7 @@ export class MembersAddModalComponent implements OnInit {
       this.error = promise.message
     } else {
       const tableBody = <HTMLElement>document.getElementById('membersTableBody')
-      const tableRowExist = <HTMLElement>document.getElementById('membersTableDataRow')
+      const tableRowExist = <HTMLElement>document.querySelector('.membersTableDataRow')
       const memberData = {
         'memberId': promise.member.id,
         'memberName': promise.member.name,

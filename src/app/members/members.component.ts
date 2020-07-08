@@ -52,30 +52,26 @@ export class MembersComponent implements OnInit {
     this.apiServiceService.downloadExcel()
   }
   async blockMember() {
-    this.membersID.length = 0
-    const checkboxes = document.querySelectorAll('.memberCheckbox')
-    for (let index = 0; index < checkboxes.length; index++) {
-      const element = <HTMLInputElement>checkboxes[index];
-      if (element.checked) {
-        this.membersID.push(Number(element.value))
-      }
+
+    if (this.membersID.length != 0) {
+      this.error = ''
+      await this.apiServiceService.blockMembers(this.membersID)
+      this.getMembersByPage()
+      this.error = 'Сначала выберите участника'
+      this.membersID.length = 0
     }
 
-    await this.apiServiceService.blockMembers(this.membersID)
-    this.getMembersByPage()
   }
   async activateMember() {
-    this.membersID.length = 0
-    const checkboxes = document.querySelectorAll('.memberCheckbox')
-    for (let index = 0; index < checkboxes.length; index++) {
-      const element = <HTMLInputElement>checkboxes[index];
-      if (element.checked) {
-        this.membersID.push(Number(element.value))
-      }
-    }
 
-    await this.apiServiceService.activateMembers(this.membersID)
-    this.getMembersByPage()
+    if (this.membersID.length != 0) {
+      this.error = ''
+      await this.apiServiceService.activateMembers(this.membersID)
+      this.getMembersByPage()
+      this.error = 'Сначала выберите участника'
+      this.membersID.length = 0
+    }
+    
   }
 
   showAddModal() {
@@ -92,8 +88,13 @@ export class MembersComponent implements OnInit {
 
   }
   showDelModal() {
-    const modal = document.getElementById('membersDelModal')
-    modal.style.display = "block";
+    if (this.membersID.length != 0) {
+      this.error = ''
+      const modal = document.getElementById('membersDelModal')
+      modal.style.display = "block";
+      this.error = 'Сначала выберите участника'
+      this.membersID.length = 0
+    }
   }
 
 
@@ -111,6 +112,9 @@ export class MembersComponent implements OnInit {
     })
     this.apiServiceService.selectedMemberId$.subscribe((id) => {
       this.memberID = id
+    })
+    this.apiServiceService.selectedMembersId$.subscribe((apiData) => {
+      this.membersID = apiData
     })
 
     this.apiServiceService.getDepartments()

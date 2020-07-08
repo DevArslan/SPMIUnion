@@ -12,11 +12,11 @@
     <div class="members-nav-edit" (click) = "showEditModal()" [ngClass]="{blockModal: !memberID}" title="{{error}}">
       <i class="editIcon"></i>
     </div>
-    <div class="members-nav-remove" (click) = "showDelModal()">
+    <div class="members-nav-remove" (click) = "showDelModal()" [ngClass]="{blockModal: membersID.length == 0}" title="{{error}}">
       <i class="removeIcon"></i>
     </div>
-    <button (click)="blockMember()" class="blockButton">Заблокировать</button>
-    <button (click)="activateMember()" class="activateButton">Активировать</button>
+    <button (click)="blockMember()" class="blockButton" [ngClass]="{blockModal: membersID.length == 0}"  title="{{error}}">Заблокировать</button>
+    <button (click)="activateMember()" class="activateButton" [ngClass]="{blockModal: membersID.length == 0}"  title="{{error}}">Активировать</button>
     <button (click)="downloadExcel()" class="activateButton" >Excel</button>
     <div class="members-nav-excel"></div>
     <div class="members-nav-pdf"></div>
