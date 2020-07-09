@@ -88,11 +88,11 @@ export class MembersAddModalComponent implements OnInit {
   selectMember(event) {
     console.log(event)
 
-    this.name = event.target.dataset.selectName
-    event.target.placholder = this.name
+    this.name = event.currentTarget.dataset.selectName
+    event.target.placeholder = this.name
 
-    this.card = event.target.dataset.selectCard
-    this.cardNumber = 'номер карты: ' + String(event.target.dataset.selectCardNumber).toUpperCase()
+    this.card = event.currentTarget.dataset.selectCard
+    this.cardNumber = 'номер карты: ' + String(event.currentTarget.dataset.selectCardNumber).toUpperCase()
     const cardInputElement = <HTMLInputElement>document.getElementById('cardNumber')
     cardInputElement.placeholder = this.card
 
