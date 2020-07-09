@@ -7,7 +7,7 @@
     <div class="modal-content">
       <form action="">
         <div class="memberName">
-          <input class="memberName-input" type="text" name="name" placeholder="ФИО" [(ngModel)]="name" #inputName>
+          <input class="memberName-input" maxlength="64" type="text" name="name" placeholder="ФИО" [(ngModel)]="name" #inputName>
           <div class="loadingio-spinner-rolling-16sntvlkiknj" id="preloader" *ngIf="preloader">
             <div class="ldio-d7d2560npw">
               <div></div>
@@ -25,9 +25,12 @@
             </li>
           </ul>
         </div>
-        <input type="text" class="memberCard-input" name="card" id="cardNumber" placeholder="№ чип карты"
+          <div class="memberCard">
+            <input type="text" class="memberCard-input" name="card" id="cardNumber" placeholder="№ чип карты"
           [(ngModel)]="card">
         <p class="cardNumber">{{cardNumber}}</p>
+          </div>
+        
       </form>
       <div class="faculty" (click)='dropDownFaculty()'>
         <p id="faculty-placeholder" class="faculty-placeholder">{{faculty}}</p>
