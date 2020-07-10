@@ -43,7 +43,12 @@ export class StructuresTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.apiServiceService.getDepartments()
+
+    if(this.apiServiceService.departments){
+      this.apiServiceService.getDepartments()
+    }
+
+    
     this.apiServiceService.departments$.subscribe((dataFromApi) => {
       this.dataForModal = dataFromApi
       console.log(this.dataForModal)

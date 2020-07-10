@@ -79,7 +79,7 @@ export class StructuresCardComponent implements OnInit {
       const structureName = <HTMLInputElement>document.getElementById('structureName')
       this.titleLength = String(structureName.value.length)
       structureName.setAttribute('readonly', '')
-      structureName.setAttribute('size', String(Number(this.titleLength)*1.05))
+      structureName.setAttribute('size', String(Number(this.titleLength) * 1.05))
       structureName.blur()
       await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
     }
@@ -92,13 +92,13 @@ export class StructuresCardComponent implements OnInit {
       const proforgName = <HTMLInputElement>document.getElementById('proforgName')
       this.proforgNameLength = String(proforgName.value.length)
       proforgName.setAttribute('readonly', '')
-      proforgName.setAttribute('size', String(Number(this.proforgNameLength)*1.05))
+      proforgName.setAttribute('size', String(Number(this.proforgNameLength) * 1.05))
       proforgName.blur()
       await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
     }
     await this.apiServiceService.editStructure(this.selectedData.title, this.proforgName, this.selectedData.id)
-    
-    
+
+
   }
   // showEditStructureNameForm() {
   //   this.structureNameInputDrop = !this.structureNameInputDrop
@@ -218,13 +218,22 @@ export class StructuresCardComponent implements OnInit {
           if (params.id == element.id) {
             this.equalID = true
             this.selectedData = element;
-            this.titleLength = String(this.selectedData.title.length*1.05)
-            const structureName = document.getElementById('structureName')
-            structureName.setAttribute('size', this.titleLength)
-            
-            this.proforgNameLength = String(this.selectedData.proforg.length*1.05)
-            const proforgName = document.getElementById('proforgName')
-            proforgName.setAttribute('size', this.proforgNameLength)
+            try {
+              this.titleLength = String(this.selectedData.title.length * 1.05)
+              const structureName = document.getElementById('structureName')
+              structureName.setAttribute('size', this.titleLength)
+            } catch (error) {
+
+            }
+            try {
+              this.proforgNameLength = String(this.selectedData.proforg.length * 1.05)
+              const proforgName = document.getElementById('proforgName')
+              proforgName.setAttribute('size', this.proforgNameLength)
+            } catch (error) {
+
+            }
+
+
 
 
             // Фильтрация подразделения под конкретную структуру
