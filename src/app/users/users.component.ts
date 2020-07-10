@@ -12,6 +12,7 @@ export class UsersComponent implements OnInit {
   users: any
   username: string = ''
 
+  memberID: any
 
 
   ngOnInit(): void {
@@ -27,7 +28,9 @@ export class UsersComponent implements OnInit {
       console.log(this.users)
     })
 
-
+    this.apiServiceService.selectedUserId$.subscribe((data)=>{
+      this.memberID = data
+    })
   }
 
   showAddModal() {
