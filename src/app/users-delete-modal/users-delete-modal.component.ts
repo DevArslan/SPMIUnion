@@ -9,7 +9,7 @@ export class UsersDeleteModalComponent implements OnInit {
 
   constructor(private apiServiceService: ApiServiceService) { }
   userID: any
-
+  error: ''
   closeModal(){
     const modal = document.getElementById('usersDelModal')
     modal.style.display = "none";
@@ -26,9 +26,16 @@ export class UsersDeleteModalComponent implements OnInit {
     // }
     this.userID =  this.apiServiceService.selectedUserId$.getValue()
     console.log(this.userID)
-    await this.apiServiceService.deleteUser(this.userID)
-    await this.apiServiceService.getUsers()
-    this.closeModal()
+
+    const promise = await this.apiServiceService.deleteUser(this.userID)
+    if(promise.error){
+      this.error = promise.message
+    }else{
+      await this.apiServiceService.getUsers()
+      this.closeModal()
+    }
+    
+    
   }
 
   ngOnInit(): void {

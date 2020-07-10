@@ -90,7 +90,9 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
 
   // Удаление структуры
@@ -104,7 +106,9 @@ export class ApiServiceService {
         'Authorization': `Basic ${token}`
       },
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
 
   // Редактирование структуры
@@ -124,7 +128,9 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
 
   // Получение списка подразделений
@@ -164,7 +170,9 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
 
   // Изменение подразделения
@@ -184,7 +192,9 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
 
   // Удаление подразделения
@@ -198,7 +208,9 @@ export class ApiServiceService {
         'Authorization': `Basic ${token}`
       },
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
 
   // Получение списка участников
@@ -417,7 +429,9 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
 
   // Редактирование пользователя
@@ -431,7 +445,9 @@ export class ApiServiceService {
         'Authorization': `Basic ${token}`
       },
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
   // Удаление пользователей
   async deleteUser(userID) {
@@ -445,7 +461,9 @@ export class ApiServiceService {
         'Authorization': `Basic ${token}`
       },
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
 
   // Получение ролей

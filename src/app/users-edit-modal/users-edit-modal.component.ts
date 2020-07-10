@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ApiServiceService } from "src/app/shared/api-service.service";
+import { of } from 'rxjs';
 @Component({
   selector: 'app-users-edit-modal',
   templateUrl: './users-edit-modal.component.html',
@@ -15,21 +16,21 @@ export class UsersEditModalComponent implements OnInit {
   roleID: number
   userID: number
 
+  error:string = ''
   ngOnInit(): void {
   }
   async editUser(){
-    // const checkboxes = document.getElementsByClassName('userCheckbox')
 
-    // for (let index = 0; index < checkboxes.length; index++) {
-    //   const element = <HTMLInputElement>checkboxes[index];
-    //   if(element.checked){
-    //     this.userID = Number(element.value)
-    //   }
-    // }
     this.userID =  this.api.selectedUserId$.getValue()
-    await this.api.editUser(this.userID,this.roleID)
-    await this.api.getUsers()
-    this.closeModal()
+
+    const promise = await this.api.editUser(this.userID,this.roleID)
+    if(promise.error){
+      this.error = promise.message
+    }else{
+      await this.api.getUsers()
+      this.closeModal()
+    }
+    this.roleLabel = 'Роль'
   }
   closeModal(){
     const modal = document.getElementById('usersEditModal')

@@ -15,32 +15,38 @@ export class UsersAddModalComponent implements OnInit {
   username: string
   password: string
   login: string
+
+  error = ''
   ngOnInit(): void {
 
   }
-  async createUser(){
+  async createUser() {
     console.log('create')
     console.log(this.roles)
-    await this.apiServiceService.createUser(this.username, this.login, this.password)
-    await this.apiServiceService.getUsers()
-    this.closeModal()
-    
+    const promise = await this.apiServiceService.createUser(this.username, this.login, this.password)
+    if (promise.error) {
+      this.error = promise.message
+    } else {
+      await this.apiServiceService.getUsers()
+      this.closeModal()
+    }
+
+  }
+  closeModal() {
+    const modal = document.getElementById('usersAddModal')
+    modal.style.display = "none";
     this.username = undefined
     this.password = undefined
     this.login = undefined
     this.roleLabel = 'Выберите роль'
   }
-  closeModal(){
-    const modal = document.getElementById('usersAddModal')
-    modal.style.display = "none";
-  }
 
-  selectRole(event){
-    this.roleLabel =  event.target.dataset.selectRole
+  selectRole(event) {
+    this.roleLabel = event.target.dataset.selectRole
     this.dropDownRole()
   }
 
-  dropDownRole(){
+  dropDownRole() {
     this.roleDropdown = !this.roleDropdown
   }
 
