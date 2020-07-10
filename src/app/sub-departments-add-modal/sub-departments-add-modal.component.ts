@@ -15,6 +15,7 @@ export class SubDepartmentsAddModalComponent implements OnInit {
   subDepartmentDropdown: boolean = false
   departmentID:string
   title: string = ''
+  error: string =  ''
 
   dropDownSubDepartment(){
     this.subDepartmentDropdown = !this.subDepartmentDropdown
@@ -22,13 +23,20 @@ export class SubDepartmentsAddModalComponent implements OnInit {
   closeModal(){
     const modal = document.getElementById('subDepartmentAddModal')
     modal.style.display = "none";
+    this.title = ''
   }
   async addSubDepartment(){
     // this.departmentID = this.apiServiceService.selectedDepartment
     this.departmentID = this.department.id
-    await this.apiServiceService.createSubDepartment(this.title,this.departmentID)
-    await this.apiServiceService.getDepartments()
-    this.closeModal()
+
+    const promise = await this.apiServiceService.createSubDepartment(this.title,this.departmentID)
+    if(promise.error){
+      this.error = promise.message
+    }else{
+      await this.apiServiceService.getDepartments()
+      this.closeModal()
+  }
+    
     // Ниже штука, чтобы сразу отобразить изменения
     // this.structureRouting.postData$.next('')
   }

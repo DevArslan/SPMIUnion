@@ -10,6 +10,7 @@ export class StructuresAddModalComponent implements OnInit {
   title: string;
   proforg: string;
 
+  error = ''
   constructor(private api: ApiServiceService) { }
 
   ngOnInit(): void {
@@ -17,10 +18,17 @@ export class StructuresAddModalComponent implements OnInit {
   closeModal(){
     const modal = document.getElementById('structuresAddModal')
     modal.style.display = "none";
+    this.title = ''
+    this.proforg = ''
   }
   async createDepartment(){
-    await this.api.createDepartment(this.title, this.proforg)
-    await this.api.getDepartments()
+    const promise = await this.api.createDepartment(this.title, this.proforg)
+    if(promise.error){
+      this.error = promise.message
+    }else{
+      await this.api.getDepartments()
     this.closeModal()
+    }
+    
   }
 }

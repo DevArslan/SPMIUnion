@@ -10,31 +10,40 @@ export class SubDepartmentsEditModalComponent implements OnInit {
 
   @Input() subDepartmentId
   @Input() dataForModal
-
+  @Input() subDepartmentTitle
   constructor(private api: ApiServiceService) { }
 
   facultyDropdown: boolean = false
-  title:string
+  title: string
   departmentID: number
   faculty: string = 'Факультет'
 
-  selectFaculty(event){
-    this.faculty =  event.target.dataset.selectFaculty
+  error: string = ''
+
+  selectFaculty(event) {
+    this.faculty = event.target.dataset.selectFaculty
     this.departmentID = Number(event.target.dataset.selectId)
     this.dropDownFaculty()
   }
-  dropDownFaculty(){
+  dropDownFaculty() {
     this.facultyDropdown = !this.facultyDropdown
   }
   closeModal() {
     const modal = document.getElementById('subDepartmentEditModal')
     modal.style.display = "none";
+    this.faculty = 'Факультет' 
   }
   async editSubDepartment() {
-    
-    await this.api.editSubDepartment(this.title, this.departmentID, this.subDepartmentId)
-    await this.api.getDepartments()
-    this.closeModal()
+
+    const promise = await this.api.editSubDepartment(this.title, this.departmentID, this.subDepartmentId)
+    if (promise.error) {
+      this.error = promise.messsage
+    } else {
+      await this.api.getDepartments()
+      this.closeModal()
+    }
+
+
     // Ниже штука, чтобы сразу отобразить изменения
     // this.structureRouting.postData$.next('')
 

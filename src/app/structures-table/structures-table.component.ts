@@ -14,6 +14,7 @@ export class StructuresTableComponent implements OnInit {
   data: {}[]
   dataForModal: {}[] = []
   currentSubDynamic: number
+  subDepartmentTitle: string = ''
   constructor(private apiServiceService: ApiServiceService) {}
   
   getDynamic(id){
@@ -38,6 +39,8 @@ export class StructuresTableComponent implements OnInit {
   showEditModal(event){
     console.log(event.target.parentElement)
     this.subDepartmentId =  event.target.parentElement.dataset.subdepartmentId
+    this.subDepartmentTitle = event.target.parentElement.dataset.title
+    console.log(this.subDepartmentTitle)
     const modal = document.getElementById('subDepartmentEditModal')
     modal.style.display = 'block'
   }

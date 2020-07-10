@@ -6,7 +6,7 @@
       </div>
       <div class="modal-content">
         <form action="">
-          <input type="text" name="name" placeholder="Название подразделения" [(ngModel)]="title">
+          <input type="text" name="subDepartmentTitle" placeholder="Название подразделения" [(ngModel)]="title" value="{{subDepartmentTitle}}">
         </form>
         <div class="faculty"  (click) = 'dropDownFaculty()'>
           <p id="faculty-placeholder" class="faculty-placeholder">{{faculty}}</p>
@@ -19,6 +19,7 @@
         </div>
         <button class="addButton" (click)="editSubDepartment()">Изменить</button>
       </div>
+      <p>{{error}}</p>
     </div>
   </div>
   

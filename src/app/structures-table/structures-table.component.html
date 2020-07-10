@@ -12,7 +12,8 @@
   </thead>
   <tbody>
     <tr *ngFor="let item of selectedSubDepartments" ng-repeat="dynamic in dynamics"
-      attr.data-subdepartment-id="{{item.id}}" attr.data-subdepartment-title="{{item.head_department_title}}_{{item.title}}">
+      attr.data-subdepartment-id="{{item.id}}"
+      attr.data-subdepartment-title="{{item.head_department_title}}_{{item.title}}" attr.data-title="{{item.title}}">
       <td>{{item.title}}</td>
       <td>{{item.head_department_title}}</td>
       <td>{{item.members_total}}</td>
@@ -25,6 +26,7 @@
   </tbody>
   <app-sub-departments-del-modal class="subDepartmentDelModal" id="subDepartmentDelModal"
     [subDepartmentId]=subDepartmentId></app-sub-departments-del-modal>
-  <app-sub-departments-edit-modal [dataForModal]='dataForModal' class="subDepartmentEditModal"
-    id="subDepartmentEditModal" [subDepartmentId]=subDepartmentId></app-sub-departments-edit-modal>
+  <app-sub-departments-edit-modal [dataForModal]='dataForModal' [subDepartmentTitle]="subDepartmentTitle"
+    class="subDepartmentEditModal" id="subDepartmentEditModal" [subDepartmentId]=subDepartmentId>
+  </app-sub-departments-edit-modal>
 </table>

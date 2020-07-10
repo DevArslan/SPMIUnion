@@ -9,7 +9,7 @@ import { ApiServiceService } from "src/app/shared/api-service.service";
 export class SubDepartmentsDelModalComponent implements OnInit {
   @Input() subDepartmentId
   constructor(private api: ApiServiceService) { }
-
+  error: string = ''
 
   closeModal(){
     const modal = document.getElementById('subDepartmentDelModal')
@@ -17,10 +17,14 @@ export class SubDepartmentsDelModalComponent implements OnInit {
   }
   async deleteSubDepartment(){
 
-
-    await this.api.deleteSubDepartment(this.subDepartmentId)
-    await this.api.getDepartments()
-    this.closeModal()
+    const promise = await this.api.deleteSubDepartment(this.subDepartmentId)
+    if(promise.error){
+      this.error = promise.message
+    }else{
+      await this.api.getDepartments()
+      this.closeModal()
+    }
+    
 
     // Ниже штука, чтобы сразу отобразить изменения
     // this.structureRouting.postData$.next('')
