@@ -24,6 +24,11 @@ export class UsersAddModalComponent implements OnInit {
     await this.apiServiceService.createUser(this.username, this.login, this.password)
     await this.apiServiceService.getUsers()
     this.closeModal()
+    
+    this.username = undefined
+    this.password = undefined
+    this.login = undefined
+    this.roleLabel = 'Выберите роль'
   }
   closeModal(){
     const modal = document.getElementById('usersAddModal')

@@ -9,7 +9,7 @@
   </div> -->
   <div class="structureCard-info">
     <div class="structureCard-organizer">
-      <span>Профорг:&nbsp; </span>
+      <span>Профорг:&nbsp;</span>
       <input readonly id="proforgName" contenteditable value="{{selectedData.proforg}}" [(ngModel)]="proforgName" (blur)="this.saveProforgName()"> 
       <i class="editIcon" (click)="showEditProforgNameForm()"></i>
     </div>
@@ -20,7 +20,8 @@
     
     <div class="departmentsInfo">
       <div class="departmentsInfo-usersCount">
-        <p>Всего участников: {{selectedData.members_total}}</p>
+        <span>Всего участников:&nbsp;</span>
+        <p> {{selectedData.members_total}}</p>
       </div>
       <div class="departmentsInfo-count" (click)="dropdownStructureTable()">
         <i class="dropdown" [ngClass]="{'dropdownIconActive': dropdown}"></i>

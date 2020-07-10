@@ -156,6 +156,10 @@
       }
       .departmentsInfo-usersCount {
         margin-top: 1rem;
+        display: flex;
+        p{
+          font-weight: 400;
+        }
       }
       app-structures-table {
         transition: all 0.3s;
