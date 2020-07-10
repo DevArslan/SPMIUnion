@@ -11,11 +11,14 @@ export class MembersDeleteModalComponent implements OnInit {
   @Output() childEvent = new EventEmitter();
   constructor(private apiServiceService: ApiServiceService) { }
   membersID: number[] = []
+  memberID: number[] = []
+  error: string
   ngOnInit(): void {
-    // this.apiServiceService.selectedMembersId$.subscribe((apiData)=>{
-    //   console.log(apiData)
-    //   this.membersID = apiData
-    // })
+    this.apiServiceService.selectedMemberId$.subscribe((id)=>{
+      this.memberID.length = 0
+      this.memberID.push(id)
+      console.log(this.memberID)
+    })
   }
   closeModal(){
     const modal = document.getElementById('membersDelModal')
@@ -32,9 +35,15 @@ export class MembersDeleteModalComponent implements OnInit {
       }
     }
     
-    console.log(this.membersID)
-    await this.apiServiceService.deleteMember(this.membersID)
+    if(this.membersID.length == 0){
+      await this.apiServiceService.deleteMember(this.memberID)
+    }else{
+      await this.apiServiceService.deleteMember(this.membersID)
+    }
 
+
+    
+    
     this.childEvent.emit();
     this.closeModal()
   }

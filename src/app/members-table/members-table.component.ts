@@ -29,11 +29,16 @@ export class MembersTableComponent implements OnInit {
       event.currentTarget.classList.remove('selectedRow')
       this.selectedMemberId = undefined
       event.currentTarget.id = null
+      
     } else {
       event.currentTarget.classList.add('selectedRow')
       event.currentTarget.id = 'selectedMember'
       this.selectedMemberId = event.currentTarget.dataset.memberId
+      // event.currentTarget.firstChild.firstChild.checked = true
     }
+
+    
+
     this.api.selectedMemberId$.next(this.selectedMemberId)
     event.stopPropagation()
   }

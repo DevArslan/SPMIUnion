@@ -94,6 +94,11 @@ export class MembersComponent implements OnInit {
       modal.style.display = "block";
       this.error = 'Сначала выберите участника'
       this.membersID.length = 0
+    }else if(this.memberID){
+      this.error = ''
+      const modal = document.getElementById('membersDelModal')
+      modal.style.display = "block";
+      this.error = 'Сначала выберите участника'
     }
   }
 

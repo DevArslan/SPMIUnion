@@ -291,7 +291,6 @@ export class ApiServiceService {
         } else {
           return res.json()
         }
-
       })
   }
 
@@ -310,7 +309,13 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      if (res.ok) {
+        return res.json()
+      } else {
+        return res.json()
+      }
+    })
   }
 
   // Редактирование участника профсоюза

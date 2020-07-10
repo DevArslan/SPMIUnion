@@ -1,5 +1,5 @@
 <div class="members">
-  <app-members-add-modal [dataForModal]='dataForModal' class="membersAddModal" id="membersAddModal"></app-members-add-modal>
+  <app-members-add-modal (childEvent)="getMembersByPage()" [dataForModal]='dataForModal' class="membersAddModal" id="membersAddModal"></app-members-add-modal>
   <app-members-delete-modal (childEvent)="getMembersByPage()" class="membersDelModal" id="membersDelModal"></app-members-delete-modal>
   <app-members-edit-modal (childEvent)="getMembersByPage()" [data]='data' [dataForModal]='dataForModal' class="membersEditModal" id="membersEditModal"></app-members-edit-modal>
   <div class="members-nav">
@@ -12,7 +12,7 @@
     <div class="members-nav-edit" (click) = "showEditModal()" [ngClass]="{blockModal: !memberID}" title="{{error}}">
       <i class="editIcon"></i>
     </div>
-    <div class="members-nav-remove" (click) = "showDelModal()" [ngClass]="{blockModal: membersID.length == 0}" title="{{error}}">
+    <div class="members-nav-remove" (click) = "showDelModal()" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}" title="{{error}}">
       <i class="removeIcon"></i>
     </div>
     <button (click)="blockMember()" class="blockButton" [ngClass]="{blockModal: membersID.length == 0}"  title="{{error}}">Заблокировать</button>

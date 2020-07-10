@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { Input } from "@angular/core";
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { fromEvent } from 'rxjs';
   styleUrls: ['./members-add-modal.component.scss']
 })
 export class MembersAddModalComponent implements OnInit {
-
+  @Output() childEvent = new EventEmitter();
   @Input() dataForModal: {}[] = []
   constructor(private apiServiceService: ApiServiceService) { }
   membersDropdown: boolean = false
@@ -47,27 +47,28 @@ export class MembersAddModalComponent implements OnInit {
       console.log(promise)
       this.error = promise.message
     } else {
-      const tableBody = <HTMLElement>document.getElementById('membersTableBody')
-      const tableRowExist = <HTMLElement>document.querySelector('.membersTableDataRow')
-      const memberData = {
-        'memberId': promise.member.id,
-        'memberName': promise.member.name,
-        'memberSubDep': promise.member.subdepartment,
-        'memberCard': promise.member.card,
-        'memberIsStudent': promise.member.is_student,
-        'memberActive': promise.member.active,
-      }
-      var tableRow = <HTMLElement>tableRowExist.cloneNode(true)
-      const tableRowChildInput = <HTMLInputElement>tableRow.childNodes[0].firstChild
-      tableRowChildInput.value = memberData.memberId
+    //   const tableBody = <HTMLElement>document.getElementById('membersTableBody')
+    //   const tableRowExist = <HTMLElement>document.querySelector('.membersTableDataRow')
+    //   const memberData = {
+    //     'memberId': promise.member.id,
+    //     'memberName': promise.member.name,
+    //     'memberSubDep': promise.member.subdepartment,
+    //     'memberCard': promise.member.card,
+    //     'memberIsStudent': promise.member.is_student,
+    //     'memberActive': promise.member.active,
+    //   }
+    //   var tableRow = <HTMLElement>tableRowExist.cloneNode(true)
+    //   const tableRowChildInput = <HTMLInputElement>tableRow.childNodes[0].firstChild
+    //   tableRowChildInput.value = memberData.memberId
 
-      for (const item in memberData) {
-        const tableRowChild = <HTMLElement>tableRow.childNodes[index]
-        tableRowChild.innerHTML = memberData[item]
-        index +=1
-        console.log(tableRowChild)
-    }
-    tableBody.appendChild(tableRow)
+    //   for (const item in memberData) {
+    //     const tableRowChild = <HTMLElement>tableRow.childNodes[index]
+    //     tableRowChild.innerHTML = memberData[item]
+    //     index +=1
+    //     console.log(tableRowChild)
+    // }
+    // tableBody.appendChild(tableRow)
+    this.childEvent.emit();
     this.closeModal()
   }
 }
