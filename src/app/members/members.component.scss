@@ -1,5 +1,8 @@
 .members{
   padding: 1rem;
+  button{
+    cursor: pointer;
+  }
   .error{
     color: red;
     text-transform: uppercase;

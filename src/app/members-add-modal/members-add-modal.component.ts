@@ -45,8 +45,10 @@ export class MembersAddModalComponent implements OnInit {
     // Добавление участника в таблицу без доп.запроса к API
     if (promise.error) {
       console.log(promise)
-      this.error = promise.message
+      this.error = promise.message;
+      
     } else {
+      // Снизу добавление участника в таблицу без обращения к серверу
     //   const tableBody = <HTMLElement>document.getElementById('membersTableBody')
     //   const tableRowExist = <HTMLElement>document.querySelector('.membersTableDataRow')
     //   const memberData = {
@@ -131,9 +133,12 @@ export class MembersAddModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.apiServiceService.membersAKPS$.subscribe((dataFromAPI) => {
-      this.members = dataFromAPI
-      console.log(this.members)
+    this.apiServiceService.membersAKPS$.subscribe((dataFromAPI:any) => {
+      if(dataFromAPI.error){
+        this.error = dataFromAPI.message
+      }else{
+        this.members = dataFromAPI
+      }
       this.membersDropdown = true
     })
     this.apiServiceService.preloader$.subscribe((dataFromAPI) => {

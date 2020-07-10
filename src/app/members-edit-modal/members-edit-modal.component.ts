@@ -45,9 +45,14 @@ export class MembersEditModalComponent implements OnInit {
 
   async editMember(){
 
-    await this.API.editMember(this.name,this.card,this.subdepartmentID,this.isStudent,this.memberID)
-    this.childEvent.emit();
-    this.closeModal()
+
+    const promise = await this.API.editMember(this.name,this.card,this.subdepartmentID,this.isStudent,this.memberID)
+      if(promise.error){
+        this.error = promise.message
+      }else{
+        this.childEvent.emit();
+        this.closeModal()
+      }
   }
 
   selectFaculty(event){

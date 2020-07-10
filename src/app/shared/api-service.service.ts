@@ -292,6 +292,7 @@ export class ApiServiceService {
           return res.json()
         }
       })
+      .catch(error=> console.log(error))
   }
 
   // Удаление участников из профсоюза
@@ -310,11 +311,7 @@ export class ApiServiceService {
       body: JSON.stringify(data),
     })
     .then((res) => {
-      if (res.ok) {
-        return res.json()
-      } else {
-        return res.json()
-      }
+      return res.json()
     })
   }
 
@@ -337,7 +334,9 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
 
   // Активация участников в профсоюзе
@@ -355,7 +354,9 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res.json()))
+      .then((res) => {
+        return res.json()
+      })
   }
   // Блокировка участников в профсоюзе
   async blockMembers(membersID) {
@@ -372,7 +373,9 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     })
-      .then((res) => console.log(res.json()))
+    .then((res) => {
+      return res.json()
+    })
   }
 
   // Получение списка пользователей

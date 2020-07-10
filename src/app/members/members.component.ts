@@ -59,6 +59,15 @@ export class MembersComponent implements OnInit {
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
       this.membersID.length = 0
+    }else if(this.memberID){
+      this.error = ''
+      const memberID = []
+      memberID.push(this.memberID)
+      const promise = await this.apiServiceService.blockMembers(memberID)
+      console.log(promise)
+      this.getMembersByPage()
+      this.error = 'Сначала выберите участника'
+      this.membersID.length = 0
     }
 
   }
@@ -66,7 +75,17 @@ export class MembersComponent implements OnInit {
 
     if (this.membersID.length != 0) {
       this.error = ''
-      await this.apiServiceService.activateMembers(this.membersID)
+      const promise = await this.apiServiceService.activateMembers(this.membersID)
+      console.log(promise)
+      this.getMembersByPage()
+      this.error = 'Сначала выберите участника'
+      this.membersID.length = 0
+    }else if(this.memberID){
+      this.error = ''
+      const memberID = []
+      memberID.push(this.memberID)
+      const promise = await this.apiServiceService.activateMembers(memberID)
+      console.log(promise)
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
       this.membersID.length = 0

@@ -15,8 +15,8 @@
     <div class="members-nav-remove" (click) = "showDelModal()" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}" title="{{error}}">
       <i class="removeIcon"></i>
     </div>
-    <button (click)="blockMember()" class="blockButton" [ngClass]="{blockModal: membersID.length == 0}"  title="{{error}}">Заблокировать</button>
-    <button (click)="activateMember()" class="activateButton" [ngClass]="{blockModal: membersID.length == 0}"  title="{{error}}">Активировать</button>
+    <button (click)="blockMember()" class="blockButton" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}" title="{{error}}">Заблокировать</button>
+    <button (click)="activateMember()" class="activateButton" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}" title="{{error}}">Активировать</button>
     <button (click)="downloadExcel()" class="activateButton" >Excel</button>
     <div class="members-nav-excel"></div>
     <div class="members-nav-pdf"></div>

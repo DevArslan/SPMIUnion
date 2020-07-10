@@ -23,6 +23,7 @@ export class MembersDeleteModalComponent implements OnInit {
   closeModal(){
     const modal = document.getElementById('membersDelModal')
     modal.style.display = "none";
+    this.error = ''
   }
 
   async deleteMember(){
@@ -36,15 +37,25 @@ export class MembersDeleteModalComponent implements OnInit {
     }
     
     if(this.membersID.length == 0){
-      await this.apiServiceService.deleteMember(this.memberID)
-    }else{
-      await this.apiServiceService.deleteMember(this.membersID)
+      const promise = await this.apiServiceService.deleteMember(this.memberID)
+      if(promise.error){
+        this.error = promise.message
+      }else{
+        this.childEvent.emit();
+        this.closeModal()
+      }
+      
+    }else if(this.memberID){
+      const promise = await this.apiServiceService.deleteMember(this.membersID)
+      if(promise.error){
+        this.error = promise.message
+      }else{
+        this.childEvent.emit();
+        this.closeModal()
+      }
     }
 
 
     
-    
-    this.childEvent.emit();
-    this.closeModal()
   }
 }
