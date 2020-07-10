@@ -1,21 +1,22 @@
 <div class="structureCard">
   <div class="structureCard-name">
-    <p >{{selectedData.title}}</p>
+    <input  readonly id="structureName"  value="{{selectedData.title}}" [(ngModel)]="structureName" (blur)="this.saveStructureName()" >
     <i class="editIcon" (click)="showEditStructureNameForm()"></i>
   </div>
-  <div class="saveForm" id="structureNameInput" action="" [ngClass]="{dropdown: structureNameInputDrop}">
+  <!-- <div class="saveForm" id="structureNameInput" action="" [ngClass]="{dropdown: structureNameInputDrop}">
     <input type="text"  placeholder="Введите название структуры" [(ngModel)]="structureName">
     <button class="saveButton" (click)="saveStructureName()">Сохранить</button>
-  </div>
+  </div> -->
   <div class="structureCard-info">
     <div class="structureCard-organizer">
-      <p>Профорг: {{selectedData.proforg}}</p>
+      <span>Профорг:&nbsp; </span>
+      <input readonly id="proforgName" contenteditable value="{{selectedData.proforg}}" [(ngModel)]="proforgName" (blur)="this.saveProforgName()"> 
       <i class="editIcon" (click)="showEditProforgNameForm()"></i>
     </div>
-    <div class="saveForm" id="proforgNameInput" action="" [ngClass]="{dropdown: proforgNameInputDrop}">
+    <!-- <div class="saveForm" id="proforgNameInput" action="" [ngClass]="{dropdown: proforgNameInputDrop}">
       <input type="text"  placeholder="Введите ФИО профорга" [(ngModel)]="proforgName">
       <button class="saveButton" (click)="saveProforgName()">Сохранить</button>
-    </div>
+    </div> -->
     
     <div class="departmentsInfo">
       <div class="departmentsInfo-usersCount">

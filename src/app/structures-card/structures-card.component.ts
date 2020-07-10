@@ -20,7 +20,7 @@ export class StructuresCardComponent implements OnInit {
     // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
   }
 
-  selectedData: any={}
+  selectedData: any = {}
   selectedDataStructures: string[] = []
   selectedDataStructuresUsers: string[] = []
   data: {}[] = []
@@ -32,6 +32,8 @@ export class StructuresCardComponent implements OnInit {
   structureName: string
   proforgNameInputDrop: boolean = false
   proforgName: string
+  titleLength: string
+  proforgNameLength: string
 
   dropdown: boolean = false;
 
@@ -72,21 +74,48 @@ export class StructuresCardComponent implements OnInit {
   }
 
   async saveStructureName() {
-    await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
-    this.selectedData.title = this.structureName
-    this.showEditStructureNameForm()
+    if (this.structureName) {
+      this.selectedData.title = this.structureName
+      const structureName = <HTMLInputElement>document.getElementById('structureName')
+      this.titleLength = String(structureName.value.length)
+      structureName.setAttribute('readonly', '')
+      structureName.setAttribute('size', String(Number(this.titleLength)*1.05))
+      structureName.blur()
+      await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
+    }
+
+
   }
   async saveProforgName() {
+    if (this.proforgName) {
+      this.selectedData.proforg = this.proforgName
+      const proforgName = <HTMLInputElement>document.getElementById('proforgName')
+      this.proforgNameLength = String(proforgName.value.length)
+      proforgName.setAttribute('readonly', '')
+      proforgName.setAttribute('size', String(Number(this.proforgNameLength)*1.05))
+      proforgName.blur()
+      await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
+    }
     await this.apiServiceService.editStructure(this.selectedData.title, this.proforgName, this.selectedData.id)
-    this.selectedData.proforg = this.proforgName
-    this.showEditProforgNameForm()
+    
+    
   }
+  // showEditStructureNameForm() {
+  //   this.structureNameInputDrop = !this.structureNameInputDrop
+  // }
   showEditStructureNameForm() {
-    this.structureNameInputDrop = !this.structureNameInputDrop
+    const structureName = document.getElementById('structureName')
+    structureName.removeAttribute('readonly')
+    structureName.focus()
   }
   showEditProforgNameForm() {
-    this.proforgNameInputDrop = !this.proforgNameInputDrop
+    const proforgName = document.getElementById('proforgName')
+    proforgName.removeAttribute('readonly')
+    proforgName.focus()
   }
+  // showEditProforgNameForm() {
+  //   this.proforgNameInputDrop = !this.proforgNameInputDrop
+  // }
 
   showAddModal() {
     const modal = document.getElementById('subDepartmentAddModal')
@@ -153,9 +182,9 @@ export class StructuresCardComponent implements OnInit {
   dropdownStructureTable() {
     this.dropdown = !this.dropdown
   }
-  downloadExcel(){
+  downloadExcel() {
     console.log(this.selectedData.id)
-    this.apiServiceService.downloadExcelDepartment(this.selectedData.id,this.selectedData.title)
+    this.apiServiceService.downloadExcelDepartment(this.selectedData.id, this.selectedData.title)
   }
 
   async getDepartmentDataById(id) {
@@ -184,11 +213,20 @@ export class StructuresCardComponent implements OnInit {
         this.selectedSubDepartments.length = 0
 
         this.data = this.apiServiceService.departments
-        
+
         this.data.forEach(async (element: any) => {
           if (params.id == element.id) {
             this.equalID = true
             this.selectedData = element;
+            this.titleLength = String(this.selectedData.title.length*1.05)
+            const structureName = document.getElementById('structureName')
+            structureName.setAttribute('size', this.titleLength)
+            
+            this.proforgNameLength = String(this.selectedData.proforg.length*1.05)
+            const proforgName = document.getElementById('proforgName')
+            proforgName.setAttribute('size', this.proforgNameLength)
+
+
             // Фильтрация подразделения под конкретную структуру
             this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
 
@@ -197,7 +235,7 @@ export class StructuresCardComponent implements OnInit {
                 this.selectedSubDepartments.push(element)
               }
             });
-            
+
             this.selectedSubDepartmentsIds.length = 0
             this.selectedSubDepartments.forEach((element: any) => {
               this.selectedSubDepartmentsIds.push(element.id)
@@ -218,12 +256,12 @@ export class StructuresCardComponent implements OnInit {
             })
           }
         })
-        
+
 
       })
-      if(this.equalID == true){
-          
-      }else{
+      if (this.equalID == true) {
+
+      } else {
         this.ROUTER.navigate(['main']);
         this.equalID = true
       }
