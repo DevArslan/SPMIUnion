@@ -1,7 +1,7 @@
 <table>
   <thead>
     <tr>
-      <th></th>
+      <!-- <th></th> -->
       <th>ФИО</th>
       <th>Логин</th>
       <th>Роль</th>
@@ -9,10 +9,10 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of users ">
-      <td>
+    <tr *ngFor="let item of users" class="usersTableDataRow" (click)=selectUser($event) attr.data-member-id = {{item.id}}> 
+      <!-- <td>
         <input class="userCheckbox" type="checkbox" value="{{item.id}}">
-      </td>
+      </td> -->
       <td>{{item.name}}</td>
       <td>{{item.login}}</td>
       <td>{{item.role}}</td>

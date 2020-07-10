@@ -18,15 +18,15 @@ export class UsersEditModalComponent implements OnInit {
   ngOnInit(): void {
   }
   async editUser(){
-    const checkboxes = document.getElementsByClassName('userCheckbox')
+    // const checkboxes = document.getElementsByClassName('userCheckbox')
 
-    for (let index = 0; index < checkboxes.length; index++) {
-      const element = <HTMLInputElement>checkboxes[index];
-      if(element.checked){
-        this.userID = Number(element.value)
-      }
-    }
-
+    // for (let index = 0; index < checkboxes.length; index++) {
+    //   const element = <HTMLInputElement>checkboxes[index];
+    //   if(element.checked){
+    //     this.userID = Number(element.value)
+    //   }
+    // }
+    this.userID =  this.api.selectedUserId$.getValue()
     await this.api.editUser(this.userID,this.roleID)
     await this.api.getUsers()
     this.closeModal()

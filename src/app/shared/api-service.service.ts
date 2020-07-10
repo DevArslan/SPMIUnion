@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/auth.service'
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,7 @@ export class ApiServiceService {
   loadingCompleted: boolean
   membersAKPS: any
   stats: any
+  // selectedUserId: any
 
   users$ = new Subject<{}[]>()
   departments$ = new Subject<{}[]>();
@@ -32,6 +33,8 @@ export class ApiServiceService {
   selectedMemberId$ = new Subject<number>()
   selectedMembersId$ = new Subject<number[]>();
 
+  // Observable user data
+  selectedUserId$ = new BehaviorSubject(undefined)
 
   // Получение данных о структурах
   async getDepartments() {
