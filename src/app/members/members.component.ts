@@ -17,6 +17,7 @@ export class MembersComponent implements OnInit {
   data: {}[] = []
   dataForModal: {}[] = []
 
+  query: any = ''
   pageNumber: number = 1
   rows: number[] = [10, 20, 30, 40, 50]
   rowsCount: number = 10
@@ -28,6 +29,7 @@ export class MembersComponent implements OnInit {
   error: string = 'Сначала выберите участника'
 
   @ViewChild('inputPage') input: ElementRef;
+  @ViewChild('usernameInput') inputUsername: ElementRef;
 
   changeMaxNumberPage() {
     this.maxPageNumber = Math.ceil(this.membersCount / this.rowsCount)
@@ -44,7 +46,7 @@ export class MembersComponent implements OnInit {
 
   getMembersByPage() {
 
-    this.apiServiceService.getMembersByPage(this.rowsCount, this.pageNumber)
+    this.apiServiceService.getMembersByPage(this.rowsCount, this.pageNumber, this.username)
 
   }
 
@@ -172,7 +174,20 @@ export class MembersComponent implements OnInit {
         })
       )
       .subscribe();
+
+      fromEvent(this.inputUsername.nativeElement, 'keyup')
+      .pipe(
+        filter(Boolean),
+        debounceTime(1000),
+        distinctUntilChanged(),
+        tap(async (text) => {
+          // console.log(this.input.nativeElement.value)
+          const data = await this.getMembersByPage()
+          console.log(data)
+        })
+      )
+      .subscribe();
   }
 
-
+  
 }

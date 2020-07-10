@@ -234,8 +234,8 @@ export class ApiServiceService {
   }
 
   // Пагинация для таблицы участников
-  async getMembersByPage(rows, page) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members?rows='+rows+'&page='+page
+  async getMembersByPage(rows, page, query) {
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members?rows='+rows+'&page='+page+'&query='+query
     const token = this.authService.getToken()
     console.log(rows,page)
     return fetch(url, {

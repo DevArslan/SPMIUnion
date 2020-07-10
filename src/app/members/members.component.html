@@ -4,7 +4,7 @@
   <app-members-edit-modal (childEvent)="getMembersByPage()" [data]='data' [dataForModal]='dataForModal' class="membersEditModal" id="membersEditModal"></app-members-edit-modal>
   <div class="members-nav">
     <div class="members-search">
-      <input class="searchInput" type="text" placeholder="Поиск" [(ngModel)]="username">
+      <input class="searchInput" type="text" placeholder="Поиск" [(ngModel)]="username" #usernameInput>
     </div>
     <div class="members-nav-add" (click) = "showAddModal()">
       <i class="plusIcon"></i>
@@ -23,7 +23,7 @@
 
   </div>
 
-  <app-members-table class="membersTable" [data]='data | filter:username'></app-members-table>
+  <app-members-table class="membersTable" [data]='data'></app-members-table>
 
   <div class="tableNav">
     <div class="tableNav-pages">
