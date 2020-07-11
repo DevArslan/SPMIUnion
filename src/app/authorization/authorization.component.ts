@@ -23,7 +23,18 @@ export class AuthorizationComponent implements OnInit {
   loginError: string = ''
   passwordError: string = ''
 
+  resetErrors() {
+    this.loginError = ''
+    this.passwordError = ''
+    this.error = ''
+  }
+
   auth() {
+    function resetErrors() {
+      this.loginError = ''
+      this.passwordError = ''
+      this.error = ''
+    }
     this.loginError = ''
     this.passwordError = ''
     this.error = ''
@@ -51,12 +62,12 @@ export class AuthorizationComponent implements OnInit {
           if (data.remember == true) {
             console.log(data.remember)
             this.authService.profileData = jsonData
-            localStorage.setItem('jsonData',JSON.stringify(jsonData))
-            localStorage.setItem('token',token)
+            localStorage.setItem('jsonData', JSON.stringify(jsonData))
+            localStorage.setItem('token', token)
           } else {
             this.authService.profileData = jsonData
-            sessionStorage.setItem('jsonData',JSON.stringify(jsonData))
-            sessionStorage.setItem('token',token)
+            sessionStorage.setItem('jsonData', JSON.stringify(jsonData))
+            sessionStorage.setItem('token', token)
           }
         })
         .then(() => {
@@ -71,5 +82,10 @@ export class AuthorizationComponent implements OnInit {
     if (!this.password) {
       this.passwordError = 'Требуется указать пароль'
     }
+    setTimeout(() => {
+      this.loginError = ''
+      this.passwordError = ''
+      this.error = ''
+    }, 2500)
   }
 }
