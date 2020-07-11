@@ -22,6 +22,11 @@ export class UsersEditModalComponent implements OnInit {
       this.users = dataFromApi.users
       this.api.selectedUserId$.subscribe(()=>{
         this.userID =  this.api.selectedUserId$.getValue()
+        if (this.userID) {
+          this.error = ''
+        } else {
+          this.error = 'Сначала выберите участников'
+        }
         this.users.forEach((user):any => {
           if(user.id == this.userID){
             this.roleLabel = user.role
