@@ -147,9 +147,20 @@ export class MembersComponent implements OnInit {
     })
     this.apiServiceService.selectedMemberId$.subscribe((id) => {
       this.memberID = id
+      if (this.memberID) {
+        this.error = ''
+      } else {
+        this.error = 'Сначала выберите участников'
+      }
     })
     this.apiServiceService.selectedMembersId$.subscribe((apiData) => {
       this.membersID = apiData
+      if (this.membersID.length != 0) {
+        this.error = ''
+      } else {
+        this.error = 'Сначала выберите участников'
+      }
+
     })
 
     this.apiServiceService.getDepartments()
@@ -175,7 +186,7 @@ export class MembersComponent implements OnInit {
       )
       .subscribe();
 
-      fromEvent(this.inputUsername.nativeElement, 'keyup')
+    fromEvent(this.inputUsername.nativeElement, 'keyup')
       .pipe(
         filter(Boolean),
         debounceTime(1000),
@@ -189,5 +200,5 @@ export class MembersComponent implements OnInit {
       .subscribe();
   }
 
-  
+
 }
