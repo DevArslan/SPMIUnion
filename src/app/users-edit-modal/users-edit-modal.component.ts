@@ -8,20 +8,32 @@ import { of } from 'rxjs';
 })
 export class UsersEditModalComponent implements OnInit {
   @Input() roles: [] = []
-  
   constructor(private api: ApiServiceService) { }
   
   roleDropdown: boolean = false
   roleLabel:string = 'Роль'
   roleID: number
   userID: number
+  users: any
 
   error:string = ''
   ngOnInit(): void {
+    this.api.users$.subscribe((dataFromApi: any) => {
+      this.users = dataFromApi.users
+      this.api.selectedUserId$.subscribe(()=>{
+        this.userID =  this.api.selectedUserId$.getValue()
+        this.users.forEach((user):any => {
+          if(user.id == this.userID){
+            this.roleLabel = user.role
+          }  
+        });
+      })
+    })
+    
   }
+
   async editUser(){
 
-    this.userID =  this.api.selectedUserId$.getValue()
 
     const promise = await this.api.editUser(this.userID,this.roleID)
     if(promise.error){
