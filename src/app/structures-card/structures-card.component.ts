@@ -176,7 +176,7 @@ export class StructuresCardComponent implements OnInit {
     var yy = date.getFullYear();
     if (yy < 10) yy = '0' + yy;
 
-    return yy + '-' + mm + '-' + dd;
+    return dd + '-' + mm + '-' + yy;
   }
 
   dropdownStructureTable() {
@@ -252,7 +252,7 @@ export class StructuresCardComponent implements OnInit {
             });
 
             const nowDate = this.formatDate(new Date())
-            const nowDateMinusOneYear = (Number(new Date().getFullYear()) - 1) + this.formatDate(new Date()).slice(4)
+            const nowDateMinusOneYear = (this.formatDate(new Date()).slice(0,-4)) + Number(new Date().getFullYear() - 1)
             await this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
             this.apiServiceService.stats$.subscribe(() => {
               this.selectedSubDepartmentsIds.forEach((id) => {

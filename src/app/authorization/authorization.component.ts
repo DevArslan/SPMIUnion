@@ -26,6 +26,7 @@ export class AuthorizationComponent implements OnInit {
   auth() {
     this.loginError = ''
     this.passwordError = ''
+    this.error = ''
     if (this.login && this.password) {
       const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/login'
 
