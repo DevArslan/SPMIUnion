@@ -11,7 +11,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let item of selectedSubDepartments" ng-repeat="dynamic in dynamics"
+    <tr *ngFor="let item of selectedSubDepartments" 
       attr.data-subdepartment-id="{{item.id}}"
       attr.data-subdepartment-title="{{item.head_department_title}}_{{item.title}}" attr.data-title="{{item.title}}">
       <td>{{item.title}}</td>

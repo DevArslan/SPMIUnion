@@ -126,6 +126,11 @@ export class StructuresCardComponent implements OnInit {
     modal.style.display = 'block'
   }
 
+  sortBySubID(arr) {
+    return arr.sort((a, b) => a.subdepartment_id > b.subdepartment_id ? 1 : -1);
+  }
+
+
   updateCharts(structureChart, structureChart2) {
 
     // Обнуление массивов с данными подразделений
@@ -140,26 +145,39 @@ export class StructuresCardComponent implements OnInit {
       this.selectedDataStructures.push(element.title)
       this.selectedDataStructuresUsers.push(element.members_total)
     });
-
-    for (let index = 0; index < this.stats.length; index++) {
-
+    console.log(this.stats)
+    let sortedByIdStats = this.stats
+    console.log(this.stats)
+    for (let index = 1; index < sortedByIdStats.length; index++) {
+      
+      
       // this.datesForDiagram.push(this.stats[index].date_time)
       // this.currentValueForDiagram.push(this.stats[index].current_total)
 
       for (const key in this.diagramData) {
-        let month = this.stats[index].date_time.slice(3, 5)
-
-        if (month == key) {
-          this.diagramData[key] = (this.stats[index].current_total)
+        let month = sortedByIdStats[index].date_time.slice(3, 5)
+        if(sortedByIdStats[index].subdepartment_id != sortedByIdStats[index-1].subdepartment_id ){
+          
+          if (month == key) {
+            this.diagramData[key] += (sortedByIdStats[index-1].current_total)
+          }
+        }
+        if(index == sortedByIdStats.length-1 ){
+          if (month == key) {
+            this.diagramData[key] += (sortedByIdStats[index-1].current_total)
+        
+          }
         }
       }
     }
+    
     let index = -2
     for (const key in this.diagramData) {
       this.currentValueForDiagram[index] = this.diagramData[key]
+      
       index += 1
     }
-
+  
     structureChart.update()
     structureChart2.update()
 

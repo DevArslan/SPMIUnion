@@ -38,6 +38,7 @@ export class MembersEditModalComponent implements OnInit {
           this.name = element.name 
           console.log(this.name)
           this.card = element.card 
+          this.structure = element.subdepartment
         }
       });
     })
