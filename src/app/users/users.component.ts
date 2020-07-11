@@ -12,6 +12,7 @@ export class UsersComponent implements OnInit {
   users: any
   username: string = ''
 
+  error: string =  'Сначала выберите пользователя'
   memberID: any
 
 
@@ -30,6 +31,11 @@ export class UsersComponent implements OnInit {
 
     this.apiServiceService.selectedUserId$.subscribe((data)=>{
       this.memberID = data
+      if (this.memberID) {
+        this.error = ''
+      } else {
+        this.error = 'Сначала выберите пользователя'
+      }
     })
   }
 
