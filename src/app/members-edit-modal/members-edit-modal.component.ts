@@ -31,6 +31,7 @@ export class MembersEditModalComponent implements OnInit {
   @Output() childEvent = new EventEmitter();
   ngOnInit(): void {
     this.API.selectedMemberId$.subscribe((id)=>{
+      this.structures.length = 0
       this.memberID = id
       this.data.forEach((element: any)=> {
         if(element.id == this.memberID){
@@ -41,6 +42,20 @@ export class MembersEditModalComponent implements OnInit {
           this.structure = element.subdepartment
         }
       });
+      this.API.departments.forEach((department: any) => {
+        department.sub_departments.forEach((subdepartment: any) => {
+          if(subdepartment.title == this.structure){
+            this.faculty = department.title
+          }
+        });
+      });
+      this.dataForModal.forEach((element: any) => {
+        if (this.faculty == element.title) {
+          element.sub_departments.forEach(item => {
+            this.structures.push(item)
+          });
+        }
+      })
     })
   }
 
@@ -84,5 +99,7 @@ export class MembersEditModalComponent implements OnInit {
     const modal = document.getElementById('membersEditModal')
     modal.style.display = "none";
     this.faculty = 'Факультет'
+    this.structureDropdown = false
+    this.facultyDropdown = false
   }
 }
