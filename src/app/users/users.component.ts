@@ -12,7 +12,7 @@ export class UsersComponent implements OnInit {
   users: any
   username: string = ''
 
-  error: string =  'Сначала выберите пользователя'
+  error: string = 'Сначала выберите пользователя'
   memberID: any
 
 
@@ -29,7 +29,7 @@ export class UsersComponent implements OnInit {
       console.log(this.users)
     })
 
-    this.apiServiceService.selectedUserId$.subscribe((data)=>{
+    this.apiServiceService.selectedUserId$.subscribe((data) => {
       this.memberID = data
       if (this.memberID) {
         this.error = ''
@@ -44,13 +44,23 @@ export class UsersComponent implements OnInit {
     modal.style.display = "block";
   }
   showEditModal() {
-    const modal = document.getElementById('usersEditModal')
-    modal.style.display = "block";
+    if (this.memberID) {
+      this.error = ''
+      const modal = document.getElementById('usersEditModal')
+      modal.style.display = "block";
+      this.error = 'Сначала выберите пользователя'
+    }
+
   }
   showDelModal() {
-    const modal = document.getElementById('usersDelModal')
-    modal.style.display = "block";
+    if (this.memberID) {
+      this.error = ''
+      const modal = document.getElementById('usersDelModal')
+      modal.style.display = "block";
+      this.error = 'Сначала выберите пользователя'
+    }
+
   }
-  
+
 
 }
