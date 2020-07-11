@@ -15,7 +15,7 @@
           </div>
         </div>
 
-        <div class="facultyDropdown" [ngClass]="{'dropdown': membersDropdown}">
+        <div class="membersDropdown" [ngClass]="{'dropdown': membersDropdown}">
           <ul>
             <li *ngFor="let item of members.users" attr.data-select-name="{{item.name}}"
               attr.data-select-card="{{item.card}}" attr.data-select-card-number="{{item.card_number}}"
