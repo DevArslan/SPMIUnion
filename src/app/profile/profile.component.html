@@ -6,7 +6,7 @@
     <ul>
       <li>Имя: {{loginData.name}}</li>
       <li>Логин: {{loginData.login}}</li>
-      <li>Зарегистрирован: {{loginData.registered}}</li>
+      <li>Зарегистрирован: {{loginData.registered | date: 'dd/MM/yyyy'}}</li>
       <li>Уровень доступа: {{loginData.role}}</li>
     </ul>
   </div>
