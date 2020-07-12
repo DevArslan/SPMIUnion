@@ -24,17 +24,13 @@ export class AuthorizationComponent implements OnInit {
   passwordError: string = ''
 
   resetErrors() {
-    this.loginError = ''
-    this.passwordError = ''
-    this.error = ''
+    this.loginError = ' '
+    this.passwordError = ' '
+    this.error = ' '
   }
 
   auth() {
-    function resetErrors() {
-      this.loginError = ''
-      this.passwordError = ''
-      this.error = ''
-    }
+
     this.loginError = ''
     this.passwordError = ''
     this.error = ''

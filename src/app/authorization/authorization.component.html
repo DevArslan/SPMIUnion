@@ -4,25 +4,25 @@
   <form class="auth-form" action="" >
     <ul>
       <li>
-        <label for="login">логин</label>
-        <input [(ngModel)]="login" type="text" name="login">
+        <!-- <label for="login">логин</label> -->
+        <input [(ngModel)]="login" type="text" name="login" placeholder="Login" class="textInput">
+      </li>
+      <li class="formError">
+        <p >{{loginError}}&nbsp;</p>
       </li>
       <li>
-        <p class="formError">{{loginError}}</p>
+        <!-- <label for="password">пароль</label> -->
+        <input [(ngModel)]="password" type="password" name="password" placeholder="Password" class="textInput">
       </li>
-      <li>
-        <label for="password">пароль</label>
-        <input [(ngModel)]="password" type="password" name="password">
-      </li>
-      <li>
-        <p class="formError">{{passwordError}}</p>
+      <li class="formError">
+        <p >{{passwordError}}&nbsp;</p>
       </li>
       <li class="remember">
         <input type="checkbox" name="remember" [(ngModel)]="remember">
-        <label for="remember">Запомнить меня</label>
+        <label class="remember-label" for="remember">Запомнить меня</label>
       </li>
-      <li>
-        <p class="formError">{{error}}</p>
+      <li class="formError">
+        <p >{{error}}&nbsp;</p>
       </li>
       <li>
         <button class="submitButton" (click)="$event.preventDefault(); auth()">Войти</button>
