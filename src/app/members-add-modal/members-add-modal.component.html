@@ -1,5 +1,5 @@
 <div class="modalWrapper" id="modal">
-  <div class="modal">
+  <div class="modal" (click) = "closeAllDropdown($event)" id="modalBack">
     <div class="modal-header">
       <p>Добавить участника</p>
       <app-close-button (click)="closeModal()"></app-close-button>

@@ -32,7 +32,24 @@ export class MembersAddModalComponent implements OnInit {
 
   @ViewChild('inputName') input: ElementRef;
 
+  closeAllDropdownWrapper(event){
+    if (event.target == document.getElementById('modal')) {
+      this.structureDropdown = false
+      this.facultyDropdown = false
+      this.membersDropdown = false
+    }
+  }
+  closeAllDropdown(event) {
+    console.log(event.target)
+    console.log(document.getElementById('modalBack'))
+    if (event.target == document.getElementById('modalBack')) {
+      this.structureDropdown = false
+      this.facultyDropdown = false
+      this.membersDropdown = false
+    }
 
+    // event.stopPropagation()
+  }
 
   searchInAKSP(name) {
     this.apiServiceService.getMembersAKPS(name)
@@ -46,34 +63,34 @@ export class MembersAddModalComponent implements OnInit {
     if (promise.error) {
       console.log(promise)
       this.error = promise.message;
-      
+
     } else {
       // Снизу добавление участника в таблицу без обращения к серверу
-    //   const tableBody = <HTMLElement>document.getElementById('membersTableBody')
-    //   const tableRowExist = <HTMLElement>document.querySelector('.membersTableDataRow')
-    //   const memberData = {
-    //     'memberId': promise.member.id,
-    //     'memberName': promise.member.name,
-    //     'memberSubDep': promise.member.subdepartment,
-    //     'memberCard': promise.member.card,
-    //     'memberIsStudent': promise.member.is_student,
-    //     'memberActive': promise.member.active,
-    //   }
-    //   var tableRow = <HTMLElement>tableRowExist.cloneNode(true)
-    //   const tableRowChildInput = <HTMLInputElement>tableRow.childNodes[0].firstChild
-    //   tableRowChildInput.value = memberData.memberId
+      //   const tableBody = <HTMLElement>document.getElementById('membersTableBody')
+      //   const tableRowExist = <HTMLElement>document.querySelector('.membersTableDataRow')
+      //   const memberData = {
+      //     'memberId': promise.member.id,
+      //     'memberName': promise.member.name,
+      //     'memberSubDep': promise.member.subdepartment,
+      //     'memberCard': promise.member.card,
+      //     'memberIsStudent': promise.member.is_student,
+      //     'memberActive': promise.member.active,
+      //   }
+      //   var tableRow = <HTMLElement>tableRowExist.cloneNode(true)
+      //   const tableRowChildInput = <HTMLInputElement>tableRow.childNodes[0].firstChild
+      //   tableRowChildInput.value = memberData.memberId
 
-    //   for (const item in memberData) {
-    //     const tableRowChild = <HTMLElement>tableRow.childNodes[index]
-    //     tableRowChild.innerHTML = memberData[item]
-    //     index +=1
-    //     console.log(tableRowChild)
-    // }
-    // tableBody.appendChild(tableRow)
-    this.childEvent.emit();
-    this.closeModal()
+      //   for (const item in memberData) {
+      //     const tableRowChild = <HTMLElement>tableRow.childNodes[index]
+      //     tableRowChild.innerHTML = memberData[item]
+      //     index +=1
+      //     console.log(tableRowChild)
+      // }
+      // tableBody.appendChild(tableRow)
+      this.childEvent.emit();
+      this.closeModal()
+    }
   }
-}
 
   selectFaculty(event) {
     this.structures.length = 0
@@ -124,19 +141,27 @@ export class MembersAddModalComponent implements OnInit {
 
   dropDownFaculty() {
     this.facultyDropdown = !this.facultyDropdown
+    this.structureDropdown = false
+    this.membersDropdown = false
   }
   dropDownStructure() {
     this.structureDropdown = !this.structureDropdown
+    this.facultyDropdown = false
+    this.membersDropdown = false
+
   }
   dropDownMembers() {
     this.membersDropdown = !this.membersDropdown
+    this.structureDropdown = false
+    this.facultyDropdown = false
+
   }
 
   ngOnInit(): void {
-    this.apiServiceService.membersAKPS$.subscribe((dataFromAPI:any) => {
-      if(dataFromAPI.error){
+    this.apiServiceService.membersAKPS$.subscribe((dataFromAPI: any) => {
+      if (dataFromAPI.error) {
         this.error = dataFromAPI.message
-      }else{
+      } else {
         this.members = dataFromAPI
       }
       this.membersDropdown = true
@@ -157,8 +182,12 @@ export class MembersAddModalComponent implements OnInit {
           // console.log(this.input.nativeElement.value)
           const memberName = <HTMLInputElement>this.input.nativeElement.value
           const preloader = document.getElementById('preloader')
-          const data = await this.searchInAKSP(memberName)
-          console.log(data)
+          if (String(memberName) != '') {
+            const data = await this.searchInAKSP(memberName)
+          } else {
+            this.membersDropdown = false
+          }
+
         })
       )
       .subscribe();

@@ -109,6 +109,8 @@
       }
       }
       .facultyDropdown {
+        max-height: 300px;
+        overflow-y: scroll;
         width: 83%;
         z-index: 9999 !important;
         background-color: white;
@@ -149,6 +151,8 @@
         justify-content: space-between;
       }
       .structureDropdown {
+        max-height: 300px;
+        overflow-y: scroll;
         width: 83%;
         z-index: 999 !important;
         background-color: white;
