@@ -34,7 +34,7 @@
           <li  attr.data-page-number = "{{item}}" (click)="getMembersByPage($event)">{{item}}</li>
         </div> -->
         <p>Page</p>
-        <input type="text" [(ngModel)]="pageNumber" #inputPage>
+        <input (keyup)="check($event)" type="text" [(ngModel)]="pageNumber" #inputPage>
         <p>of {{maxPageNumber}}</p>
         <i class="rightArrow" attr.data-page-number = {{pageNumber-(-1)}} (click)=changePage($event)></i>
         <i class="rightDoubleArrow" attr.data-page-number = {{maxPageNumber}} (click)=changePage($event)></i>

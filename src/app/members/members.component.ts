@@ -131,7 +131,16 @@ export class MembersComponent implements OnInit {
       this.error = 'Сначала выберите участника'
     }
   }
-
+  check(e) {
+    console.log(e.currentTarget.value)
+    if(Number.isInteger(Number(e.currentTarget.value)) == false){
+      
+      e.currentTarget.value = e.currentTarget.value.slice(0, -1)
+      console.log(e.currentTarget.value)
+    }
+    // e.value = e.value.replace(/[^0-9.]/g, ''); 
+    // e.value = e.value.replace(/(\..*)\./g, '$1');
+  }
 
   ngOnInit(): void {
     this.apiServiceService.getMembers()
