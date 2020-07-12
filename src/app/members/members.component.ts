@@ -133,11 +133,16 @@ export class MembersComponent implements OnInit {
   }
   check(e) {
     console.log(e.currentTarget.value)
-    if(Number.isInteger(Number(e.currentTarget.value)) == false){
-      
+    if(Number.isInteger(Number(e.currentTarget.value)) == false || Number(e.currentTarget.value) > this.maxPageNumber){
       e.currentTarget.value = e.currentTarget.value.slice(0, -1)
       console.log(e.currentTarget.value)
     }
+    if(e.currentTarget.value === '0' ){
+      e.currentTarget.value = '1'
+    }
+         // setTimeout((()=>{
+      //   e.currentTarget.value = '1'
+      // }),1000)
     // e.value = e.value.replace(/[^0-9.]/g, ''); 
     // e.value = e.value.replace(/(\..*)\./g, '$1');
   }
