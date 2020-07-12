@@ -47,8 +47,8 @@
                 <td>{{item.name}}</td>
                 <td>{{item.subdepartment}}</td>
                 <td>{{item.card}}</td>
-                <td>{{item.is_student}}</td>
-                <td>{{item.active}}</td>
+                <td ><i [ngClass]="{active: item.is_student}"></i></td>
+                <td ><i [ngClass]="{active: item.active}" ></i></td>
 
               </tr>
             </tbody>

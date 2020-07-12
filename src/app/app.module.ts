@@ -32,6 +32,7 @@ import { UsersEditModalComponent } from './users-edit-modal/users-edit-modal.com
 import { StructuresDeleteModalComponent } from './structures-delete-modal/structures-delete-modal.component';
 import { SubDepartmentsDelModalComponent } from './sub-departments-del-modal/sub-departments-del-modal.component';
 import { SubDepartmentsEditModalComponent } from './sub-departments-edit-modal/sub-departments-edit-modal.component';
+import { ConvertToIconsPipe } from './pipes/convert-to-icons.pipe';
 
 const itemRoutes: Routes = [
   {
@@ -99,7 +100,8 @@ const appRouter: Routes = [
     UsersEditModalComponent,
     StructuresDeleteModalComponent,
     SubDepartmentsDelModalComponent,
-    SubDepartmentsEditModalComponent
+    SubDepartmentsEditModalComponent,
+    ConvertToIconsPipe
   ],
   imports: [
     BrowserModule,
