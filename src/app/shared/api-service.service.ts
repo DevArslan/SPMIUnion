@@ -562,10 +562,7 @@ export class ApiServiceService {
   // Статистика по датам
   async getStats(fromData, toData, subID) {
     let url = 'https://digital.spmi.ru/profsouz_test/api/v1/stats' 
-    // + '?from_date=' + fromData + '&to_date=' + toData 
-    // subID.forEach(element => {
-    //   url +='&subdepartment_id=' + element
-    // });
+    
     
     const data = {
       subdepartments: subID,
@@ -574,21 +571,29 @@ export class ApiServiceService {
     }
     console.log(data)
     const token = this.authService.getToken()
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${token}`
-      },
-      body: JSON.stringify(data),
-    })
-      .then((res) => (res.json()))
-      .then(data => {
-        
-        this.stats = data
-        this.stats$.next(this.stats);
-      }
-      )
+    if(subID.length != 0){
+      return fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Basic ${token}`
+        },
+        body: JSON.stringify(data),
+      })
+        .then((res) => (res.json()))
+        .then(data => {
+          console.log(data)
+          this.stats = data
+          this.stats$.next(this.stats);
+        }
+        )
+    }else{
+      
+      this.stats = {'stats': []}
+      console.log(this.stats)
+      this.stats$.next(this.stats);
+    }
+    
   }
 
 

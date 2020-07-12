@@ -34,7 +34,7 @@ export class StructuresCardComponent implements OnInit {
   proforgName: string
   titleLength: string
   proforgNameLength: string
-
+  emptyArray:[] = []
   dropdown: boolean = false;
 
   stats: any[] = []
@@ -145,39 +145,56 @@ export class StructuresCardComponent implements OnInit {
       this.selectedDataStructures.push(element.title)
       this.selectedDataStructuresUsers.push(element.members_total)
     });
-    console.log(this.stats)
+    
     let sortedByIdStats = this.stats
-    console.log(this.stats)
-    for (let index = 1; index < sortedByIdStats.length; index++) {
-      
-      
-      // this.datesForDiagram.push(this.stats[index].date_time)
-      // this.currentValueForDiagram.push(this.stats[index].current_total)
-
-      for (const key in this.diagramData) {
-        let month = sortedByIdStats[index].date_time.slice(3, 5)
-        if(sortedByIdStats[index].subdepartment_id != sortedByIdStats[index-1].subdepartment_id ){
+    console.log(sortedByIdStats)
+    if(this.stats.length != 0){
+      if (sortedByIdStats.length != 1) {
+        for (let index = 1; index < sortedByIdStats.length; index++) {
+         
+            for (const key in this.diagramData) {
+              let month = sortedByIdStats[index].date_time.slice(3, 5)
+              if (sortedByIdStats[index].subdepartment_id != sortedByIdStats[index - 1].subdepartment_id) {
+  
+                if (month == key) {
+  
+                  this.diagramData[key] += (sortedByIdStats[index - 1].current_total)
+  
+                }
+              }
+              if (index == sortedByIdStats.length - 1) {
+  
+                if (month == key) {
+  
+                  this.diagramData[key] += (sortedByIdStats[index].current_total)
+  
+                }
+              }
+            }
           
-          if (month == key) {
-            this.diagramData[key] += (sortedByIdStats[index-1].current_total)
-          }
         }
-        if(index == sortedByIdStats.length-1 ){
-          if (month == key) {
-            this.diagramData[key] += (sortedByIdStats[index-1].current_total)
+      } else {
         
+          for (const key in this.diagramData) {
+            let month = sortedByIdStats[0].date_time.slice(3, 5)
+            if (month == key) {
+              this.diagramData[key] += (sortedByIdStats[0].current_total)
+            }
           }
-        }
+        
       }
+    }else{
+      this.diagramData = { '01': 0, '02': 0, '03': 0, '04': 0, '05': 0, '06': 0, '07': 0, '08': 0, '09': 0, '10': 0, '11': 0, '12': 0 }
     }
     
+
     let index = -2
     for (const key in this.diagramData) {
       this.currentValueForDiagram[index] = this.diagramData[key]
-      
+
       index += 1
     }
-  
+
     structureChart.update()
     structureChart2.update()
 
@@ -216,6 +233,7 @@ export class StructuresCardComponent implements OnInit {
     this.apiServiceService.getStats(nowDateMinusOneYear, nowDate, subID)
     this.apiServiceService.stats$.subscribe(() => {
       this.stats = this.apiServiceService.stats.stats
+      console.log(this.stats)
     })
   }
 
@@ -270,16 +288,15 @@ export class StructuresCardComponent implements OnInit {
             });
 
             const nowDate = this.formatDate(new Date())
-            const nowDateMinusOneYear = (this.formatDate(new Date()).slice(0,-4)) + Number(new Date().getFullYear() - 1)
+            const nowDateMinusOneYear = (this.formatDate(new Date()).slice(0, -4)) + Number(new Date().getFullYear() - 1)
             await this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
+
+            
             this.apiServiceService.stats$.subscribe(() => {
               this.selectedSubDepartmentsIds.forEach((id) => {
                 this.getDynamic(id)
               })
-
               this.updateCharts(structureChart, structureChart2)
-
-
             })
           }
         })
