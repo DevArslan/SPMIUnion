@@ -14,6 +14,7 @@ export class StructuresTableComponent implements OnInit {
   data: {}[]
   dataForModal: {}[] = []
   currentSubDynamic: number
+  departmentTitle: string = ''
   subDepartmentTitle: string = ''
   constructor(private apiServiceService: ApiServiceService) {}
   
@@ -40,6 +41,8 @@ export class StructuresTableComponent implements OnInit {
     console.log(event.target.parentElement)
     this.subDepartmentId =  event.target.parentElement.dataset.subdepartmentId
     this.subDepartmentTitle = event.target.parentElement.dataset.title
+    this.departmentTitle =  event.target.parentElement.dataset.departmentTitle
+    this.apiServiceService.departmentForEditModal$.next(this.departmentTitle)
     console.log(this.subDepartmentTitle)
     const modal = document.getElementById('subDepartmentEditModal')
     modal.style.display = 'block'

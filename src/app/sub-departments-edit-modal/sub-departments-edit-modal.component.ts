@@ -49,6 +49,9 @@ export class SubDepartmentsEditModalComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    this.api.departmentForEditModal$.subscribe(()=>{
+      this.faculty = this.api.departmentForEditModal$.getValue()
+    })
   }
 
 }

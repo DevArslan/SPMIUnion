@@ -16,6 +16,7 @@ export class ApiServiceService {
   loadingCompleted: boolean
   membersAKPS: any
   stats: any
+  // structureForEditModal: any
   // selectedUserId: any
 
   users$ = new Subject<{}[]>()
@@ -27,6 +28,7 @@ export class ApiServiceService {
   membersAKPS$ = new Subject<{}[]>()
   preloader$ = new Subject<boolean>()
   stats$ = new Subject<[]>();
+  departmentForEditModal$ = new BehaviorSubject(undefined)
 
 
   // Observable member data
