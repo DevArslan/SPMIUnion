@@ -1,4 +1,4 @@
-.closeModal{
+.closeModal {
   display: none;
 }
 .modalWrapper {
@@ -18,10 +18,10 @@
     background-color: white;
     width: 20%;
     margin: 20vh auto 0 auto;
-    p{
+    p {
       margin: 0;
     }
-    .modal-header{
+    .modal-header {
       font-size: 1rem;
       font-weight: bold;
       padding: 1rem;
@@ -36,7 +36,7 @@
       padding: 0rem 1rem 1rem 1rem;
       form {
         width: 100%;
-        input{
+        input {
           padding: 0.5rem;
           display: block;
           width: 100%;
@@ -46,7 +46,7 @@
         }
       }
       .arrowIcon {
-        background-image: url('src/assets/icons/keyboard_arrow_down-24px.svg');
+        background-image: url("src/assets/icons/keyboard_arrow_down-24px.svg");
         background-repeat: no-repeat;
         background-position: center;
         height: 1rem;
@@ -62,7 +62,7 @@
         align-items: center;
         justify-content: space-between;
       }
-      .roleDropdown{
+      .roleDropdown {
         width: 83%;
         z-index: 9999 !important;
         background-color: white;
@@ -73,24 +73,24 @@
         border-radius: 3px;
         border: 1px solid #ccc;
         display: none;
-        ul{
+        ul {
           list-style: none;
           padding: 0;
           margin: 0;
-          li{
+          li {
             margin-top: 0.5rem;
             cursor: pointer;
           }
         }
       }
 
-      .dropdown{
+      .dropdown {
         display: block !important;
       }
-      .dropdownIcon{
+      .dropdownIcon {
         transform: rotate(-180deg);
       }
-      .structure{
+      .structure {
         padding: 0.5rem;
         margin-top: 1rem;
         border-radius: 3px;
@@ -99,7 +99,7 @@
         align-items: center;
         justify-content: space-between;
       }
-      .structureDropdown{
+      .structureDropdown {
         width: 83%;
         z-index: 9999 !important;
         background-color: white;
@@ -110,36 +110,42 @@
         border-radius: 3px;
         border: 1px solid #ccc;
         display: none;
-        ul{
+        ul {
           list-style: none;
           padding: 0;
           margin: 0;
-          li{
+          li {
             margin-top: 0.5rem;
             cursor: pointer;
           }
         }
       }
-      .checkStudent{
+      .checkStudent {
         margin-top: 1rem;
         display: flex;
         align-items: center;
-        input{
+        input {
           width: 1rem;
           height: 1rem;
         }
-        p{
+        p {
           margin-left: 0.5rem;
         }
       }
-      .addButton{
+      .addButton {
         cursor: pointer;
         display: block;
         outline: none;
         margin: 1rem auto 0 auto;
         padding: 0.5rem;
         border-radius: 3px;
-        border: 1px solid #ccc;
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        background-color: #3cae59;
+        &:hover {
+          background-color: darken(#3cae59, 6%);
+        }
       }
     }
   }

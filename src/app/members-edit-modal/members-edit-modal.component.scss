@@ -141,9 +141,15 @@
         display: block;
         outline: none;
         margin: 1rem auto 0 auto;
-        padding: 0.5rem;
+        
         border-radius: 3px;
-        border: 1px solid #ccc;
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        background-color: #3cae59;
+        &:hover {
+          background-color: darken(#3cae59, 6%);
+        }
       }
     }
   }

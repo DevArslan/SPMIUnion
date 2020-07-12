@@ -186,9 +186,14 @@
         display: block;
         outline: none;
         margin: 1rem auto 0 auto;
-        padding: 0.5rem;
+        padding: 0.5rem 1rem;
         border-radius: 3px;
-        border: 1px solid #ccc;
+        border: none;
+        color: white;
+        background-color: #3cae59;
+        &:hover {
+          background-color: darken(#3cae59, 6%);
+        }
       }
       .errors {
         margin-top: 1rem;

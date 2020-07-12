@@ -35,6 +35,9 @@
           color: #ffffff;
           padding: 0.5rem;
           border: none;
+          &:hover {
+            background-color: darken(#3cae59, 6%);
+          }
         }
         .formError{
           color: red;

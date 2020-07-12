@@ -16,29 +16,30 @@ table{
     font-weight: normal;
     border-bottom: 1px solid #ccc;
   }
-  .excelButton{
+  .button{
+    opacity: 0.85;
     padding: 0 1rem;
-    background-image: url('src/assets/icons/icons8-microsoft-excel.svg');
     background-position: center;
     background-repeat: no-repeat;
     width: 1.5rem;
     height: 1.5rem;
     cursor: pointer;
+    &:hover{
+      opacity: 1;
+    }
+  }
+  .excelButton{
+    opacity: 0.85;
+    background-image: url('src/assets/icons/icons8-microsoft-excel.svg');
   }
   .delButton{
+    opacity: 0.7;
     background-image: url('src/assets/icons/clear-24pxRed.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 1.5rem;
-    height: 1.5rem;
-    cursor: pointer;
+
   }
   .editButton{
+    opacity: 0.7;
     background-image: url('src/assets/icons/create-24px.svg');
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 1.5rem;
-    height: 1.5rem;
-    cursor: pointer;
+
   }
 }

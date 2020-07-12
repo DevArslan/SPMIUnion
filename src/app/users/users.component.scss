@@ -1,47 +1,53 @@
-.users{
+.users {
   padding: 1rem;
-  .usersAddModal{
+  .usersAddModal {
     display: none;
   }
-  .usersEditModal{
+  .usersEditModal {
     display: none;
   }
-  .usersDelModal{
+  .usersDelModal {
     display: none;
   }
-  .users-nav{
+  .users-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 20%;
-    .searchInput{
-      background-image: url('src/assets/icons/search-24px.svg');
+    width: 26.5%;
+    .searchInput {
+      background-image: url("src/assets/icons/search-24px.svg");
       background-repeat: no-repeat;
       background-position: right;
       border: 1px solid #ccc;
       padding: 0.5rem;
     }
-    i{
+    i {
       background-position: center;
       background-repeat: no-repeat;
-      height: 2rem;
-      width: 2rem;
+      background-size: cover;
+
+      height: 1.3rem;
+      width: 1.3rem;
       display: block;
+      &:hover {
+        padding: 0;
+        padding-bottom: calc(100% * 3 / 30);
+      }
     }
-    .plusIcon{
+    .plusIcon {
       cursor: pointer;
-      background-image: url('src/assets/icons/add_circle_outline-24px.svg');
+      background-image: url("src/assets/icons/add_circle_outline-24px.svg");
     }
-    .editIcon{
+    .editIcon {
       cursor: pointer;
-      background-image: url('src/assets/icons/create-24px.svg');
+      background-image: url("src/assets/icons/create-24px.svg");
     }
-    .removeIcon{
+    .removeIcon {
       cursor: pointer;
-      background-image: url('src/assets/icons/remove_circle_outline-24px.svg');
+      background-image: url("src/assets/icons/remove_circle_outline-24px.svg");
     }
   }
-  .blockModal{
+  .blockModal {
     opacity: 0.5;
   }
 }

@@ -1,16 +1,19 @@
-.members{
+$btn-bkg: #3cae59;
+
+.members {
   padding: 1rem;
-  button{
+  button {
     cursor: pointer;
   }
-  .error{
+
+  .error {
     color: red;
     text-transform: uppercase;
     margin: 0;
     margin-top: 0.5rem;
     padding: 0;
   }
-  .tableNav{
+  .tableNav {
     width: 35%;
     display: flex;
     align-items: center;
@@ -18,28 +21,28 @@
     margin-top: 1rem;
     border: 1px solid #cccccc;
     border-radius: 3px;
-    p{
+    p {
       margin: 0;
     }
-    .tableNav-pages{
+    .tableNav-pages {
       width: 70%;
-      
-      .tableNav-list{
+
+      .tableNav-list {
         padding: 1rem;
         margin: 0;
         display: flex;
         align-items: center;
         justify-content: space-around;
         list-style: none;
-        input{
+        input {
           display: inline-block;
           width: 2rem;
         }
-        li{
+        li {
           display: inline-block;
           cursor: pointer;
         }
-        i{
+        i {
           cursor: pointer;
           background-position: center;
           background-repeat: no-repeat;
@@ -47,23 +50,23 @@
           height: 1rem;
           display: inline-block;
         }
-        .leftDoubleArrow{
-          background-image: url('src/assets/icons/double_arrow-black-18dp.svg');
+        .leftDoubleArrow {
+          background-image: url("src/assets/icons/double_arrow-black-18dp.svg");
           transform: rotate(180deg);
         }
-        .leftArrow{
-          background-image: url('src/assets/icons/arrow_back_ios-black-18dp.svg');
+        .leftArrow {
+          background-image: url("src/assets/icons/arrow_back_ios-black-18dp.svg");
           width: 1.5rem;
         }
-        .rightArrow{
-          background-image: url('src/assets/icons/arrow_back_ios-black-18dp.svg');
+        .rightArrow {
+          background-image: url("src/assets/icons/arrow_back_ios-black-18dp.svg");
           width: 1.5rem;
           transform: rotate(180deg);
-        } 
-        .rightDoubleArrow{
-          background-image: url('src/assets/icons/double_arrow-black-18dp.svg');
         }
-        .selectedPage{
+        .rightDoubleArrow {
+          background-image: url("src/assets/icons/double_arrow-black-18dp.svg");
+        }
+        .selectedPage {
           align-items: center;
           justify-content: center;
           display: flex;
@@ -76,71 +79,81 @@
       }
     }
   }
-  
-  .membersAddModal{
+
+  .membersAddModal {
     display: none;
   }
-  .membersDelModal{
+  .membersDelModal {
     display: none;
   }
-  .membersEditModal{
+  .membersEditModal {
     display: none;
   }
-  .showMembersAddModal{
+  .showMembersAddModal {
     display: block;
   }
-  .members-nav{
+  .members-nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 20%;
-    .activateButton{
+    width: 60%;
+    .activateButton {
       margin-left: 1rem;
       color: #ffffff;
       background-color: #3cae59;
-      border:none;
+      border: none;
       outline: none;
       border-radius: 3px;
       padding: 0.5rem 1rem;
+      &:hover {
+        background-color: darken(#3cae59, 6%);
+      }
     }
-    .blockButton{
+    .blockButton {
       color: #ffffff;
       background-color: #e96250;
-      border:none;
+      border: none;
       outline: none;
       border-radius: 3px;
       padding: 0.5rem 1rem;
+      &:hover {
+        background-color: darken(#e96250, 6%);
+      }
     }
-    .searchInput{
-      background-image: url('src/assets/icons/search-24px.svg');
+    .searchInput {
+      background-image: url("src/assets/icons/search-24px.svg");
       background-repeat: no-repeat;
       background-position: right;
       border: 1px solid #ccc;
       padding: 0.5rem;
     }
-    i{
+    i {
       background-position: center;
       background-repeat: no-repeat;
-      height: 2rem;
-      width: 2rem;
+      background-size: cover;
+      
+      height: 1.3rem;
+      width: 1.3rem;
       display: block;
+      &:hover {
+        padding: 0; 
+        padding-bottom: calc(100% * 3 / 30);
+      }
     }
-    .blockModal{
+    .blockModal {
       opacity: 0.5;
     }
-    .plusIcon{
+    .plusIcon {
       cursor: pointer;
-      background-image: url('src/assets/icons/add_circle_outline-24px.svg');
+      background-image: url("src/assets/icons/add_circle_outline-24px.svg");
     }
-    .editIcon{
+    .editIcon {
       cursor: pointer;
-      background-image: url('src/assets/icons/create-24px.svg');
+      background-image: url("src/assets/icons/create-24px.svg");
     }
-    .removeIcon{
+    .removeIcon {
       cursor: pointer;
-      background-image: url('src/assets/icons/remove_circle_outline-24px.svg');
+      background-image: url("src/assets/icons/remove_circle_outline-24px.svg");
     }
   }
-
 }
-

@@ -15,6 +15,9 @@
     color: #ffffff;
     border-radius: 3px;
     background-color: #3cae59;
+    &:hover{
+      background-color: darken(#3cae59,6%);
+    }
   }
   .searchInput{
     margin-top: 0.5rem;

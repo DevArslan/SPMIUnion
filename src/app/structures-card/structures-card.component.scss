@@ -54,6 +54,9 @@
       display: block;
       opacity: 0.7;
       cursor: pointer;
+      &:hover{
+        opacity: 1;
+      }
     }
   }
   .structureCard-nav {
@@ -68,12 +71,18 @@
       padding: 1rem;
       border-radius: 3px;
       background-color: #3cae59;
+      &:hover{
+        background-color: darken(#3cae59,6%);
+      }
     }
     .structureCard-nav-del {
       cursor: pointer;
       padding: 1rem;
       border-radius: 3px;
       background-color: #e96250;
+      &:hover{
+        background-color: darken(#e96250,6%);
+      }
     }
     .structureCard-nav-edit {
       height: 1rem;
@@ -116,6 +125,9 @@
         display: block;
         opacity: 0.7;
         cursor: pointer;
+        &:hover{
+          opacity: 1;
+        }
       }
     }
     .structureCharts {

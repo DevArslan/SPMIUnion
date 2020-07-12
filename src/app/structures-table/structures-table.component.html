@@ -19,9 +19,9 @@
       <td>{{item.members_total}}</td>
       <!-- <td>{{item.dynamic}}</td> -->
       <td>{{getDynamic(item.id)}} {{currentSubDynamic}}</td>
-      <td class="excelButton" (click)="downloadExcel($event)"></td>
-      <td class="editButton" (click)="showEditModal($event)"></td>
-      <td class="delButton" (click)="showDelModal($event)"></td>
+      <td class="excelButton button" (click)="downloadExcel($event)"></td>
+      <td class="editButton button" (click)="showEditModal($event)"></td>
+      <td class="delButton button" (click)="showDelModal($event)"></td>
     </tr>
   </tbody>
   <app-sub-departments-del-modal class="subDepartmentDelModal" id="subDepartmentDelModal"
