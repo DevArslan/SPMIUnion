@@ -188,12 +188,14 @@ export class StructuresCardComponent implements OnInit {
     }
     
 
-    let index = -2
+    let index = 0
     for (const key in this.diagramData) {
-      this.currentValueForDiagram[index] = this.diagramData[key]
+      // Такое заполнение массива, потому что js не итерирует объекты последовательно (это хоть какое-то решение)
+      this.currentValueForDiagram[Number(key)] = this.diagramData[key]
 
-      index += 1
     }
+    // Удаление первого пустого элемента массива, иначе перескакивает на один месяц вперед. 
+    this.currentValueForDiagram.shift()
 
     structureChart.update()
     structureChart2.update()
