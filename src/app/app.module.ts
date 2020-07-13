@@ -52,6 +52,11 @@ const itemRoutes: Routes = [
 const appRouter: Routes = [
   {
     path: 'main',
+    redirectTo: '/main/members',
+    pathMatch: 'full'
+  },
+  {
+    path: 'main',
     component: MainComponent, children: itemRoutes,
     canActivate: [AuthGuard]
   },
@@ -61,14 +66,15 @@ const appRouter: Routes = [
   },
   {
     path: '',
-    redirectTo: '/main',
+    redirectTo: '/main/members',
     pathMatch: 'full'
   },
   {
     path: '**',
-    redirectTo: '/main',
+    redirectTo: '/main/members',
     pathMatch: 'full'
-  }
+  },
+ 
 
 ]
 

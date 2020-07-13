@@ -306,7 +306,7 @@ export class StructuresCardComponent implements OnInit {
       if (this.equalID == true) {
 
       } else {
-        this.ROUTER.navigate(['main']);
+        this.ROUTER.navigate(['main/members']);
         this.equalID = true
       }
     })
