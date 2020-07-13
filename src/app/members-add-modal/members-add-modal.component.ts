@@ -137,6 +137,7 @@ export class MembersAddModalComponent implements OnInit {
     this.error = ''
     this.subdepartmentID = null
     this.structures.length = 0
+    this.cardNumber = ''
   }
 
   dropDownFaculty() {
