@@ -20,7 +20,7 @@ export class UsersTableComponent implements OnInit {
   }
 
   selectUser(event) {
-    console.log(event.currentTarget)
+    
     const rows = document.querySelectorAll('.usersTableDataRow')
     rows.forEach(element => {
       element.classList.remove('selectedRow')
@@ -35,6 +35,7 @@ export class UsersTableComponent implements OnInit {
       event.currentTarget.id = 'selectedMember'
       this.selectedUserId = event.currentTarget.dataset.memberId
     }
+    console.log(this.selectedUserId)
     this.api.selectedUserId$.next(this.selectedUserId)
     event.stopPropagation()
   }

@@ -31,6 +31,7 @@ export class UsersDeleteModalComponent implements OnInit {
     if(promise.error){
       this.error = promise.message
     }else{
+      this.apiServiceService.selectedUserId$.next(undefined)
       await this.apiServiceService.getUsers()
       this.closeModal()
     }

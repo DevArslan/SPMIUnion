@@ -68,6 +68,7 @@ export class MembersEditModalComponent implements OnInit {
         this.error = promise.message
       }else{
         this.childEvent.emit();
+        this.API.selectedMemberId$.next(undefined)
         this.closeModal()
       }
   }

@@ -44,7 +44,9 @@ export class UsersEditModalComponent implements OnInit {
     if(promise.error){
       this.error = promise.message
     }else{
+      this.api.selectedUserId$.next(undefined)
       await this.api.getUsers()
+      
       this.closeModal()
     }
     this.roleLabel = 'Роль'

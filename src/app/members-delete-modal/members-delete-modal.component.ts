@@ -42,7 +42,8 @@ export class MembersDeleteModalComponent implements OnInit {
         this.error = promise.message
       }else{
         this.childEvent.emit();
-        this.apiServiceService.selectedMembersId$.next([])
+        const emptyArray = []
+        this.apiServiceService.selectedMembersId$.next(emptyArray)
         this.closeModal()
         
       }

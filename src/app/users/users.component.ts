@@ -19,7 +19,7 @@ export class UsersComponent implements OnInit {
 
 
   ngOnInit(): void {
-    if(this.authService.profileData.role == 'Administrator'){
+    if(this.authService.loginData.role == 'Administrator'){
       this.roleIsAdmin = true
     }
     
