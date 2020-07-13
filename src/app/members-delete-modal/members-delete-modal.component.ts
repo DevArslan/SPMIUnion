@@ -42,7 +42,9 @@ export class MembersDeleteModalComponent implements OnInit {
         this.error = promise.message
       }else{
         this.childEvent.emit();
+        this.apiServiceService.selectedMembersId$.next([])
         this.closeModal()
+        
       }
       
     }else if(this.memberID){
@@ -51,7 +53,9 @@ export class MembersDeleteModalComponent implements OnInit {
         this.error = promise.message
       }else{
         this.childEvent.emit();
+        this.apiServiceService.selectedMemberId$.next(undefined)
         this.closeModal()
+        
       }
     }
 

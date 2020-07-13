@@ -76,7 +76,7 @@ export class MembersComponent implements OnInit {
       } {
         this.getMembersByPage()
         this.error = 'Сначала выберите участника'
-        this.membersID.length = 0
+        this.memberID = undefined
       }
 
     }
@@ -99,8 +99,9 @@ export class MembersComponent implements OnInit {
       console.log(promise)
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
-      this.membersID.length = 0
+      this.memberID = undefined
     }
+    
 
   }
 
