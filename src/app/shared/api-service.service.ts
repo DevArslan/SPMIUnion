@@ -230,6 +230,7 @@ export class ApiServiceService {
       .then(data => {
         this.members = data
         this.members$.next(this.members);
+        
         return data
       }
       )

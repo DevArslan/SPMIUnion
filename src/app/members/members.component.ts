@@ -14,7 +14,7 @@ export class MembersComponent implements OnInit {
 
   username: string = ''
   membersID: number[] = []
-  data: {}[] = []
+  data: any = []
   dataForModal: {}[] = []
 
   query: any = ''
@@ -22,7 +22,7 @@ export class MembersComponent implements OnInit {
   rows: number[] = [10, 20, 30, 40, 50]
   rowsCount: number = 10
   maxPageNumber: number
-  membersCount: number
+  membersCount: number  = 0
 
   memberID: number
 
@@ -133,32 +133,47 @@ export class MembersComponent implements OnInit {
   }
   check(e) {
     console.log(e.currentTarget.value)
-    if(Number.isInteger(Number(e.currentTarget.value)) == false || Number(e.currentTarget.value) > this.maxPageNumber){
+    if (Number.isInteger(Number(e.currentTarget.value)) == false || Number(e.currentTarget.value) > this.maxPageNumber) {
       e.currentTarget.value = e.currentTarget.value.slice(0, -1)
       console.log(e.currentTarget.value)
     }
-    if(e.currentTarget.value === '0' ){
+    if (e.currentTarget.value === '0') {
       e.currentTarget.value = '1'
     }
-         // setTimeout((()=>{
-      //   e.currentTarget.value = '1'
-      // }),1000)
+    // setTimeout((()=>{
+    //   e.currentTarget.value = '1'
+    // }),1000)
     // e.value = e.value.replace(/[^0-9.]/g, ''); 
     // e.value = e.value.replace(/(\..*)\./g, '$1');
   }
 
   ngOnInit(): void {
-    this.apiServiceService.getMembers()
+    this.getMembersByPage()
+    
 
     this.apiServiceService.members$.subscribe((dataFromApi: any) => {
       this.data = dataFromApi.members
-      console.log(this.data)
-      this.membersCount = this.data.length
-
+      this.membersCount = dataFromApi.total
       if (!this.maxPageNumber) {
-        this.maxPageNumber = Math.ceil(this.membersCount / this.rowsCount)
+        
+        this.maxPageNumber = Math.ceil(Number(this.membersCount) / this.rowsCount)
+        
       }
+      
     })
+    
+
+    // this.apiServiceService.departments$.subscribe((departments) => {
+    //   this.dataForModal = this.apiServiceService.departments
+    //   this.apiServiceService.departments.forEach((department: any) => {
+    //     this.membersCount += Number(department.members_total)
+        
+    //   })
+    //   console.log(this.membersCount)
+    //   if (!this.maxPageNumber) {
+    //     this.maxPageNumber = Math.ceil(this.membersCount / this.rowsCount)
+    //   }
+    // })
     this.apiServiceService.selectedMemberId$.subscribe((id) => {
       this.memberID = id
       if (this.memberID) {
@@ -177,10 +192,12 @@ export class MembersComponent implements OnInit {
 
     })
 
-    this.apiServiceService.getDepartments()
+    
+
     this.apiServiceService.departments$.subscribe((dataFromApi) => {
       this.dataForModal = dataFromApi
     })
+    this.apiServiceService.getDepartments()
 
     this.getMembersByPage()
   }
