@@ -145,9 +145,9 @@ export class StructuresCardComponent implements OnInit {
       this.selectedDataStructures.push(element.title)
       this.selectedDataStructuresUsers.push(element.members_total)
     });
-    
+    // !!! Поменять переменную, все работает без сортировки
     let sortedByIdStats = this.stats
-    console.log(sortedByIdStats)
+
     if(this.stats.length != 0){
       if (sortedByIdStats.length != 1) {
         for (let index = 1; index < sortedByIdStats.length; index++) {
@@ -235,7 +235,6 @@ export class StructuresCardComponent implements OnInit {
     this.apiServiceService.getStats(nowDateMinusOneYear, nowDate, subID)
     this.apiServiceService.stats$.subscribe(() => {
       this.stats = this.apiServiceService.stats.stats
-      console.log(this.stats)
     })
   }
 

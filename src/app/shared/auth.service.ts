@@ -15,14 +15,14 @@ export class AuthService {
 
     if (sessionStorage.getItem('jsonData')) {
       this.loginData = JSON.parse(sessionStorage.getItem('jsonData'))
-      if (this.loginData.role == 'Administrator') {
+      if (this.loginData.role == 'Administrator' || this.loginData.role == 'Moderator' || this.loginData.role == 'User') {
         return true
       } else {
         return false
       }
     }else if(localStorage.getItem('jsonData')){
       this.loginData = JSON.parse(localStorage.getItem('jsonData'))
-      if (this.loginData.role == 'Administrator') {
+      if (this.loginData.role == 'Administrator' || this.loginData.role == 'Moderator' || this.loginData.role == 'User') {
         return true
       } else {
         return false

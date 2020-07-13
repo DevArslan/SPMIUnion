@@ -70,7 +70,7 @@ export class AuthorizationComponent implements OnInit {
           }
         })
         .then(() => {
-          if (this.authService.profileData.role == 'Administrator') {
+          if (this.authService.IsAuthenticated()) {
             this.router.navigate(['main/members']);
           }
         })

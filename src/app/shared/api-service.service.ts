@@ -53,6 +53,7 @@ export class ApiServiceService {
       .then(data => {
         this.departments = data.departments;
         this.departments$.next(this.departments);
+        
       }
       )
   }
