@@ -20,8 +20,8 @@ export class UsersEditModalComponent implements OnInit {
   ngOnInit(): void {
     this.api.users$.subscribe((dataFromApi: any) => {
       this.users = dataFromApi.users
-      this.api.selectedUserId$.subscribe(()=>{
-        this.userID =  this.api.selectedUserId$.getValue()
+      this.api.selectedUserId$.subscribe((data)=>{
+        this.userID =  data
         if (this.userID) {
           this.error = ''
         } else {

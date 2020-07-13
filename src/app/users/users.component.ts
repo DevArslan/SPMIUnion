@@ -13,7 +13,7 @@ export class UsersComponent implements OnInit {
   username: string = ''
 
   error: string = 'Сначала выберите пользователя'
-  memberID: any
+  userID: any
 
 
   ngOnInit(): void {
@@ -30,8 +30,8 @@ export class UsersComponent implements OnInit {
     })
 
     this.apiServiceService.selectedUserId$.subscribe((data) => {
-      this.memberID = data
-      if (this.memberID) {
+      this.userID = data
+      if (this.userID) {
         this.error = ''
       } else {
         this.error = 'Сначала выберите пользователя'
@@ -44,7 +44,7 @@ export class UsersComponent implements OnInit {
     modal.style.display = "block";
   }
   showEditModal() {
-    if (this.memberID) {
+    if (this.userID) {
       this.error = ''
       const modal = document.getElementById('usersEditModal')
       modal.style.display = "block";
@@ -53,7 +53,7 @@ export class UsersComponent implements OnInit {
 
   }
   showDelModal() {
-    if (this.memberID) {
+    if (this.userID) {
       this.error = ''
       const modal = document.getElementById('usersDelModal')
       modal.style.display = "block";

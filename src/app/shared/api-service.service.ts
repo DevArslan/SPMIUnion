@@ -36,7 +36,7 @@ export class ApiServiceService {
   selectedMembersId$ = new Subject<number[]>();
 
   // Observable user data
-  selectedUserId$ = new BehaviorSubject(undefined)
+  selectedUserId$ = new Subject<number>()
 
   // Получение данных о структурах
   async getDepartments() {

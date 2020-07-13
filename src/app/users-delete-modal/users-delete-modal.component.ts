@@ -24,8 +24,8 @@ export class UsersDeleteModalComponent implements OnInit {
     //     this.userID = Number(element.value)
     //   }
     // }
-    this.userID =  this.apiServiceService.selectedUserId$.getValue()
-    console.log(this.userID)
+    // this.userID =  this.apiServiceService.selectedUserId$.getValue()
+    // console.log(this.userID)
 
     const promise = await this.apiServiceService.deleteUser(this.userID)
     if(promise.error){
@@ -39,6 +39,9 @@ export class UsersDeleteModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.apiServiceService.selectedUserId$.subscribe((id)=>{
+      this.userID = id
+    })
   }
 
 }
