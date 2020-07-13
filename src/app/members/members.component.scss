@@ -120,6 +120,20 @@ $btn-bkg: #3cae59;
         background-color: darken(#e96250, 6%);
       }
     }
+    .activateButton.blockModal{
+      opacity: 0.5;
+      &:hover{
+        cursor: not-allowed;
+        background-color: #3cae59;
+      }
+    }
+    .blockButton.blockModal{
+      opacity: 0.5;
+      &:hover{
+        cursor: not-allowed;
+        background-color: #e96250;
+      }
+    }
     .searchInput {
       background-image: url("src/assets/icons/search-24px.svg");
       background-repeat: no-repeat;
@@ -140,8 +154,13 @@ $btn-bkg: #3cae59;
         padding-bottom: calc(100% * 3 / 30);
       }
     }
+    
     .blockModal {
       opacity: 0.5;
+      &:hover{
+        
+        cursor: not-allowed;
+      }
     }
     .plusIcon {
       cursor: pointer;
@@ -154,6 +173,13 @@ $btn-bkg: #3cae59;
     .removeIcon {
       cursor: pointer;
       background-image: url("src/assets/icons/remove_circle_outline-24px.svg");
+    }
+    i.blockModal{
+      &:hover {
+        cursor: not-allowed;
+        padding: 0; 
+        padding-bottom: calc(100%*0);
+      }
     }
   }
 }

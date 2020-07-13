@@ -6,11 +6,11 @@
     <div class="users-nav-add" (click) = "showAddModal()">
       <i class="plusIcon"></i>
     </div>
-    <div class="users-nav-edit" (click) = "showEditModal()" [ngClass]="{blockModal: !userID}" title="{{error}}">
-      <i class="editIcon"></i>
+    <div class="users-nav-edit" (click) = "showEditModal()"  title="{{error}}">
+      <i class="editIcon" [ngClass]="{blockModal: !userID}"></i>
     </div>
-    <div class="users-nav-remove" (click) = "showDelModal()" [ngClass]="{blockModal: !userID}" title="{{error}}">
-      <i class="removeIcon"></i>
+    <div class="users-nav-remove" (click) = "showDelModal()"  title="{{error}}">
+      <i class="removeIcon" [ngClass]="{blockModal: !userID}"></i>
     </div>
     <div class="users-nav-excel"></div>
     <div class="users-nav-pdf"></div>

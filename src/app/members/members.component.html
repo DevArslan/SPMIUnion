@@ -9,11 +9,11 @@
     <div class="members-nav-add" (click) = "showAddModal()">
       <i class="plusIcon"></i>
     </div>
-    <div class="members-nav-edit" (click) = "showEditModal()" [ngClass]="{blockModal: !memberID}" title="{{error}}">
-      <i class="editIcon"></i>
+    <div class="members-nav-edit" (click) = "showEditModal()"  title="{{error}}">
+      <i class="editIcon" [ngClass]="{blockModal: !memberID}"></i>
     </div>
-    <div class="members-nav-remove" (click) = "showDelModal()" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}" title="{{error}}">
-      <i class="removeIcon"></i>
+    <div class="members-nav-remove" (click) = "showDelModal()"  title="{{error}}">
+      <i class="removeIcon" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}"></i>
     </div>
     <button (click)="blockMember()" class="blockButton" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}" title="{{error}}">Заблокировать</button>
     <button (click)="activateMember()" class="activateButton" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}" title="{{error}}">Активировать</button>
