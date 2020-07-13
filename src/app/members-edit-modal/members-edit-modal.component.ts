@@ -40,6 +40,7 @@ export class MembersEditModalComponent implements OnInit {
           console.log(this.name)
           this.card = element.card 
           this.structure = element.subdepartment
+          this.isStudent = element.is_student
         }
       });
       this.API.departments.forEach((department: any) => {
