@@ -6,8 +6,8 @@
     </div>
     <div class="modal-content">
       <form action="">
-        <input type="text" name="title" placeholder="Название" [(ngModel)]="title">
-        <input type="text" name="proforg" placeholder="Профорг" [(ngModel)]="proforg">
+        <input type="text" name="title" placeholder="Название" [(ngModel)]="title" maxlength="120">
+        <input type="text" name="proforg" placeholder="Профорг" [(ngModel)]="proforg" maxlength="120">
       </form>
       <button class="addButton" (click)="createDepartment()">Добавить</button>
     </div>
