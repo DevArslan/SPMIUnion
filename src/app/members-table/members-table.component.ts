@@ -69,7 +69,7 @@ export class MembersTableComponent implements OnInit {
     if (event.currentTarget.checked == true) {
       event.currentTarget.parentNode.parentNode.classList.add('selectedRow')
 
-    } else {
+    } else if(event.currentTarget.parentNode.parentNode.id != 'selectedMember'){
       event.currentTarget.parentNode.parentNode.classList.remove('selectedRow')
     }
 

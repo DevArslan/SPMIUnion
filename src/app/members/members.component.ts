@@ -110,6 +110,7 @@ export class MembersComponent implements OnInit {
     modal.style.display = "block";
   }
   showEditModal() {
+    console.log(this.membersID.length)
     if (this.memberID && this.membersID.length < 2) {
       this.error = ''
       const modal = document.getElementById('membersEditModal')
