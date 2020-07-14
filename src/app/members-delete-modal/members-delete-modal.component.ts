@@ -10,6 +10,7 @@ import { Input } from "@angular/core";
 export class MembersDeleteModalComponent implements OnInit {
   @Output() childEvent = new EventEmitter();
   constructor(private apiServiceService: ApiServiceService) { }
+  title: string
   membersID: number[] = []
   memberID: number[] = []
   error: string
@@ -18,6 +19,9 @@ export class MembersDeleteModalComponent implements OnInit {
       this.memberID.length = 0
       this.memberID.push(id)
       console.log(this.memberID)
+    })
+    this.apiServiceService.titleForDeleteModal$.subscribe((title)=>{
+      this.title = title
     })
   }
   closeModal(){

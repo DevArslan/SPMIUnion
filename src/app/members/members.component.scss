@@ -162,6 +162,13 @@ $btn-bkg: #3cae59;
         cursor: not-allowed;
       }
     }
+    .blockEditmodal{
+      opacity: 0.5;
+      &:hover{
+        
+        cursor: not-allowed;
+      }
+    }
     .plusIcon {
       cursor: pointer;
       background-image: url("src/assets/icons/add_circle_outline-24px.svg");

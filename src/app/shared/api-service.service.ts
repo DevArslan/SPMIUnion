@@ -29,7 +29,7 @@ export class ApiServiceService {
   preloader$ = new Subject<boolean>()
   stats$ = new Subject<[]>();
   departmentForEditModal$ = new BehaviorSubject(undefined)
-
+  titleForDeleteModal$ = new Subject<string>();
 
   // Observable member data
   selectedMemberId$ = new Subject<number>()

@@ -11,7 +11,10 @@
           <col width="11%">
           <col width="10%">
           <tr>
-            <th></th>
+            <th>
+              <input class="memberCheckbox" type="checkbox"
+              (click)=selectAllMembers($event)>
+            </th>
             <th>id</th>
             <th>ФИО</th>
             <th>Подразделения</th>
@@ -37,7 +40,7 @@
             <col width="10%">
             <tbody id="membersTableBody">
 
-              <tr *ngFor="let item of data" class="membersTableDataRow" (click)=selectMember($event)
+              <tr  *ngFor="let item of data" class="membersTableDataRow unselectable" (click)="selectMember($event)"  
                 attr.data-member-id={{item.id}}>
                 <td>
                   <input class="memberCheckbox" type="checkbox" value="{{item.id}}"

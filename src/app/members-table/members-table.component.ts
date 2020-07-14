@@ -15,9 +15,24 @@ export class MembersTableComponent implements OnInit {
 
   constructor(private api: ApiServiceService) { }
 
+  titleForDeleteModal: string = ''
+
   selectedMemberId: number
   selectedMembersId: number[] = []
   selectedMembersId2: number[] = []
+
+  membersCountForEdit: boolean = false
+  selectAllMembers(event) {
+    const checkboxes = document.querySelectorAll('.memberCheckbox')
+    for (let index = 0; index < checkboxes.length; index++) {
+      const element = <HTMLInputElement>checkboxes[index];
+      element.checked = true
+      this.selectedMembersId.push(Number(element.value))
+    }
+    console.log(this.selectedMembersId)
+    this.api.selectedMembersId$.next(this.selectedMembersId)
+    event.stopPropagation()
+  }
 
   selectMember(event) {
     const rows = document.querySelectorAll('.membersTableDataRow')
@@ -29,22 +44,34 @@ export class MembersTableComponent implements OnInit {
       event.currentTarget.classList.remove('selectedRow')
       this.selectedMemberId = undefined
       event.currentTarget.id = null
-      
+
     } else {
       event.currentTarget.classList.add('selectedRow')
       event.currentTarget.id = 'selectedMember'
       this.selectedMemberId = event.currentTarget.dataset.memberId
       // event.currentTarget.firstChild.firstChild.checked = true
     }
+    const checkboxes = document.querySelectorAll('.memberCheckbox')
+    for (let index = 0; index < checkboxes.length; index++) {
+      const element = <HTMLInputElement>checkboxes[index];
+      element.checked = false
+    }
 
-    
-
+    this.titleForDeleteModal = 'Удалить участника'
+    this.api.titleForDeleteModal$.next(this.titleForDeleteModal)
     this.api.selectedMemberId$.next(this.selectedMemberId)
+
     event.stopPropagation()
   }
   selectMembersByCheckbox(event) {
     let flag = 0
     const selectedCheckbox = event.currentTarget.value
+    if (event.currentTarget.checked == true) {
+      event.currentTarget.parentNode.parentNode.classList.add('selectedRow')
+
+    } else {
+      event.currentTarget.parentNode.parentNode.classList.remove('selectedRow')
+    }
 
 
 
@@ -73,7 +100,9 @@ export class MembersTableComponent implements OnInit {
       }
     }
 
-    console.log(this.selectedMembersId)
+
+    this.titleForDeleteModal = 'Удалить участников'
+    this.api.titleForDeleteModal$.next(this.titleForDeleteModal)
     this.api.selectedMembersId$.next(this.selectedMembersId)
 
     event.stopPropagation()
