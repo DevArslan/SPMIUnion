@@ -59,6 +59,8 @@ export class MembersAddModalComponent implements OnInit {
   async createMember() {
     let index = 1
     const promise = await this.apiServiceService.createMember(this.name, this.card, this.subdepartmentID, this.isStudent)
+    const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+    selectAllCheckbox.checked = false
     // Добавление участника в таблицу без доп.запроса к API
     if (promise.error) {
       console.log(promise)

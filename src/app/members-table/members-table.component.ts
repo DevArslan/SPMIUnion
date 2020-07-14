@@ -21,14 +21,28 @@ export class MembersTableComponent implements OnInit {
   selectedMembersId: number[] = []
   selectedMembersId2: number[] = []
 
+  selectedAll: boolean = false
+
   membersCountForEdit: boolean = false
   selectAllMembers(event) {
+    this.selectedMembersId.length = 0
+    // this.selectedAll = !this.selectedAll
+    const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
     const checkboxes = document.querySelectorAll('.memberCheckbox')
-    for (let index = 0; index < checkboxes.length; index++) {
-      const element = <HTMLInputElement>checkboxes[index];
-      element.checked = true
-      this.selectedMembersId.push(Number(element.value))
+    if (selectAllCheckbox.checked == true) {
+      for (let index = 0; index < checkboxes.length; index++) {
+        const element = <HTMLInputElement>checkboxes[index];
+        element.checked = true
+        this.selectedMembersId.push(Number(element.value))
+      }
+    } else {
+      for (let index = 0; index < checkboxes.length; index++) {
+        const element = <HTMLInputElement>checkboxes[index];
+        element.checked = false
+        this.selectedMembersId.length = 0
+      }
     }
+
     console.log(this.selectedMembersId)
     this.api.selectedMembersId$.next(this.selectedMembersId)
     event.stopPropagation()
@@ -69,7 +83,7 @@ export class MembersTableComponent implements OnInit {
     if (event.currentTarget.checked == true) {
       event.currentTarget.parentNode.parentNode.classList.add('selectedRow')
 
-    } else if(event.currentTarget.parentNode.parentNode.id != 'selectedMember'){
+    } else if (event.currentTarget.parentNode.parentNode.id != 'selectedMember') {
       event.currentTarget.parentNode.parentNode.classList.remove('selectedRow')
     }
 

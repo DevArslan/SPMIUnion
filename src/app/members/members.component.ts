@@ -54,10 +54,12 @@ export class MembersComponent implements OnInit {
     this.apiServiceService.downloadExcel()
   }
   async blockMember() {
-
+    
     if (this.membersID.length != 0) {
       this.error = ''
       const promise = await this.apiServiceService.blockMembers(this.membersID)
+      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+    selectAllCheckbox.checked = false
       if (promise.error) {
         alert(promise.message)
       } else {
@@ -71,6 +73,8 @@ export class MembersComponent implements OnInit {
       const memberID = []
       memberID.push(this.memberID)
       const promise = await this.apiServiceService.blockMembers(memberID)
+      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+    selectAllCheckbox.checked = false
       if (promise.error) {
         alert(promise.message)
       } {
@@ -83,10 +87,12 @@ export class MembersComponent implements OnInit {
 
   }
   async activateMember() {
-
+   
     if (this.membersID.length != 0) {
       this.error = ''
       const promise = await this.apiServiceService.activateMembers(this.membersID)
+      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+      selectAllCheckbox.checked = false
       console.log(promise)
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
@@ -96,6 +102,7 @@ export class MembersComponent implements OnInit {
       const memberID = []
       memberID.push(this.memberID)
       const promise = await this.apiServiceService.activateMembers(memberID)
+      
       console.log(promise)
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'

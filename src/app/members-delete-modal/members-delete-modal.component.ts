@@ -42,6 +42,8 @@ export class MembersDeleteModalComponent implements OnInit {
     
     if(this.membersID.length == 0){
       const promise = await this.apiServiceService.deleteMember(this.memberID)
+      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+      selectAllCheckbox.checked = false
       if(promise.error){
         this.error = promise.message
       }else{
@@ -54,6 +56,8 @@ export class MembersDeleteModalComponent implements OnInit {
       
     }else if(this.memberID){
       const promise = await this.apiServiceService.deleteMember(this.membersID)
+      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+      selectAllCheckbox.checked = false
       if(promise.error){
         this.error = promise.message
       }else{
