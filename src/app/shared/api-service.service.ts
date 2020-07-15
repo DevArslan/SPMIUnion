@@ -150,6 +150,7 @@ export class ApiServiceService {
       .then((res) => res.json())
       .then(data => {
         this.loadingCompleted = true
+        console.log('подразделения')
 
         return data
       }

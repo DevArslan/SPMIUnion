@@ -296,13 +296,14 @@ export class StructuresCardComponent implements OnInit {
 
             // Фильтрация подразделения под конкретную структуру
             this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
-
+            
+            this.selectedSubDepartments.length = 0
             this.subDepartments.forEach((element: any) => {
               if (element.head_department_id == this.selectedData.id) {
                 this.selectedSubDepartments.push(element)
               }
             });
-
+            console.log(this.selectedSubDepartments)
             this.selectedSubDepartmentsIds.length = 0
             this.selectedSubDepartments.forEach((element: any) => {
               this.selectedSubDepartmentsIds.push(element.id)
