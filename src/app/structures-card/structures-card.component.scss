@@ -1,6 +1,7 @@
 .structureCard {
   width: 100%;
   padding: 1rem 3rem 1rem 1rem;
+  
   .dropdown {
     display: block !important;
   }
@@ -37,7 +38,9 @@
     font-weight: bold;
     display: flex;
     align-items: center;
-    input {
+    textarea {
+      max-width: 80%;
+      resize: none;
       font-weight: bold;
       display: inline-block;
       border: none;

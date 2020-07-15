@@ -256,9 +256,10 @@ export class StructuresCardComponent implements OnInit {
             this.equalID = true
             this.selectedData = element;
             try {
-              this.titleLength = String(this.selectedData.title.length * 1.05)
-              const structureName = document.getElementById('structureName')
-              structureName.setAttribute('size', this.titleLength)
+              this.titleLength = String(this.selectedData.title.length * 20+60)
+              const structureName = <HTMLInputElement>document.getElementById('structureName')
+              structureName.style.width = this.titleLength+'px'
+              // structureName.setAttribute('size', this.titleLength)
             } catch (error) {
 
             }

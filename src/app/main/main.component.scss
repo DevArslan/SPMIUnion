@@ -1,7 +1,7 @@
-.wrapper{
+.wrapper {
   display: flex;
 
-  nav{
+  nav {
     padding-left: 2%;
     width: 15%;
     // position: fixed;
@@ -9,15 +9,24 @@
     color: white;
     background-color: #2c2c2c;
   }
-  .content{
+  .content {
     background-color: #fff;
     width: 83%;
     // margin-left: 17%;
-    
-    .content-header{
+
+    .content-header {
       color: #ffffff;
       padding: 1rem 0 1rem 3rem;
       background-color: #3cae59;
+    }
+    .content-outlet {
+      overflow-y: scroll;
+      max-height: 95vh;
+      &:hover{
+        ::-webkit-scrollbar-thumb {
+          opacity: 1;
+        }
+      }
     }
   }
 }
