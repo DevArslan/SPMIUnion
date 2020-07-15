@@ -34,7 +34,7 @@ export class StructuresCardComponent implements OnInit {
   proforgName: string
   titleLength: string
   proforgNameLength: string
-  emptyArray:[] = []
+  emptyArray: [] = []
   dropdown: boolean = false;
 
   stats: any[] = []
@@ -44,6 +44,8 @@ export class StructuresCardComponent implements OnInit {
 
   dynamics: { 'subID': number, 'dynamic': number }[] = []
   equalID: boolean = false
+
+
 
   getDynamic(subID) {
     let nowMonth = (new Date()).getMonth() + 1
@@ -74,27 +76,39 @@ export class StructuresCardComponent implements OnInit {
   }
 
   async saveStructureName() {
+    const structureName = <HTMLInputElement>document.getElementById('structureName')
+    const structureNameP = document.getElementById('structureNameP')
     if (this.structureName) {
       this.selectedData.title = this.structureName
-      const structureName = <HTMLInputElement>document.getElementById('structureName')
       this.titleLength = String(structureName.value.length)
       structureName.setAttribute('readonly', '')
       structureName.setAttribute('size', String(Number(this.titleLength) * 1.05))
       structureName.blur()
       await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
+      structureNameP.style.display = 'block'
+      structureName.style.display = 'none'
+    } else {
+      structureNameP.style.display = 'block'
+      structureName.style.display = 'none'
     }
 
 
   }
   async saveProforgName() {
+    const proforgName = <HTMLInputElement>document.getElementById('proforgName')
+    const proforgNameP = document.getElementById('proforgNameP')
     if (this.proforgName) {
       this.selectedData.proforg = this.proforgName
-      const proforgName = <HTMLInputElement>document.getElementById('proforgName')
       this.proforgNameLength = String(proforgName.value.length)
       proforgName.setAttribute('readonly', '')
       proforgName.setAttribute('size', String(Number(this.proforgNameLength) * 1.05))
       proforgName.blur()
       await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
+      proforgNameP.style.display = 'block'
+      proforgName.style.display = 'none'
+    }else{
+      proforgNameP.style.display = 'block'
+      proforgName.style.display = 'none'
     }
     await this.apiServiceService.editStructure(this.selectedData.title, this.proforgName, this.selectedData.id)
 
@@ -104,12 +118,18 @@ export class StructuresCardComponent implements OnInit {
   //   this.structureNameInputDrop = !this.structureNameInputDrop
   // }
   showEditStructureNameForm() {
-    const structureName = document.getElementById('structureName')
+    const structureNameP = document.getElementById('structureNameP')
+    const structureName = <HTMLInputElement>document.getElementById('structureName')
+    structureNameP.style.display = 'none'
+    structureName.style.display = 'block'
     structureName.removeAttribute('readonly')
     structureName.focus()
   }
   showEditProforgNameForm() {
+    const proforgNameP = document.getElementById('proforgNameP')
     const proforgName = document.getElementById('proforgName')
+    proforgNameP.style.display = 'none'
+    proforgName.style.display = 'block'
     proforgName.removeAttribute('readonly')
     proforgName.focus()
   }
@@ -148,45 +168,45 @@ export class StructuresCardComponent implements OnInit {
     // !!! Поменять переменную, все работает без сортировки
     let sortedByIdStats = this.stats
 
-    if(this.stats.length != 0){
+    if (this.stats.length != 0) {
       if (sortedByIdStats.length != 1) {
         for (let index = 1; index < sortedByIdStats.length; index++) {
-         
-            for (const key in this.diagramData) {
-              let month = sortedByIdStats[index].date_time.slice(3, 5)
-              if (sortedByIdStats[index].subdepartment_id != sortedByIdStats[index - 1].subdepartment_id) {
-  
-                if (month == key) {
-  
-                  this.diagramData[key] += (sortedByIdStats[index - 1].current_total)
-  
-                }
-              }
-              if (index == sortedByIdStats.length - 1) {
-  
-                if (month == key) {
-  
-                  this.diagramData[key] += (sortedByIdStats[index].current_total)
-  
-                }
+
+          for (const key in this.diagramData) {
+            let month = sortedByIdStats[index].date_time.slice(3, 5)
+            if (sortedByIdStats[index].subdepartment_id != sortedByIdStats[index - 1].subdepartment_id) {
+
+              if (month == key) {
+
+                this.diagramData[key] += (sortedByIdStats[index - 1].current_total)
+
               }
             }
-          
-        }
-      } else {
-        
-          for (const key in this.diagramData) {
-            let month = sortedByIdStats[0].date_time.slice(3, 5)
-            if (month == key) {
-              this.diagramData[key] += (sortedByIdStats[0].current_total)
+            if (index == sortedByIdStats.length - 1) {
+
+              if (month == key) {
+
+                this.diagramData[key] += (sortedByIdStats[index].current_total)
+
+              }
             }
           }
-        
+
+        }
+      } else {
+
+        for (const key in this.diagramData) {
+          let month = sortedByIdStats[0].date_time.slice(3, 5)
+          if (month == key) {
+            this.diagramData[key] += (sortedByIdStats[0].current_total)
+          }
+        }
+
       }
-    }else{
+    } else {
       this.diagramData = { '01': 0, '02': 0, '03': 0, '04': 0, '05': 0, '06': 0, '07': 0, '08': 0, '09': 0, '10': 0, '11': 0, '12': 0 }
     }
-    
+
 
     let index = 0
     for (const key in this.diagramData) {
@@ -256,15 +276,15 @@ export class StructuresCardComponent implements OnInit {
             this.equalID = true
             this.selectedData = element;
             try {
-              this.titleLength = String(this.selectedData.title.length * 20+60)
+              this.titleLength = String(this.selectedData.title.length * 20)
               const structureName = <HTMLInputElement>document.getElementById('structureName')
-              structureName.style.width = this.titleLength+'px'
+              structureName.style.width = this.titleLength + 'px'
               // structureName.setAttribute('size', this.titleLength)
             } catch (error) {
 
             }
             try {
-              this.proforgNameLength = String(this.selectedData.proforg.length * 1.05)
+              this.proforgNameLength = String(this.selectedData.proforg.length * 20)
               const proforgName = document.getElementById('proforgName')
               proforgName.setAttribute('size', this.proforgNameLength)
             } catch (error) {
@@ -293,7 +313,7 @@ export class StructuresCardComponent implements OnInit {
             const nowDateMinusOneYear = (this.formatDate(new Date()).slice(0, -4)) + Number(new Date().getFullYear() - 1)
             await this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
 
-            
+
             this.apiServiceService.stats$.subscribe(() => {
               this.selectedSubDepartmentsIds.forEach((id) => {
                 this.getDynamic(id)

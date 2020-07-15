@@ -38,13 +38,18 @@
     font-weight: bold;
     display: flex;
     align-items: center;
+    p{
+      max-width: 90%;
+      margin-left: 0.7rem;
+    }
     textarea {
+      display: none;
       max-width: 80%;
       resize: none;
       font-weight: bold;
-      display: inline-block;
       border: none;
       margin-left: 0.7rem;
+      hyphens: auto;
       outline: none;
     }
     .editIcon {
@@ -112,10 +117,18 @@
     .structureCard-organizer {
       display: flex;
       align-items: center;
-      input {
+      p{
+        max-width: 90%;
+        margin-left: 0.7rem;
+      }
+      textarea {
+        display: none;
+        max-width: 80%;
+        resize: none;
         font-weight: 400;
-        display: inline-block;
+        font-weight: bold;
         border: none;
+        margin-left: 0.7rem;
         outline: none;
       }
       .editIcon {
