@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
+import { promise } from 'protractor';
 
 @Component({
   selector: 'app-members',
@@ -22,7 +23,7 @@ export class MembersComponent implements OnInit {
   rows: number[] = [10, 20, 30, 40, 50]
   rowsCount: number = 10
   maxPageNumber: number
-  membersCount: number  = 0
+  membersCount: number = 0
 
   memberID: number
 
@@ -54,15 +55,17 @@ export class MembersComponent implements OnInit {
     this.apiServiceService.downloadExcel()
   }
   async blockMember() {
-    
+
     if (this.membersID.length != 0) {
       this.error = ''
       const promise = await this.apiServiceService.blockMembers(this.membersID)
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-    selectAllCheckbox.checked = false
+      selectAllCheckbox.checked = false
       if (promise.error) {
-        alert(promise.message)
+        this.error = promise.message
+        this.apiServiceService.error.next(String(this.error))
       } else {
+        this.apiServiceService.responseOK.next('Участники успешно заблокированы')
         this.getMembersByPage()
         this.error = 'Сначала выберите участника'
         this.membersID.length = 0
@@ -74,11 +77,12 @@ export class MembersComponent implements OnInit {
       memberID.push(this.memberID)
       const promise = await this.apiServiceService.blockMembers(memberID)
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-    selectAllCheckbox.checked = false
+      selectAllCheckbox.checked = false
       if (promise.error) {
-        alert(promise.message)
+        this.apiServiceService.error.next(String(this.error))
       } {
         this.getMembersByPage()
+        this.apiServiceService.responseOK.next('Участник успешно заблокирован')
         this.error = 'Сначала выберите участника'
         this.memberID = undefined
       }
@@ -87,10 +91,16 @@ export class MembersComponent implements OnInit {
 
   }
   async activateMember() {
-   
+
     if (this.membersID.length != 0) {
       this.error = ''
       const promise = await this.apiServiceService.activateMembers(this.membersID)
+      if (promise.error) {
+        this.error = promise.message
+        this.apiServiceService.error.next(String(this.error))
+      } else {
+        this.apiServiceService.responseOK.next('Участники успешно активированы')
+      }
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
       selectAllCheckbox.checked = false
       console.log(promise)
@@ -102,13 +112,17 @@ export class MembersComponent implements OnInit {
       const memberID = []
       memberID.push(this.memberID)
       const promise = await this.apiServiceService.activateMembers(memberID)
-      
-      console.log(promise)
+      if (promise.error) {
+        this.error = promise.message
+        this.apiServiceService.error.next(String(this.error))
+      } else {
+        this.apiServiceService.responseOK.next('Участник успешно активирован')
+      }
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
       this.memberID = undefined
     }
-    
+
 
   }
 
@@ -158,25 +172,25 @@ export class MembersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMembersByPage()
-    
+
 
     this.apiServiceService.members$.subscribe((dataFromApi: any) => {
       this.data = dataFromApi.members
       this.membersCount = dataFromApi.total
       if (!this.maxPageNumber) {
-        
+
         this.maxPageNumber = Math.ceil(Number(this.membersCount) / this.rowsCount)
-        
+
       }
-      
+
     })
-    
+
 
     // this.apiServiceService.departments$.subscribe((departments) => {
     //   this.dataForModal = this.apiServiceService.departments
     //   this.apiServiceService.departments.forEach((department: any) => {
     //     this.membersCount += Number(department.members_total)
-        
+
     //   })
     //   console.log(this.membersCount)
     //   if (!this.maxPageNumber) {
@@ -201,7 +215,7 @@ export class MembersComponent implements OnInit {
 
     })
 
-    
+
 
     this.apiServiceService.departments$.subscribe((dataFromApi) => {
       this.dataForModal = dataFromApi
@@ -234,7 +248,7 @@ export class MembersComponent implements OnInit {
         tap(async (text) => {
           // console.log(this.input.nativeElement.value)
           const data = await this.getMembersByPage()
-          console.log(data)
+
         })
       )
       .subscribe();

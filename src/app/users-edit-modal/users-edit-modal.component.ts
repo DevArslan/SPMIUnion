@@ -43,10 +43,11 @@ export class UsersEditModalComponent implements OnInit {
     const promise = await this.api.editUser(this.userID,this.roleID)
     if(promise.error){
       this.error = promise.message
+      this.api.error.next(String(this.error))
     }else{
       this.api.selectedUserId$.next(undefined)
       await this.api.getUsers()
-      
+      this.api.responseOK.next('Пользователь успешно изменен')
       this.closeModal()
     }
     this.roleLabel = 'Роль'

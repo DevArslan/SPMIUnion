@@ -30,9 +30,11 @@ export class UsersDeleteModalComponent implements OnInit {
     const promise = await this.apiServiceService.deleteUser(this.userID)
     if(promise.error){
       this.error = promise.message
+      this.apiServiceService.error.next(String(this.error))
     }else{
       this.apiServiceService.selectedUserId$.next(undefined)
       await this.apiServiceService.getUsers()
+      this.apiServiceService.responseOK.next('Пользователь успешно удален')
       this.closeModal()
     }
     

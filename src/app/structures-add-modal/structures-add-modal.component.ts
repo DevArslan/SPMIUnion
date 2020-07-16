@@ -25,9 +25,11 @@ export class StructuresAddModalComponent implements OnInit {
     const promise = await this.api.createDepartment(this.title, this.proforg)
     if(promise.error){
       this.error = promise.message
+      this.api.error.next(String(this.error))
     }else{
       await this.api.getDepartments()
-    this.closeModal()
+      this.api.responseOK.next('Структура успешно создана')
+      this.closeModal()
     }
     
   }

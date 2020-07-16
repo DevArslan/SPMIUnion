@@ -38,6 +38,9 @@ export class ApiServiceService {
   // Observable user data
   selectedUserId$ = new Subject<number>()
 
+  error = new Subject<string>()
+  responseOK = new Subject<string>()
+
   // Получение данных о структурах
   async getDepartments() {
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments'

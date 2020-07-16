@@ -32,7 +32,9 @@ export class SubDepartmentsAddModalComponent implements OnInit {
     const promise = await this.apiServiceService.createSubDepartment(this.title,this.departmentID)
     if(promise.error){
       this.error = promise.message
+      this.apiServiceService.error.next(String(this.error))
     }else{
+      this.apiServiceService.responseOK.next('Подразделение успешно создано')
       await this.apiServiceService.getDepartments()
       this.closeModal()
   }

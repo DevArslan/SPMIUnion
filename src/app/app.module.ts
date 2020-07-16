@@ -33,6 +33,9 @@ import { StructuresDeleteModalComponent } from './structures-delete-modal/struct
 import { SubDepartmentsDelModalComponent } from './sub-departments-del-modal/sub-departments-del-modal.component';
 import { SubDepartmentsEditModalComponent } from './sub-departments-edit-modal/sub-departments-edit-modal.component';
 import { ConvertToIconsPipe } from './pipes/convert-to-icons.pipe';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatSnackBarModule} from '@angular/material/snack-bar'
+
 
 const itemRoutes: Routes = [
   {
@@ -107,12 +110,16 @@ const appRouter: Routes = [
     StructuresDeleteModalComponent,
     SubDepartmentsDelModalComponent,
     SubDepartmentsEditModalComponent,
-    ConvertToIconsPipe
+    ConvertToIconsPipe,
+    
+    
   ],
   imports: [
     BrowserModule,
     RouterModule.forRoot(appRouter),
     FormsModule,
+    BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

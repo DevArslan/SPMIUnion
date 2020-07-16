@@ -84,7 +84,13 @@ export class StructuresCardComponent implements OnInit {
       structureName.setAttribute('readonly', '')
       structureName.setAttribute('size', String(Number(this.titleLength) * 1.05))
       structureName.blur()
-      await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
+      const promise = await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
+      if (promise.error) {
+        let error = promise.message
+        this.apiServiceService.error.next(String(error))
+      } else {
+        this.apiServiceService.responseOK.next('Название успешно изменено')
+      }
       structureNameP.style.display = 'block'
       structureName.style.display = 'none'
     } else {
@@ -103,14 +109,21 @@ export class StructuresCardComponent implements OnInit {
       proforgName.setAttribute('readonly', '')
       proforgName.setAttribute('size', String(Number(this.proforgNameLength) * 1.05))
       proforgName.blur()
-      await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
+      const promise = await this.apiServiceService.editStructure(this.selectedData.title, this.proforgName, this.selectedData.id)
+
+      if (promise.error) {
+        let error = promise.message
+        this.apiServiceService.error.next(String(error))
+
+      } else {
+        this.apiServiceService.responseOK.next('ФИО профорга успешно изменено')
+      }
       proforgNameP.style.display = 'block'
       proforgName.style.display = 'none'
-    }else{
+    } else {
       proforgNameP.style.display = 'block'
       proforgName.style.display = 'none'
     }
-    await this.apiServiceService.editStructure(this.selectedData.title, this.proforgName, this.selectedData.id)
 
 
   }
@@ -296,7 +309,7 @@ export class StructuresCardComponent implements OnInit {
 
             // Фильтрация подразделения под конкретную структуру
             this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
-            
+
             this.selectedSubDepartments.length = 0
             this.subDepartments.forEach((element: any) => {
               if (element.head_department_id == this.selectedData.id) {

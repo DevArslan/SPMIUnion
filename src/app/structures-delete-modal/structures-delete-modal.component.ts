@@ -31,11 +31,13 @@ export class StructuresDeleteModalComponent implements OnInit {
 
     if(promise.error){
       this.error = promise.message
+      this.api.error.next(String(this.error))
     }else{
       await this.api.getDepartments()
       const firstDepartmentId = this.api.departments[0].id
       console.log(firstDepartmentId)
       this.router.navigate(['main/structures/'+firstDepartmentId]);
+      this.api.responseOK.next('Структура успешно удалена')
       this.closeModal()
     }
 

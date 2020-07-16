@@ -38,11 +38,14 @@ export class SubDepartmentsEditModalComponent implements OnInit {
     const promise = await this.api.editSubDepartment(this.title, this.departmentID, this.subDepartmentId)
     if (promise.error) {
       this.error = promise.messsage
+      this.api.error.next(String(this.error))
     } else {
       await this.api.getDepartments()
+      this.api.responseOK.next('Подразделение успешно изменено')
       this.closeModal()
     }
-
+    
+    
 
     // Ниже штука, чтобы сразу отобразить изменения
     // this.structureRouting.postData$.next('')

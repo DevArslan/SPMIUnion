@@ -20,8 +20,11 @@ export class SubDepartmentsDelModalComponent implements OnInit {
     const promise = await this.api.deleteSubDepartment(this.subDepartmentId)
     if(promise.error){
       this.error = promise.message
+      this.api.error.next(String(this.error))
+      
     }else{
       await this.api.getDepartments()
+      this.api.responseOK.next('Поздразделение успешно удалено')
       this.closeModal()
     }
     

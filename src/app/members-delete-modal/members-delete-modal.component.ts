@@ -46,10 +46,12 @@ export class MembersDeleteModalComponent implements OnInit {
       selectAllCheckbox.checked = false
       if(promise.error){
         this.error = promise.message
+        this.apiServiceService.error.next(String(this.error))
       }else{
         this.childEvent.emit();
         const emptyArray = []
         this.apiServiceService.selectedMembersId$.next(emptyArray)
+        this.apiServiceService.responseOK.next('Участник успешно удален')
         this.closeModal()
         
       }
@@ -60,9 +62,11 @@ export class MembersDeleteModalComponent implements OnInit {
       selectAllCheckbox.checked = false
       if(promise.error){
         this.error = promise.message
+        this.apiServiceService.error.next(String(this.error))
       }else{
         this.childEvent.emit();
         this.apiServiceService.selectedMemberId$.next(undefined)
+        this.apiServiceService.responseOK.next('Участники успешно удалены')
         this.closeModal()
         
       }

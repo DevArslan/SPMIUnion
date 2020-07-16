@@ -65,6 +65,7 @@ export class MembersAddModalComponent implements OnInit {
     if (promise.error) {
       console.log(promise)
       this.error = promise.message;
+      this.apiServiceService.error.next(String(this.error))
 
     } else {
       // Снизу добавление участника в таблицу без обращения к серверу
@@ -89,6 +90,7 @@ export class MembersAddModalComponent implements OnInit {
       //     console.log(tableRowChild)
       // }
       // tableBody.appendChild(tableRow)
+      this.apiServiceService.responseOK.next('Участник успешно добавлен')
       this.childEvent.emit();
       this.closeModal()
     }
@@ -164,8 +166,9 @@ export class MembersAddModalComponent implements OnInit {
     this.apiServiceService.membersAKPS$.subscribe((dataFromAPI: any) => {
       if (dataFromAPI.error) {
         this.error = dataFromAPI.message
+        this.apiServiceService.error.next(String(this.error))
       } else {
-        this.members = dataFromAPI
+        this.members = dataFromAPI 
       }
       this.membersDropdown = true
     })

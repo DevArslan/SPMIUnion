@@ -26,8 +26,10 @@ export class UsersAddModalComponent implements OnInit {
     const promise = await this.apiServiceService.createUser(this.username, this.login, this.password)
     if (promise.error) {
       this.error = promise.message
+      this.apiServiceService.error.next(String(this.error))
     } else {
       await this.apiServiceService.getUsers()
+      this.apiServiceService.responseOK.next('Пользователь успешно создан')
       this.closeModal()
     }
 

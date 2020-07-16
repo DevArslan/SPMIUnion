@@ -66,9 +66,11 @@ export class MembersEditModalComponent implements OnInit {
     const promise = await this.API.editMember(this.name,this.card,this.subdepartmentID,this.isStudent,this.memberID)
       if(promise.error){
         this.error = promise.message
+        this.API.error.next(String(this.error))
       }else{
         this.childEvent.emit();
         this.API.selectedMemberId$.next(undefined)
+        this.API.responseOK.next('Участник успешно изменен')
         this.closeModal()
       }
   }
