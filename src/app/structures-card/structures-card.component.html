@@ -1,7 +1,7 @@
 <div class="structureCard">
   <div class="structureCard-name">
     <textarea class="textareaCard"   readonly id="structureName" maxlength="120"  value="{{selectedData.title}}" [(ngModel)]="structureName" (blur)="this.saveStructureName()" ></textarea>
-    <p class="textareaCard"  readonly id="structureNameP" maxlength="120">{{selectedData.title}}</p>
+    <p class="textareaCard"  readonly id="structureNameP" maxlength="120">{{structureName}}</p>
     <i class="editIcon" (click)="showEditStructureNameForm()"></i>
   </div>
   <!-- <div class="saveForm" id="structureNameInput" action="" [ngClass]="{dropdown: structureNameInputDrop}">
@@ -12,7 +12,7 @@
     <div class="structureCard-organizer">
       <span>Профорг:&nbsp;</span>
       <textarea class="textareaProf" readonly id="proforgName" maxlength="120" contenteditable value="{{selectedData.proforg}}" [(ngModel)]="proforgName" (blur)="this.saveProforgName()"></textarea>
-      <p class="textareaProf" readonly id="proforgNameP" maxlength="120" contenteditable >{{selectedData.proforg}}</p>
+      <p class="textareaProf" readonly id="proforgNameP" maxlength="120" contenteditable >{{proforgName}}</p>
       <i class="editIcon" (click)="showEditProforgNameForm()"></i>
     </div>
     <!-- <div class="saveForm" id="proforgNameInput" action="" [ngClass]="{dropdown: proforgNameInputDrop}">
