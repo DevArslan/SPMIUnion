@@ -1,10 +1,8 @@
 <div class="structureCard">
   <div class="structureCard-name">
-    <textarea class="textareaCard"  readonly id="structureName" maxlength="120"  value="{{selectedData.title}}" [(ngModel)]="structureName" (blur)="this.saveStructureName()" ></textarea>
+    <textarea class="textareaCard"   readonly id="structureName" maxlength="120"  value="{{selectedData.title}}" [(ngModel)]="structureName" (blur)="this.saveStructureName()" ></textarea>
     <p class="textareaCard"  readonly id="structureNameP" maxlength="120">{{selectedData.title}}</p>
     <i class="editIcon" (click)="showEditStructureNameForm()"></i>
-    
-    
   </div>
   <!-- <div class="saveForm" id="structureNameInput" action="" [ngClass]="{dropdown: structureNameInputDrop}">
     <input type="text"  placeholder="Введите название структуры" [(ngModel)]="structureName">

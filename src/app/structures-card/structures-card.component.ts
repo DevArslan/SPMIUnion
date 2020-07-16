@@ -36,6 +36,8 @@ export class StructuresCardComponent implements OnInit {
   proforgNameLength: string
   emptyArray: [] = []
   dropdown: boolean = false;
+  notEditStructureName: string = ''
+  notEditProforgName: string = ''
 
   stats: any[] = []
   datesForDiagram: string[] = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
@@ -74,20 +76,29 @@ export class StructuresCardComponent implements OnInit {
 
     this.dynamics.push({ 'subID': subID, 'dynamic': dynamic })
   }
+  // check(e) {
+  //   if (Number.isInteger(Number(e.currentTarget.value.slice(-1))) == true) {
+  //     e.currentTarget.value = e.currentTarget.value.slice(0, -1)
+  //     console.log(e.currentTarget.value)
+  //   }
+
+  // }
 
   async saveStructureName() {
     const structureName = <HTMLInputElement>document.getElementById('structureName')
     const structureNameP = document.getElementById('structureNameP')
     if (this.structureName) {
-      this.selectedData.title = this.structureName
+      
       this.titleLength = String(structureName.value.length)
       structureName.setAttribute('readonly', '')
       structureName.setAttribute('size', String(Number(this.titleLength) * 1.05))
       structureName.blur()
-      const promise = await this.apiServiceService.editStructure(this.structureName, this.selectedData.proforg, this.selectedData.id)
+      const promise = await this.apiServiceService.editStructure(this.structureName, this.proforgName, this.selectedData.id)
       if (promise.error) {
         let error = promise.message
         this.apiServiceService.error.next(String(error))
+        this.selectedData.title = this.notEditStructureName
+        this.structureName = this.notEditStructureName
       } else {
         this.apiServiceService.responseOK.next('Название успешно изменено')
       }
@@ -104,16 +115,18 @@ export class StructuresCardComponent implements OnInit {
     const proforgName = <HTMLInputElement>document.getElementById('proforgName')
     const proforgNameP = document.getElementById('proforgNameP')
     if (this.proforgName) {
-      this.selectedData.proforg = this.proforgName
       this.proforgNameLength = String(proforgName.value.length)
       proforgName.setAttribute('readonly', '')
       proforgName.setAttribute('size', String(Number(this.proforgNameLength) * 1.05))
       proforgName.blur()
-      const promise = await this.apiServiceService.editStructure(this.selectedData.title, this.proforgName, this.selectedData.id)
+      const promise = await this.apiServiceService.editStructure(this.structureName, this.proforgName, this.selectedData.id)
 
       if (promise.error) {
         let error = promise.message
+  
         this.apiServiceService.error.next(String(error))
+        this.selectedData.proforg = this.notEditProforgName
+        this.proforgName = this.notEditProforgName
 
       } else {
         this.apiServiceService.responseOK.next('ФИО профорга успешно изменено')
@@ -288,6 +301,10 @@ export class StructuresCardComponent implements OnInit {
           if (params.id == element.id) {
             this.equalID = true
             this.selectedData = element;
+            this.proforgName = this.selectedData.proforg
+            this.structureName = this.selectedData.title
+            this.notEditStructureName = this.selectedData.title
+            this.notEditProforgName = this.selectedData.proforg
             try {
               this.titleLength = String(this.selectedData.title.length * 20)
               const structureName = <HTMLInputElement>document.getElementById('structureName')
