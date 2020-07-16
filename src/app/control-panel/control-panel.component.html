@@ -18,7 +18,7 @@
         </div>
         <app-structures-nav class="appStructuresNav" [ngClass]="{'dropdown': structureDropdown}"></app-structures-nav>
       </li>
-      <li class="navItem">
+      <li class="navItem" *ngIf="roleIsAdmin">
         <div class="navItem-title">
           <i class="usersIcon"></i>
           <a [routerLink]="['users']">Пользователи</a>
