@@ -193,11 +193,10 @@
         transition: all 0.3s;
         max-height: 0;
         display: block;
-        overflow-y: scroll;
         opacity: 0;
       }
       .dropdownTableActive {
-        max-height: 250px;
+        max-height: 200px;
         opacity: 1;
       }
     }

@@ -1,7 +1,38 @@
-table{
+.tableWrapper{
   margin-top: 1rem;
   width: 100%;
   border-collapse: collapse;
+  margin-left: -0.5rem;
+  .tableHeader{
+    padding-left: 0.5rem;
+    table{
+      width: 100%;
+      tr{
+        padding: 1rem 0 1rem 0; 
+      }
+    }
+    
+  }
+  .tableBody{
+    direction:rtl;
+    overflow-y: scroll;
+    padding-left: 0.5rem;
+    max-height: 20vh;
+    border: none;
+    margin-left: -12px;
+    table{
+      width: 100%;
+      direction: ltr;
+      tr{
+        border: 1px solid #ccc;
+        td{
+          padding: 1rem 0 1rem 0;
+          word-wrap: break-word;
+        }
+      }
+      
+    }
+  }
   .subDepartmentDelModal{
     display: none;
   }
@@ -12,9 +43,9 @@ table{
     text-align: left;
   }
   td{
-    padding: 1rem 0 1rem 0;
+    
     font-weight: normal;
-    border-bottom: 1px solid #ccc;
+    
   }
   .button{
     opacity: 0.85;

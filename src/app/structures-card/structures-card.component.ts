@@ -120,7 +120,7 @@ export class StructuresCardComponent implements OnInit {
       proforgName.setAttribute('size', String(Number(this.proforgNameLength) * 1.05))
       proforgName.blur()
       const promise = await this.apiServiceService.editStructure(this.structureName, this.proforgName, this.selectedData.id)
-
+      
       if (promise.error) {
         let error = promise.message
   
