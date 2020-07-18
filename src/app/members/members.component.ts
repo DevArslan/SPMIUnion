@@ -28,6 +28,7 @@ export class MembersComponent implements OnInit {
   memberID: number
 
   error: string = 'Сначала выберите участника'
+  
 
   @ViewChild('inputPage') input: ElementRef;
   @ViewChild('usernameInput') inputUsername: ElementRef;
@@ -46,7 +47,7 @@ export class MembersComponent implements OnInit {
   }
 
   getMembersByPage() {
-
+    this.apiServiceService.selectedAllmembers.next(true)
     this.apiServiceService.getMembersByPage(this.rowsCount, this.pageNumber, this.username)
 
   }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from "@angular/core";
 import { ApiServiceService } from "src/app/shared/api-service.service";
+import { subscribeOn } from 'rxjs/operators';
 
 
 @Component({
@@ -11,7 +12,7 @@ import { ApiServiceService } from "src/app/shared/api-service.service";
 export class MembersTableComponent implements OnInit {
 
   @Input() data: {}[] = []
-
+  selectedAll: boolean =  true
   constructor(private api: ApiServiceService) { }
 
   titleForDeleteModal: string = ''
@@ -20,12 +21,12 @@ export class MembersTableComponent implements OnInit {
   selectedMembersId: number[] = []
   selectedMembersId2: number[] = []
 
-  selectedAll: boolean = false
+
 
   membersCountForEdit: boolean = false
   selectAllMembers(event) {
     this.selectedMembersId.length = 0
-    // this.selectedAll = !this.selectedAll
+    this.selectedAll = true
     const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
     const checkboxes = document.querySelectorAll('.memberCheckbox')
     if (selectAllCheckbox.checked == true) {
@@ -50,7 +51,9 @@ export class MembersTableComponent implements OnInit {
   }
 
   selectMember(event) {
-    
+    this.selectedAll = false
+    const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+    selectAllCheckbox.checked = false
     console.log('NOcheckbox')
     const rows = document.querySelectorAll('.membersTableDataRow')
     rows.forEach(element => {
@@ -81,35 +84,20 @@ export class MembersTableComponent implements OnInit {
     event.stopPropagation()
   }
   selectMembersByCheckbox(event) {
-    
+
     let flag = 0
     console.log('checkbox')
     const selectedCheckbox = event.currentTarget.value
     if (event.currentTarget.checked == true) {
       event.currentTarget.parentNode.parentNode.classList.add('selectedRow')
 
+
     } else if (event.currentTarget.parentNode.parentNode.id != 'selectedMember') {
+      this.selectedAll = false
+      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+      selectAllCheckbox.checked = false
       event.currentTarget.parentNode.parentNode.classList.remove('selectedRow')
     }
-
-
-
-    // if (this.selectedMembersId.length != 0) {
-    //   this.selectedMembersId.forEach((item, index, object) => {
-
-    //     if(selectedCheckbox != item){
-    //       if (flag == 0) {
-    //         flag = 1
-    //         this.selectedMembersId.push(selectedCheckbox)
-    //       }
-    //     }else{
-    //       object.splice(index, 1);
-    //     }
-
-    //   })
-    // } else {
-    //   this.selectedMembersId.push(selectedCheckbox)
-    // }
     this.selectedMembersId.length = 0
     const checkboxes = document.querySelectorAll('.memberCheckbox')
     for (let index = 0; index < checkboxes.length; index++) {
@@ -128,7 +116,10 @@ export class MembersTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    this.api.selectedAllmembers.subscribe((data)=>{
+      this.selectedAll = data
+      console.log(this.selectedAll)
+    })
 
   }
 
