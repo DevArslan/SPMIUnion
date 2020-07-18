@@ -32,12 +32,14 @@ export class MembersTableComponent implements OnInit {
       for (let index = 0; index < checkboxes.length; index++) {
         const element = <HTMLInputElement>checkboxes[index];
         element.checked = true
+        element.parentElement.parentElement.classList.add('selectedRow')
         this.selectedMembersId.push(Number(element.value))
       }
     } else {
       for (let index = 0; index < checkboxes.length; index++) {
         const element = <HTMLInputElement>checkboxes[index];
         element.checked = false
+        element.parentElement.parentElement.classList.remove('selectedRow')
         this.selectedMembersId.length = 0
       }
     }
@@ -48,6 +50,8 @@ export class MembersTableComponent implements OnInit {
   }
 
   selectMember(event) {
+    
+    console.log('NOcheckbox')
     const rows = document.querySelectorAll('.membersTableDataRow')
     rows.forEach(element => {
       element.classList.remove('selectedRow')
@@ -77,7 +81,9 @@ export class MembersTableComponent implements OnInit {
     event.stopPropagation()
   }
   selectMembersByCheckbox(event) {
+    
     let flag = 0
+    console.log('checkbox')
     const selectedCheckbox = event.currentTarget.value
     if (event.currentTarget.checked == true) {
       event.currentTarget.parentNode.parentNode.classList.add('selectedRow')

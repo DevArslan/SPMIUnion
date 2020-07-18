@@ -1,5 +1,5 @@
 <div class="tableWrapper">
-  <table cellspacing="0" cellpadding="0" style="border: none; border-bottom: 1px solid #ccc;">
+  <table cellspacing="0" cellpadding="0" style="border: none;">
     <tr style="border: none;">
       <td style="border: none;">
         <table class="tableHeader" cellspacing="0" cellpadding="1">
@@ -12,8 +12,9 @@
           <col width="10%">
           <tr>
             <th>
-              <input  type="checkbox" id="selectAllCheckbox"
+              <input  type="checkbox" id="selectAllCheckbox" name="selectAllCheckbox" class="selectAllCheckbox"
               (click)=selectAllMembers($event)>
+              <label for="selectAllCheckbox"></label>
             </th>
             <th>id</th>
             <th>ФИО</th>
@@ -43,8 +44,9 @@
               <tr  *ngFor="let item of data" class="membersTableDataRow unselectable" (click)="selectMember($event)"  
                 attr.data-member-id={{item.id}}>
                 <td>
-                  <input class="memberCheckbox" type="checkbox" value="{{item.id}}"
+                  <input class="memberCheckbox" type="checkbox" value="{{item.id}}" name="memberCheckbox" id="memberCheckbox+{{item.id}}"
                     (click)=selectMembersByCheckbox($event)>
+                    <label for="memberCheckbox+{{item.id}}"></label>
                 </td>
                 <td>{{item.id}}</td>
                 <td>{{item.name}}</td>

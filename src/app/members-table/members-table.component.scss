@@ -9,6 +9,10 @@
   //   user-select: none;           /* Non-prefixed version, currently
   //                                   not supported by any browser */
   // }
+  input[type="checkbox"] {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
   table {
     width: 100%;
     border-collapse: collapse;
@@ -16,6 +20,43 @@
     text-align: left;
     .tableHeader {
       width: calc(100% - 12px);
+      tr {
+        th {
+          label{
+            width: 1rem;
+            height: 1rem;
+          }
+          .selectAllCheckbox {
+            position: absolute;
+            z-index: -1;
+            opacity: 0;
+          }
+          .selectAllCheckbox + label {
+            display: inline-flex;
+            align-items: center;
+            user-select: none;
+          }
+          .selectAllCheckbox + label::before {
+            content: "";
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            flex-shrink: 0;
+            flex-grow: 0;
+            border: 1px solid #adb5bd;
+            border-radius: 0.15rem;
+            
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 50% 50%;
+          }
+          .selectAllCheckbox:checked + label::before {
+            border-color: #0b76ef;
+            background-color: #0b76ef;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+          }
+        }
+      }
     }
     .tableBody {
       overflow-y: scroll;
@@ -25,11 +66,49 @@
         :nth-child(1) {
           border-top: none;
         }
+        tr {
+          td {
+            label{
+              width: 1rem;
+              height: 1rem;
+            }
+            .memberCheckbox {
+              position: absolute;
+              z-index: 999;
+              opacity: 0;
+            }
+            .memberCheckbox + label {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              user-select: none;
+            }
+            .memberCheckbox + label::before {
+              content: "";
+              display: inline-block;
+              width: 1rem;
+              height: 1rem;
+              flex-shrink: 0;
+              flex-grow: 0;
+              border: 1px solid #adb5bd;
+              border-radius: 0.15rem;
+              
+              background-repeat: no-repeat;
+              background-position: center center;
+              background-size: 50% 50%;
+            }
+            .memberCheckbox:checked + label::before {
+              border-color: #0b76ef;
+              background-color: #0b76ef;
+              background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23fff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3e%3c/svg%3e");
+            }
+          }
+        }
       }
 
       td {
         padding: 1rem;
-        i{
+        i {
           background-image: url("src/assets/icons/close-24pxRed.svg");
           background-repeat: no-repeat;
           background-position: center;
@@ -60,14 +139,14 @@
       // border-left: 1px solid #ccc;
     }
     .selectedRow {
-      background-color: #D5EAEE;
-      //  
+      background-color: #d5eaee;
+      //
     }
     .membersTableDataRow {
       cursor: pointer;
     }
     .membersTableDataRow:hover {
-      background-color: #D5EAEE;
+      background-color: #d5eaee;
     }
   }
 }
