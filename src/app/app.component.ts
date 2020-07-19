@@ -10,10 +10,10 @@ import { ApiServiceService } from "src/app/shared/api-service.service";
 export class AppComponent {
   title = 'SPMIUnion';
 
-  constructor(private apiServiceService: ApiServiceService) {}
+  constructor(private API: ApiServiceService) {}
 
   ngOnInit(): void {
-    this.apiServiceService.getDepartments()
+    this.API.getDepartments()
   }
   ngOnChanges(): void {
     

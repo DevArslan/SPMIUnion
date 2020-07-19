@@ -19,7 +19,7 @@ import { MembersTableComponent } from './main/pages/members/members-table/member
 import { MembersAddModalComponent } from './main/pages/members/modals/members-add-modal/members-add-modal.component';
 import { CloseButtonComponent } from './ui-components/close-button/close-button.component';
 import { FilterPipe } from './pipes/filter.pipe';
-import { StructuresNavComponent } from './main/pages/structures/structures-nav/structures-nav.component';
+import { StructuresNavComponent } from './nav/structures-nav/structures-nav.component';
 import { StructuresNavFilterPipe } from './pipes/structures-nav-filter.pipe';
 import { StructuresTableComponent } from './main/pages/structures/structures-table/structures-table.component';
 import { UsersComponent } from './main/pages/users/users.component';
@@ -33,7 +33,7 @@ import { UsersEditModalComponent } from './main/pages/users/modals/users-edit-mo
 import { StructuresDeleteModalComponent } from './main/pages/structures/modals/structures-delete-modal/structures-delete-modal.component';
 import { SubDepartmentsDelModalComponent } from './main/pages/structures/subdepartments/modals/sub-departments-del-modal/sub-departments-del-modal.component';
 import { SubDepartmentsEditModalComponent } from './main/pages/structures/subdepartments/modals/sub-departments-edit-modal/sub-departments-edit-modal.component';
-import { ConvertToIconsPipe } from './pipes/convert-to-icons.pipe';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatSnackBarModule} from '@angular/material/snack-bar'
 
@@ -68,7 +68,6 @@ import {MatSnackBarModule} from '@angular/material/snack-bar'
     StructuresDeleteModalComponent,
     SubDepartmentsDelModalComponent,
     SubDepartmentsEditModalComponent,
-    ConvertToIconsPipe,
     
     
   ],

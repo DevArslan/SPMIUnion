@@ -164,11 +164,7 @@ export class MembersComponent implements OnInit {
     if (e.currentTarget.value === '0') {
       e.currentTarget.value = '1'
     }
-    // setTimeout((()=>{
-    //   e.currentTarget.value = '1'
-    // }),1000)
-    // e.value = e.value.replace(/[^0-9.]/g, ''); 
-    // e.value = e.value.replace(/(\..*)\./g, '$1');
+
   }
 
   ngOnInit(): void {
@@ -186,18 +182,6 @@ export class MembersComponent implements OnInit {
 
     })
 
-
-    // this.apiServiceService.departments$.subscribe((departments) => {
-    //   this.dataForModal = this.apiServiceService.departments
-    //   this.apiServiceService.departments.forEach((department: any) => {
-    //     this.membersCount += Number(department.members_total)
-
-    //   })
-    //   console.log(this.membersCount)
-    //   if (!this.maxPageNumber) {
-    //     this.maxPageNumber = Math.ceil(this.membersCount / this.rowsCount)
-    //   }
-    // })
     this.apiServiceService.selectedMemberId$.subscribe((id) => {
       this.memberID = id
       if (this.memberID) {
@@ -215,8 +199,6 @@ export class MembersComponent implements OnInit {
       }
 
     })
-
-
 
     this.apiServiceService.departments$.subscribe((dataFromApi) => {
       this.dataForModal = dataFromApi

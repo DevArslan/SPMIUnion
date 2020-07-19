@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import Chart from 'chart.js';
-import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, of } from 'rxjs';
@@ -76,19 +75,12 @@ export class StructuresCardComponent implements OnInit {
 
     this.dynamics.push({ 'subID': subID, 'dynamic': dynamic })
   }
-  // check(e) {
-  //   if (Number.isInteger(Number(e.currentTarget.value.slice(-1))) == true) {
-  //     e.currentTarget.value = e.currentTarget.value.slice(0, -1)
-  //     console.log(e.currentTarget.value)
-  //   }
-
-  // }
 
   async saveStructureName() {
     const structureName = <HTMLInputElement>document.getElementById('structureName')
     const structureNameP = document.getElementById('structureNameP')
     if (this.structureName) {
-      
+
       this.titleLength = String(structureName.value.length)
       structureName.setAttribute('readonly', '')
       structureName.setAttribute('size', String(Number(this.titleLength) * 1.05))
@@ -120,10 +112,10 @@ export class StructuresCardComponent implements OnInit {
       proforgName.setAttribute('size', String(Number(this.proforgNameLength) * 1.05))
       proforgName.blur()
       const promise = await this.apiServiceService.editStructure(this.structureName, this.proforgName, this.selectedData.id)
-      
+
       if (promise.error) {
         let error = promise.message
-  
+
         this.apiServiceService.error.next(String(error))
         this.selectedData.proforg = this.notEditProforgName
         this.proforgName = this.notEditProforgName
@@ -140,9 +132,7 @@ export class StructuresCardComponent implements OnInit {
 
 
   }
-  // showEditStructureNameForm() {
-  //   this.structureNameInputDrop = !this.structureNameInputDrop
-  // }
+
   showEditStructureNameForm() {
     const structureNameP = document.getElementById('structureNameP')
     const structureName = <HTMLInputElement>document.getElementById('structureName')
@@ -159,9 +149,7 @@ export class StructuresCardComponent implements OnInit {
     proforgName.removeAttribute('readonly')
     proforgName.focus()
   }
-  // showEditProforgNameForm() {
-  //   this.proforgNameInputDrop = !this.proforgNameInputDrop
-  // }
+
 
   showAddModal() {
     const modal = document.getElementById('subDepartmentAddModal')
@@ -178,12 +166,10 @@ export class StructuresCardComponent implements OnInit {
 
 
   updateCharts(structureChart, structureChart2) {
-
     // Обнуление массивов с данными подразделений
     this.selectedDataStructures.length = 0
     this.selectedDataStructuresUsers.length = 0
 
-    // this.datesForDiagram.length = 0
     this.currentValueForDiagram.length = 0
     this.diagramData = { '01': 0, '02': 0, '03': 0, '04': 0, '05': 0, '06': 0, '07': 0, '08': 0, '09': 0, '10': 0, '11': 0, '12': 0 }
     // Получение массивов с данным подразделений
@@ -191,40 +177,44 @@ export class StructuresCardComponent implements OnInit {
       this.selectedDataStructures.push(element.title)
       this.selectedDataStructuresUsers.push(element.members_total)
     });
-    // !!! Поменять переменную, все работает без сортировки
-    let sortedByIdStats = this.stats
-
+    // Заполнение массива данных для диаграммы
     if (this.stats.length != 0) {
-      if (sortedByIdStats.length != 1) {
-        for (let index = 1; index < sortedByIdStats.length; index++) {
+
+      if (this.stats.length != 1) {
+
+        for (let index = 1; index < this.stats.length; index++) {
 
           for (const key in this.diagramData) {
-            let month = sortedByIdStats[index].date_time.slice(3, 5)
-            if (sortedByIdStats[index].subdepartment_id != sortedByIdStats[index - 1].subdepartment_id) {
-
+            let month = this.stats[index].date_time.slice(3, 5)
+            // Так как stats отсортированы по id подразделений и времени, то мы можем забирать количество участников конкретного подразделения в момент, когда следующий id будет другого подразделения
+            if (this.stats[index].subdepartment_id != this.stats[index - 1].subdepartment_id) {
+              // Если месяц записи в подразделении совпадает с именем свойства diagramData, то прибавляем его к свойству объекта diagramData
               if (month == key) {
 
-                this.diagramData[key] += (sortedByIdStats[index - 1].current_total)
+                this.diagramData[key] += (this.stats[index - 1].current_total)
 
               }
             }
-            if (index == sortedByIdStats.length - 1) {
+            // Последнюю запись просто прибавляем, так как не с чем сравнить
+            if (index == this.stats.length - 1) {
 
               if (month == key) {
 
-                this.diagramData[key] += (sortedByIdStats[index].current_total)
+                this.diagramData[key] += (this.stats[index].current_total)
 
               }
             }
           }
 
         }
-      } else {
+      }
+      // Если в массиве только один элемент
+      else {
 
         for (const key in this.diagramData) {
-          let month = sortedByIdStats[0].date_time.slice(3, 5)
+          let month = this.stats[0].date_time.slice(3, 5)
           if (month == key) {
-            this.diagramData[key] += (sortedByIdStats[0].current_total)
+            this.diagramData[key] += (this.stats[0].current_total)
           }
         }
 
@@ -303,6 +293,7 @@ export class StructuresCardComponent implements OnInit {
             this.selectedData = element;
             this.proforgName = this.selectedData.proforg
             this.structureName = this.selectedData.title
+            // Костыль для редактирования названия структуры и имени профорга. При неправильном вводе, возвращается не изменённое значение
             this.notEditStructureName = this.selectedData.title
             this.notEditProforgName = this.selectedData.proforg
             try {

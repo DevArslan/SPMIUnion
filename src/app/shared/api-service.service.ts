@@ -16,9 +16,7 @@ export class ApiServiceService {
   loadingCompleted: boolean
   membersAKPS: any
   stats: any
-  // structureForEditModal: any
-  // selectedUserId: any
-
+  
   users$ = new Subject<{}[]>()
   departments$ = new Subject<{}[]>();
   members$ = new Subject<{}[]>();

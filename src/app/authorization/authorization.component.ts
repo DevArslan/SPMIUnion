@@ -47,7 +47,6 @@ export class AuthorizationComponent implements OnInit {
       }
       const utf8_info = utf8.encode(`${data.login}:${data.password}`)
       const token = base64.encode(utf8_info)
-      // const token = window.btoa(`${data.login}:${data.password}`);
       fetch(url, {
         method: 'GET',
         headers: {
@@ -58,6 +57,7 @@ export class AuthorizationComponent implements OnInit {
         .then(res => res.json())
         .catch(() => this.error = 'Введен неверный пароль или логин')
         .then(jsonData => {
+          // Если стоит галочка на "Запомнить меня", то записываю токен в sessionStorage, иначе в localStorage
           if (data.remember == true) {
             console.log(data.remember)
             this.authService.profileData = jsonData

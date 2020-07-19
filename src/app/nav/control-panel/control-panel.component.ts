@@ -12,6 +12,7 @@ export class ControlPanelComponent implements OnInit {
   roleIsAdmin: boolean
 
   ngOnInit(): void {
+    // Проверка роли пользователя, если администратор, то доступны все страницы
     if(this.authService.loginData.role == 'Administrator'){
       this.roleIsAdmin = true
     }

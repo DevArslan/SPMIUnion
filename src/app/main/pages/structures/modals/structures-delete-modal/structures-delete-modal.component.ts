@@ -40,12 +40,6 @@ export class StructuresDeleteModalComponent implements OnInit {
       this.api.responseOK.next('Структура успешно удалена')
       this.closeModal()
     }
-
-    
-    
-
-    // Ниже штука, чтобы сразу отобразить изменения
-    // this.structureRouting.postData$.next('')
   }
 
 }
