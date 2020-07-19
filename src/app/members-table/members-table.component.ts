@@ -21,12 +21,14 @@ export class MembersTableComponent implements OnInit {
   selectedMembersId: number[] = []
   selectedMembersId2: number[] = []
 
-
+  checkboxes: number
+  checkedCheckboxes: number
 
   membersCountForEdit: boolean = false
   selectAllMembers(event) {
     this.selectedMembersId.length = 0
     this.selectedAll = true
+    this.checkedCheckboxes = 0
     const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
     const checkboxes = document.querySelectorAll('.memberCheckbox')
     if (selectAllCheckbox.checked == true) {
@@ -35,6 +37,7 @@ export class MembersTableComponent implements OnInit {
         element.checked = true
         element.parentElement.parentElement.classList.add('selectedRow')
         this.selectedMembersId.push(Number(element.value))
+        this.checkedCheckboxes += 1
       }
     } else {
       for (let index = 0; index < checkboxes.length; index++) {
@@ -43,6 +46,7 @@ export class MembersTableComponent implements OnInit {
         element.parentElement.parentElement.classList.remove('selectedRow')
         this.selectedMembersId.length = 0
       }
+      this.checkedCheckboxes = 0
     }
 
     console.log(this.selectedMembersId)
@@ -54,9 +58,8 @@ export class MembersTableComponent implements OnInit {
     this.selectedAll = false
     const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
     selectAllCheckbox.checked = false
-    console.log('NOcheckbox')
     const rows = document.querySelectorAll('.membersTableDataRow')
-    rows.forEach(element => {
+    rows.forEach(element => {this.checkedCheckboxes = 0
       element.classList.remove('selectedRow')
       element.id = null
     });
@@ -80,20 +83,20 @@ export class MembersTableComponent implements OnInit {
     this.titleForDeleteModal = 'Удалить участника'
     this.api.titleForDeleteModal$.next(this.titleForDeleteModal)
     this.api.selectedMemberId$.next(this.selectedMemberId)
-
+    this.checkedCheckboxes = 1
+    if(this.checkedCheckboxes == 1 || this.checkedCheckboxes == 0){
+      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+      selectAllCheckbox.checked = false
+      this.selectedAll = true
+    }
     event.stopPropagation()
   }
   selectMembersByCheckbox(event) {
-
-    let flag = 0
-    console.log('checkbox')
+    this.checkedCheckboxes = 0
     const selectedCheckbox = event.currentTarget.value
     if (event.currentTarget.checked == true) {
       event.currentTarget.parentNode.parentNode.classList.add('selectedRow')
-
-
     } else if (event.currentTarget.parentNode.parentNode.id != 'selectedMember') {
-      this.selectedAll = false
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
       selectAllCheckbox.checked = false
       event.currentTarget.parentNode.parentNode.classList.remove('selectedRow')
@@ -103,10 +106,18 @@ export class MembersTableComponent implements OnInit {
     for (let index = 0; index < checkboxes.length; index++) {
       const element = <HTMLInputElement>checkboxes[index];
       if (element.checked) {
+        this.checkedCheckboxes +=1
         this.selectedMembersId.push(Number(element.value))
       }
     }
 
+    if(this.checkedCheckboxes > 1){
+      this.selectedAll = false
+    }else if(this.checkedCheckboxes == 1 || this.checkedCheckboxes == 0){
+      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+      selectAllCheckbox.checked = false
+      this.selectedAll = true
+    }
 
     this.titleForDeleteModal = 'Удалить участников'
     this.api.titleForDeleteModal$.next(this.titleForDeleteModal)
