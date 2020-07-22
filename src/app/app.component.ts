@@ -1,21 +1,19 @@
 import { Component } from '@angular/core';
-import { ApiServiceService } from "src/app/shared/api-service.service";
-
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   title = 'SPMIUnion';
 
-  constructor(private API: ApiServiceService) {}
+  /* NOTE: getDepartments() должен выполняться только в защищенном модуле, т.е. его
+  нужно вызвать в main.component */
+  constructor() {}
 
-  ngOnInit(): void {
-    this.API.getDepartments()
-  }
-  ngOnChanges(): void {
-    
-  }
+  /* NOTE: Неиспользуемый код лучше убирать */
+  // ngOnChanges(): void {
+
+  // }
 }

@@ -1,90 +1,65 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from 'src/app/shared/auth.service'
-import * as base64 from "base-64"
-import * as utf8 from "utf8"
+import { AuthService } from 'src/app/shared/auth.service';
+
 @Component({
   selector: 'app-authorization',
   templateUrl: './authorization.component.html',
-  styleUrls: ['./authorization.component.scss']
+  styleUrls: ['./authorization.component.scss'],
 })
 export class AuthorizationComponent implements OnInit {
+  /* NOTE: Лучше переменные объявлять в наччале Компонента */
+  login: string = '';
+  password: string = '';
+  remember: boolean = false;
 
-  constructor(private router: Router, private authService: AuthService) { }
+  /* NOTE: Посмотри Reactive Forms https://angular.io/guide/reactive-forms */
+  error: string = '';
+  loginError: string = '';
+  passwordError: string = '';
+
+  constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
-    if(this.authService.IsAuthenticated()){
-      this.router.navigate(['main/members'])
+    if (this.authService.isAuthenticated()) {
+      this.router.navigate(['main/members']);
     }
   }
 
-  login: string = ''
-  password: string = ''
-  remember: boolean = false
-
-  error: string = ''
-  loginError: string = ''
-  passwordError: string = ''
-
   resetErrors() {
-    this.loginError = ' '
-    this.passwordError = ' '
-    this.error = ' '
+    this.loginError = ' ';
+    this.passwordError = ' ';
+    this.error = ' ';
   }
 
   auth() {
+    /* NOTE: Раз вынес в отдельную функцию (что правильно), то нужно и использовать) */
+    this.resetErrors();
+    // this.loginError = ''
+    // this.passwordError = ''
+    // this.error = ''
 
-    this.loginError = ''
-    this.passwordError = ''
-    this.error = ''
-    if (this.login && this.password) {
-      const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/login'
-
-      const data = {
-        login: this.login,
-        password: this.password,
-        remember: this.remember
-      }
-      const utf8_info = utf8.encode(`${data.login}:${data.password}`)
-      const token = base64.encode(utf8_info)
-      fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Basic ${token}`
-        },
-      })
-        .then(res => res.json())
-        .catch(() => this.error = 'Введен неверный пароль или логин')
-        .then(jsonData => {
-          // Если стоит галочка на "Запомнить меня", то записываю токен в sessionStorage, иначе в localStorage
-          if (data.remember == true) {
-            console.log(data.remember)
-            this.authService.profileData = jsonData
-            localStorage.setItem('jsonData', JSON.stringify(jsonData))
-            localStorage.setItem('token', token)
-          } else {
-            this.authService.profileData = jsonData
-            sessionStorage.setItem('jsonData', JSON.stringify(jsonData))
-            sessionStorage.setItem('token', token)
-          }
-        })
-        .then(() => {
-          if (this.authService.IsAuthenticated()) {
-            this.router.navigate(['main/members']);
-          }
-        })
-    }
     if (!this.login) {
-      this.loginError = 'Требуется указать имя'
+      this.loginError = 'Требуется указать имя';
     }
     if (!this.password) {
-      this.passwordError = 'Требуется указать пароль'
+      this.passwordError = 'Требуется указать пароль';
     }
-    setTimeout(() => {
-      this.loginError = ''
-      this.passwordError = ''
-      this.error = ''
-    }, 2500)
+
+    if (this.login && this.password) {
+      /* NOTE: Поскольку метод login теперь в сервисе, то вызываем метод */
+      this.authService
+        .login(this.login, this.password, this.remember)
+        .subscribe(
+          (res) => this.router.navigate(['main/members']),
+          (err) => {
+            this.error = 'Введен неверный пароль или логин';
+            /* NOTE: Ошибка стирается только после того как придет ответ от сервака */
+            setTimeout(() => {
+              this.resetErrors();
+            }, 2500);
+          }
+        );
+    }
   }
 }

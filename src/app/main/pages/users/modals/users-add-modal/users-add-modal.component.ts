@@ -1,55 +1,55 @@
 import { Component, OnInit } from '@angular/core';
-import { Input } from "@angular/core";
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { Input } from '@angular/core';
+import { ApiServiceService } from 'src/app/shared/api-service.service';
 @Component({
   selector: 'app-users-add-modal',
   templateUrl: './users-add-modal.component.html',
-  styleUrls: ['./users-add-modal.component.scss']
+  styleUrls: ['./users-add-modal.component.scss'],
 })
 export class UsersAddModalComponent implements OnInit {
-  @Input() roles: [] = []
-  constructor(private apiServiceService: ApiServiceService) { }
-  roleDropdown: boolean = false
-  roleLabel: string = 'Выберите роль'
+  @Input() roles: [] = [];
+  constructor(private apiServiceService: ApiServiceService) {}
+  roleDropdown: boolean = false;
+  roleLabel: string = 'Выберите роль';
 
-  username: string
-  password: string
-  login: string
+  username: string;
+  password: string;
+  login: string;
 
-  error = ''
-  ngOnInit(): void {
-
-  }
+  error = '';
+  ngOnInit(): void {}
   async createUser() {
-    console.log('create')
-    console.log(this.roles)
-    const promise = await this.apiServiceService.createUser(this.username, this.login, this.password)
+    console.log('create');
+    console.log(this.roles);
+    const promise = await this.apiServiceService.createUser(
+      this.username,
+      this.login,
+      this.password
+    );
     if (promise.error) {
-      this.error = promise.message
-      this.apiServiceService.error.next(String(this.error))
+      this.error = promise.message;
+      this.apiServiceService.error.next(String(this.error));
     } else {
-      await this.apiServiceService.getUsers()
-      this.apiServiceService.responseOK.next('Пользователь успешно создан')
-      this.closeModal()
+      await this.apiServiceService.getUsers();
+      this.apiServiceService.responseOK.next('Пользователь успешно создан');
+      this.closeModal();
     }
-
   }
   closeModal() {
-    const modal = document.getElementById('usersAddModal')
-    modal.style.display = "none";
-    this.username = undefined
-    this.password = undefined
-    this.login = undefined
-    this.roleLabel = 'Выберите роль'
+    const modal = document.getElementById('usersAddModal');
+    modal.style.display = 'none';
+    this.username = undefined;
+    this.password = undefined;
+    this.login = undefined;
+    this.roleLabel = 'Выберите роль';
   }
 
   selectRole(event) {
-    this.roleLabel = event.target.dataset.selectRole
-    this.dropDownRole()
+    this.roleLabel = event.target.dataset.selectRole;
+    this.dropDownRole();
   }
 
   dropDownRole() {
-    this.roleDropdown = !this.roleDropdown
+    this.roleDropdown = !this.roleDropdown;
   }
-
 }

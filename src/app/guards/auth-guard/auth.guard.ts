@@ -1,40 +1,36 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, CanActivateChild, CanDeactivate, CanLoad, Route, UrlSegment, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthService } from "src/app/shared/auth.service";
+import {
+  CanActivate,
+  ActivatedRouteSnapshot,
+  RouterStateSnapshot,
+} from '@angular/router';
+import { AuthService } from 'src/app/shared/auth.service';
 import { Router } from '@angular/router';
+import { User } from 'src/app/models/profile';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class AuthGuard implements CanActivate, CanActivateChild, CanDeactivate<unknown>, CanLoad {
+export class AuthGuard implements CanActivate {
+  user: User;
 
-  constructor(private _AuthService: AuthService, private router: Router) { }
+  /*  NOTE:Лучше сервисы везде одинаково называть */
+  constructor(private authService: AuthService, private router: Router) {}
 
-  canActivate(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this._AuthService.IsAuthenticated()) {
+  /*NOTE: Неиспользуемые методы лучше убирать */
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    /* NOTE: Лучше оформить подписку. Так если произойдет логаут, то должен автоматический редайрект сделаться по идее 
+      (даже если в копмоненте не будет логики редайректа) */
+    this.authService.currentUserObservable.subscribe(
+      (user) => (this.user = user)
+    );
+    if (this.user) {
+      // Залогинился и ок
       return true;
-    }else{
-      this.router.navigate(['auth'])
     }
-  }
-  canActivateChild(
-    next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return true;
-  }
-  canDeactivate(
-    component: unknown,
-    currentRoute: ActivatedRouteSnapshot,
-    currentState: RouterStateSnapshot,
-    nextState?: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return true;
-  }
-  canLoad(
-    route: Route,
-    segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
-    return true;
+
+    // нет - редайрект
+    this.router.navigate(['/auth']);
+    return false;
   }
 }
