@@ -30,6 +30,17 @@ export class MembersEditModalComponent implements OnInit {
 
   @Output() childEvent = new EventEmitter();
   ngOnInit(): void {
+    this.API.member$.subscribe((data) => {
+      if (data.error) {
+        this.error = data.error.message
+        this.API.error.next(String(this.error))
+      } else {
+        this.API.responseOK.next('Участник успешно изменен')
+        this.childEvent.emit();
+        this.API.selectedMemberId$.next(undefined)
+        this.closeModal()
+      }
+    })  
     this.API.selectedMemberId$.subscribe((id)=>{
       this.structures.length = 0
       this.memberID = id
@@ -43,6 +54,7 @@ export class MembersEditModalComponent implements OnInit {
           this.isStudent = element.is_student
         }
       });
+
       this.API.departments.forEach((department: any) => {
         department.sub_departments.forEach((subdepartment: any) => {
           if(subdepartment.title == this.structure){
@@ -63,16 +75,8 @@ export class MembersEditModalComponent implements OnInit {
   async editMember(){
 
 
-    const promise = await this.API.editMember(this.name,this.card,this.subdepartmentID,this.isStudent,this.memberID)
-      if(promise.error){
-        this.error = promise.message
-        this.API.error.next(String(this.error))
-      }else{
-        this.childEvent.emit();
-        this.API.selectedMemberId$.next(undefined)
-        this.API.responseOK.next('Участник успешно изменен')
-        this.closeModal()
-      }
+    await this.API.editMember(this.name,this.card,this.subdepartmentID,this.isStudent,this.memberID)
+
   }
 
   selectFaculty(event){

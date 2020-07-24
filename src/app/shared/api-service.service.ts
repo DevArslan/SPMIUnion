@@ -3,12 +3,12 @@ import { AuthService } from 'src/app/shared/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BASE_URL } from '../CONFIG';
-
+import { STORAGE_KEY } from '../CONFIG';
 @Injectable({
   providedIn: 'root',
 })
 export class ApiServiceService {
-  constructor(private authService: AuthService, private http: HttpClient) {}
+  constructor(private authService: AuthService, private http: HttpClient) { }
   selectedDepartment: string;
   departments: any;
   members: {}[];
@@ -18,18 +18,24 @@ export class ApiServiceService {
   membersAKPS: any;
   stats: any;
 
-  users$ = new Subject<{}[]>();
-  departments$ = new Subject<{}[]>();
-  members$ = new Subject<{}[]>();
-  roles$ = new Subject<[]>();
+  selectedDepartment$ = new Subject<{}>();
+  users$ = new Subject<any>();
+  departments$ = new Subject<any>();
+  members$ = new Subject<any>();
+  roles$ = new Subject<any>();
   postData$ = new Subject<{}[]>();
   loadingCompleted$ = new Subject<{}>();
-  membersAKPS$ = new Subject<{}[]>();
+  membersAKPS$ = new Subject<any>();
   preloader$ = new Subject<boolean>();
-  stats$ = new Subject<[]>();
+  stats$ = new Subject<any>();
   departmentForEditModal$ = new BehaviorSubject(undefined);
   titleForDeleteModal$ = new Subject<string>();
+  subdepartments$ = new Subject<any>()
 
+  user$ = new Subject<any>()
+  member$ = new Subject<any>()
+  structure$ = new Subject<any>()
+  subdepartment$ = new Subject<any>()
   // Observable member data
   selectedMemberId$ = new Subject<number>();
   selectedMembersId$ = new Subject<number[]>();
@@ -43,23 +49,12 @@ export class ApiServiceService {
   selectedAllmembers = new Subject<boolean>();
   // Получение данных о структурах
   getDepartments() {
-    /*     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments';
-    fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        this.departments = data.departments;
-        this.departments$.next(this.departments);
-      }); */
 
     /* NOTE: Примерно так выглядит более корректный подход. */
     this.http.get(BASE_URL + 'departments').subscribe(
       (res) => {
         this.departments$.next(res['departments']);
+        this.departments = res['departments']
       },
       (err) => this.departments$.next(err)
     );
@@ -75,225 +70,184 @@ export class ApiServiceService {
 
   // TODO: Перейти полностью на HttpClient
   // Получение данных структрах по ID
+
+
   async getDepartmentById(departmentID) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1/departments/' +
-      departmentID;
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+
+
+    this.http.get(BASE_URL + 'departments/' + departmentID).subscribe(
+      (res) => {
+        return res
+        // this.departments$.next(res['departments']);
       },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        return data;
-      });
+      (err) => this.departments$.next(err)
+    );
   }
+
   // Создание структуры
   async createDepartment(title, proforg) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/departments';
+
     const data = {
       title: title,
       proforg: proforg,
     };
 
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.post(BASE_URL + 'departments', data).subscribe(
+      (res) => {
+        this.structure$.next(res)
       },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.structure$.next(err)
+      }
+    );
   }
 
   // Удаление структуры
   async deleteDepartment(departmentID) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1/departments/' +
-      departmentID;
-    return fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.delete(BASE_URL + 'departments/' + departmentID).subscribe(
+      (res) => {
+        this.structure$.next(res)
       },
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.structure$.next(err)
+
+      }
+    );
+
   }
 
   // Редактирование структуры
   async editStructure(structureName, proforgName, departmentID) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1/departments/' +
-      departmentID;
 
     const data = {
       title: structureName,
       proforg: proforgName,
     };
 
-    return fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.put(BASE_URL + 'departments/' + departmentID, data).subscribe(
+      (res) => {
+        this.structure$.next(res)
       },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.structure$.next(err)
+      }
+    );
   }
 
   // Получение списка подразделений
   async getSubDepartments() {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments';
 
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    this.http.get(BASE_URL + 'subdepartments').subscribe(
+      (res) => {
         this.loadingCompleted = true;
-        console.log('подразделения');
-
-        return data;
-      });
+        this.subdepartments$.next(res)
+        // this.departments$.next(res['departments']);
+      },
+      (err) => this.departments$.next(err)
+    );
   }
 
   // Создать подразделение
   async createSubDepartment(title, departmentID) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments';
 
     const data = {
       title: title,
       head_department_id: departmentID,
     };
 
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.post(BASE_URL + 'subdepartments', data).subscribe(
+      (res) => {
+        this.subdepartment$.next(res)
       },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.subdepartment$.next(err)
+      }
+    );
+
+
+
   }
 
   // Изменение подразделения
   async editSubDepartment(title, departmentID, subDepartmentID) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments/' +
-      subDepartmentID;
 
     const data = {
       title: title,
       head_department_id: departmentID,
     };
 
-    return fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.put(BASE_URL + 'subdepartments/' + subDepartmentID, data).subscribe(
+      (res) => {
+        this.subdepartment$.next(res)
       },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.subdepartment$.next(err)
+      }
+    );
+
+
   }
 
   // Удаление подразделения
   async deleteSubDepartment(subDepartmentID) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1/subdepartments/' +
-      subDepartmentID;
 
-    return fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.delete(BASE_URL + 'subdepartments/' + subDepartmentID).subscribe(
+      (res) => {
+        this.subdepartment$.next(res)
       },
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.subdepartment$.next(err)
+
+      }
+    );
   }
 
   // Получение списка участников
-  async getMembers() {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members';
+  // async getMembers() {
 
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        this.members = data;
-        this.members$.next(this.members);
+  //   const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members';
 
-        return data;
-      });
-  }
+  //   return fetch(url, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       this.members = data;
+  //       this.members$.next(this.members);
+
+  //       return data;
+  //     });
+  // }
 
   // Пагинация для таблицы участников
   async getMembersByPage(rows, page, query) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1/members?rows=' +
-      rows +
-      '&page=' +
-      page +
-      '&query=' +
-      query;
-
-    console.log(rows, page);
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.get(BASE_URL + 'members?rows=' + rows + '&page=' + page + '&query=' + query).subscribe(
+      (res) => {
+        console.log(res)
+        this.members$.next(res)
       },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        this.members = data;
-        this.members$.next(this.members);
-        return data;
-      });
+      (err) => this.members$.next(err)
+    );
   }
 
   // Получение списка участников в базе АКПС
   async getMembersAKPS(query) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1/members/akps?query=' +
-      query;
-
     this.preloader$.next(true);
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        this.membersAKPS = data;
-        this.membersAKPS$.next(this.membersAKPS);
+    this.http.get(BASE_URL + 'members/akps?query=' + query).subscribe(
+      (res) => {
+        console.log(res)
         this.preloader$.next(false);
-        return data;
-      });
+        this.membersAKPS$.next(res)
+      },
+      (err) => this.membersAKPS$.next(err)
+    );
   }
 
   // Создание нового участника профсоюза
   async createMember(name, card, subdepartment, student) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members';
 
     const data = {
       name: name,
@@ -302,45 +256,42 @@ export class ApiServiceService {
       subdepartment_id: subdepartment,
     };
 
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.post(BASE_URL + 'members', data).subscribe(
+      (res) => {
+        this.member$.next(res)
       },
-      body: JSON.stringify(data),
-    })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json();
-        }
-      })
-      .catch((error) => console.log(error));
+      (err) => {
+        this.member$.next(err)
+      }
+    );
   }
-
   // Удаление участников из профсоюза
   async deleteMember(membersID) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members';
 
     const data = {
       members: membersID,
     };
+
+    const token = JSON.parse(sessionStorage.getItem(STORAGE_KEY)).token
+
+    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members';
+
+
     return fetch(url, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Basic ${token}`
       },
       body: JSON.stringify(data),
     }).then((res) => {
+      this.member$.next(res.json())
       return res.json();
     });
   }
 
   // Редактирование участника профсоюза
   async editMember(name, card, subdepartment, student, memberID) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1/members/' + memberID;
 
     const data = {
       name: name,
@@ -349,73 +300,66 @@ export class ApiServiceService {
       subdepartment_id: subdepartment,
     };
 
-    return fetch(url, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.put(BASE_URL + 'members/' + memberID, data).subscribe(
+      (res) => {
+        this.member$.next(res)
       },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.member$.next(err)
+      }
+    );
+
   }
 
   // Активация участников в профсоюзе
   async activateMembers(membersID) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/enter';
 
     const data = {
       members: membersID,
     };
-    return fetch(url, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
+
+    this.http.patch(BASE_URL + 'members/enter', data).subscribe(
+      (res) => {
+        this.member$.next(res)
       },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.member$.next(err)
+      }
+    );
   }
   // Блокировка участников в профсоюзе
   async blockMembers(membersID) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/quit';
 
     const data = {
       members: membersID,
     };
-    return fetch(url, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
+
+    this.http.patch(BASE_URL + 'members/quit', data).subscribe(
+      (res) => {
+        this.member$.next(res)
       },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.member$.next(err)
+      }
+    );
   }
 
   // Получение списка пользователей
   async getUsers() {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users';
 
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.get(BASE_URL + 'users').subscribe(
+      (res) => {
+        this.users$.next(res)
       },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        this.users = data;
-        this.users$.next(this.users);
-        return data;
-      });
+      (err) => {
+        this.users$.next(err)
+      }
+    );
+
   }
 
   // Создание пользователя
   async createUser(username, login, password) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/register';
 
     const data = {
       user_name: username,
@@ -423,170 +367,141 @@ export class ApiServiceService {
       password: password,
     };
 
-    return fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.post(BASE_URL + 'users/register', data).subscribe(
+      (res) => {
+        this.user$.next(res)
       },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.user$.next(err)
+      }
+    );
   }
 
   // Редактирование пользователя
   async editUser(userID, role) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1//users/change_role/' +
-      userID +
-      '?role=' +
-      role;
 
-    return fetch(url, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.patch(BASE_URL + 'users/change_role/' + userID + '?role=' + role, '').subscribe(
+      (res) => {
+        this.user$.next(res)
       },
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.user$.next(err)
+      }
+    );
+
+
   }
   // Удаление пользователей
   async deleteUser(userID) {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/' + userID;
 
-    return fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.delete(BASE_URL + 'users/' + userID).subscribe(
+      (res) => {
+        this.user$.next(res)
       },
-    }).then((res) => {
-      return res.json();
-    });
+      (err) => {
+        this.user$.next(err)
+      }
+    );
+
   }
 
-  // Получение ролей
-
+  // Получение списка ролей
   async getRoles() {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/users/roles';
 
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.get(BASE_URL + 'users/roles').subscribe(
+      (res) => {
+        this.roles$.next(res)
       },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        this.roles = data;
-        this.roles$.next(this.roles);
-        return data;
-      });
+      (err) => {
+        this.roles$.next(err)
+      }
+    );
   }
 
   // Скачивание данных участников профсоюза в формате excel
   async downloadExcel() {
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members/xlsx';
 
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
+    this.http.get<Blob>(BASE_URL + 'members/xlsx', { observe: 'response', responseType: 'blob' as 'json' }).subscribe(
+      (response: any) => {
+        let dataType = response.type;
+        let binaryData = [];
+        binaryData.push(response);
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+        downloadLink.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${new Date().getMonth() + 1}_${new Date().getFullYear()}.xlsx`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
       },
-    })
-      .then((res) => res.blob())
-      .then((blob) => {
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${
-          new Date().getMonth() + 1
-        }_${new Date().getFullYear()}.xlsx`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      });
+      (err) => {
+        this.error.next(err)
+      }
+    );
   }
 
   // Скачивание данных участников профсоюза в структуре в формате excel
   async downloadExcelDepartment(depID, title) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1/departments/xlsx/' + depID;
 
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.blob())
-      .then((blob) => {
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${
+    this.http.get<Blob>(BASE_URL + 'departments/xlsx/' + depID, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(
+      (response: any) => {
+        let dataType = response.type;
+        let binaryData = [];
+        binaryData.push(response);
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+        downloadLink.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${
           new Date().getMonth() + 1
-        }_${new Date().getFullYear()}_${title}.xlsx`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      });
+          }_${new Date().getFullYear()}_${title}.xlsx`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+      },
+      (err) => {
+        this.error.next(err)
+      }
+    );
   }
 
   // Скачивание данных участников профсоюза в подразделении в формате excel
   async downloadExcelSubDepartment(subID, title) {
-    const url =
-      'https://digital.spmi.ru/profsouz_test/api/v1/departments/subdepartments/xlsx/' +
-      subID;
 
-    return fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => res.blob())
-      .then((blob) => {
-        var url = window.URL.createObjectURL(blob);
-        var a = document.createElement('a');
-        a.href = url;
-        a.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${
+    this.http.get<Blob>(BASE_URL + 'departments/subdepartments/xlsx/' + subID, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(
+      (response: any) => {
+        let dataType = response.type;
+        let binaryData = [];
+        binaryData.push(response);
+        let downloadLink = document.createElement('a');
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+        downloadLink.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${
           new Date().getMonth() + 1
-        }_${new Date().getFullYear()}_${title}.xlsx`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-      });
+          }_${new Date().getFullYear()}_${title}.xlsx`;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+      },
+      (err) => {
+        this.error.next(err)
+      }
+    );
   }
 
   // Статистика по датам
   async getStats(fromData, toData, subID) {
-    let url = 'https://digital.spmi.ru/profsouz_test/api/v1/stats';
 
     const data = {
       subdepartments: subID,
       from_date: fromData,
       to_date: toData,
     };
-    console.log(data);
 
     if (subID.length != 0) {
-      return fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      this.http.post(BASE_URL + 'stats', data).subscribe(
+
+        (res) => {
+          this.stats$.next(res);
         },
-        body: JSON.stringify(data),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          this.stats = data;
-          this.stats$.next(this.stats);
-        });
-    } else {
+        (err) => this.stats$.next(err)
+      );
+    }
+    else {
       this.stats = { stats: [] };
-      console.log(this.stats);
       this.stats$.next(this.stats);
     }
   }

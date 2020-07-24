@@ -15,32 +15,25 @@ export class UsersDeleteModalComponent implements OnInit {
   }
 
   async deleteMember() {
-    // const checkboxes = document.getElementsByClassName('userCheckbox')
 
-    // for (let index = 0; index < checkboxes.length; index++) {
-    //   const element = <HTMLInputElement>checkboxes[index];
-    //   if(element.checked){
-    //     this.userID = Number(element.value)
-    //   }
-    // }
-    // this.userID =  this.apiServiceService.selectedUserId$.getValue()
-    // console.log(this.userID)
 
-    const promise = await this.apiServiceService.deleteUser(this.userID);
-    if (promise.error) {
-      this.error = promise.message;
-      this.apiServiceService.error.next(String(this.error));
-    } else {
-      this.apiServiceService.selectedUserId$.next(undefined);
-      await this.apiServiceService.getUsers();
-      this.apiServiceService.responseOK.next('Пользователь успешно удален');
-      this.closeModal();
-    }
+    await this.apiServiceService.deleteUser(this.userID);
+
   }
 
   ngOnInit(): void {
     this.apiServiceService.selectedUserId$.subscribe((id) => {
       this.userID = id;
     });
+    this.apiServiceService.user$.subscribe((data) => {
+      if (data.error) {
+        this.error = data.error.message
+        this.apiServiceService.error.next(String(this.error))
+      } else {
+        this.apiServiceService.responseOK.next('Пользователь успешно удалён')
+        this.apiServiceService.getUsers()
+        this.closeModal()
+      }
+    })
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from 'src/app/shared/api-service.service';
 import { AuthService } from 'src/app/shared/auth.service';
+import { STORAGE_KEY } from '../../../CONFIG';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -11,7 +12,8 @@ export class UsersComponent implements OnInit {
     private apiServiceService: ApiServiceService,
     private authService: AuthService
   ) {}
-  roles: {};
+  roles: any;
+  user: any;
   users: any;
   username: string = '';
 
@@ -20,20 +22,19 @@ export class UsersComponent implements OnInit {
   roleIsAdmin: boolean;
 
   ngOnInit(): void {
-    if (this.authService.loginData.role == 'Administrator') {
-      this.roleIsAdmin = true;
-    }
 
     this.apiServiceService.getRoles();
     this.apiServiceService.roles$.subscribe((dataFromApi: any) => {
+      
       this.roles = dataFromApi.roles;
+      console.log(this.roles)
     });
 
-    this.apiServiceService.getUsers();
+    this.apiServiceService.getUsers()
     this.apiServiceService.users$.subscribe((dataFromApi: any) => {
-      this.users = dataFromApi.users;
-      console.log(this.users);
-    });
+      this.users = dataFromApi.users
+      console.log(this.users)
+    })
 
     this.apiServiceService.selectedUserId$.subscribe((data) => {
       this.userID = data;

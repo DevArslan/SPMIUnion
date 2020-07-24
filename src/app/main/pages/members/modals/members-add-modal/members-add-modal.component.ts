@@ -58,42 +58,9 @@ export class MembersAddModalComponent implements OnInit {
 
   async createMember() {
     let index = 1
-    const promise = await this.apiServiceService.createMember(this.name, this.card, this.subdepartmentID, this.isStudent)
+    await this.apiServiceService.createMember(this.name, this.card, this.subdepartmentID, this.isStudent)
     const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
     selectAllCheckbox.checked = false
-    // Добавление участника в таблицу без доп.запроса к API
-    if (promise.error) {
-      console.log(promise)
-      this.error = promise.message;
-      this.apiServiceService.error.next(String(this.error))
-
-    } else {
-      // Снизу добавление участника в таблицу без обращения к серверу
-      //   const tableBody = <HTMLElement>document.getElementById('membersTableBody')
-      //   const tableRowExist = <HTMLElement>document.querySelector('.membersTableDataRow')
-      //   const memberData = {
-      //     'memberId': promise.member.id,
-      //     'memberName': promise.member.name,
-      //     'memberSubDep': promise.member.subdepartment,
-      //     'memberCard': promise.member.card,
-      //     'memberIsStudent': promise.member.is_student,
-      //     'memberActive': promise.member.active,
-      //   }
-      //   var tableRow = <HTMLElement>tableRowExist.cloneNode(true)
-      //   const tableRowChildInput = <HTMLInputElement>tableRow.childNodes[0].firstChild
-      //   tableRowChildInput.value = memberData.memberId
-
-      //   for (const item in memberData) {
-      //     const tableRowChild = <HTMLElement>tableRow.childNodes[index]
-      //     tableRowChild.innerHTML = memberData[item]
-      //     index +=1
-      //     console.log(tableRowChild)
-      // }
-      // tableBody.appendChild(tableRow)
-      this.apiServiceService.responseOK.next('Участник успешно добавлен')
-      this.childEvent.emit();
-      this.closeModal()
-    }
   }
 
   selectFaculty(event) {
@@ -163,6 +130,17 @@ export class MembersAddModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.apiServiceService.member$.subscribe((data) => {
+      if (data.error) {
+        this.error = data.error.message
+        this.apiServiceService.error.next(String(this.error))
+      } else {
+        this.apiServiceService.responseOK.next('Участник успешно добавлен')
+        this.childEvent.emit();
+        this.closeModal()
+      }
+    })  
+    
     this.apiServiceService.membersAKPS$.subscribe((dataFromAPI: any) => {
       if (dataFromAPI.error) {
         this.error = dataFromAPI.message

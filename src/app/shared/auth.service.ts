@@ -61,9 +61,9 @@ export class AuthService {
             // Если результат успешный, то считаем, что юзер залогинился
             if (user) {
               // тогда и сохраняем юзера либо в локал сторэдж, либо в session
+              user.token = hash;
               if (remember) {
                 /* Токен отдельно хранить думаю нет смысла */
-                user.token = hash;
                 localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
               } else {
                 sessionStorage.setItem(STORAGE_KEY, JSON.stringify(user));

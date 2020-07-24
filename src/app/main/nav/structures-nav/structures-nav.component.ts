@@ -12,7 +12,7 @@ export class StructuresNavComponent implements OnInit {
   structureName: string = '';
   departmentsTitle: string[] = [];
   /* Достаточно просто тип массив указать с any */
-  departmentsData: any[] = [];
+  departmentsData: any;
 
   constructor(
     private structureRouting: StructuresRoutingService,
@@ -21,8 +21,6 @@ export class StructuresNavComponent implements OnInit {
 
   selectStructure(event) {
     this.faculty = event.target.dataset.selectNumber;
-    // this.apiService.selectedDepartment = this.departmentsData[0].head_department_id
-    // console.log(this.apiService.selectedDepartment)
     this.structureRouting.postData$.next(this.faculty);
   }
 
@@ -32,9 +30,8 @@ export class StructuresNavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.apiService.departments$.subscribe(() => {
-      // console.log(this.apiServiceService.departments)
-      this.departmentsData = this.apiService.departments;
+    this.apiService.departments$.subscribe((data) => {
+      this.departmentsData = data;
       this.departmentsData.forEach((element: any) => {
         this.departmentsTitle.push(element.title);
       });

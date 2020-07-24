@@ -18,6 +18,18 @@ export class UsersEditModalComponent implements OnInit {
 
   error: string = '';
   ngOnInit(): void {
+    this.api.user$.subscribe((data) => {
+      if (data.error) {
+        this.error = data.error.message
+        this.api.error.next(String(this.error))
+      } else {
+        this.api.responseOK.next('Пользователь успешно изменен')
+        this.api.getUsers()
+        this.closeModal()
+        this.roleLabel = 'Роль';
+      }
+    })
+
     this.api.users$.subscribe((dataFromApi: any) => {
       this.users = dataFromApi.users;
       this.api.selectedUserId$.subscribe((data) => {
@@ -37,17 +49,8 @@ export class UsersEditModalComponent implements OnInit {
   }
 
   async editUser() {
-    const promise = await this.api.editUser(this.userID, this.roleID);
-    if (promise.error) {
-      this.error = promise.message;
-      this.api.error.next(String(this.error));
-    } else {
-      this.api.selectedUserId$.next(undefined);
-      await this.api.getUsers();
-      this.api.responseOK.next('Пользователь успешно изменен');
-      this.closeModal();
-    }
-    this.roleLabel = 'Роль';
+    await this.api.editUser(this.userID, this.roleID);
+    
   }
   closeModal() {
     const modal = document.getElementById('usersEditModal');

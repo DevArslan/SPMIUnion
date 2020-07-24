@@ -8,7 +8,7 @@ import { ApiServiceService } from 'src/app/shared/api-service.service';
 })
 export class UsersAddModalComponent implements OnInit {
   @Input() roles: [] = [];
-  constructor(private apiServiceService: ApiServiceService) {}
+  constructor(private apiServiceService: ApiServiceService) { }
   roleDropdown: boolean = false;
   roleLabel: string = 'Выберите роль';
 
@@ -17,23 +17,29 @@ export class UsersAddModalComponent implements OnInit {
   login: string;
 
   error = '';
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.apiServiceService.user$.subscribe((data) => {
+      if (data.error) {
+        this.error = data.error.message
+        this.apiServiceService.error.next(String(this.error))
+      } else {
+        this.apiServiceService.responseOK.next('Пользователь успешно создан')
+        this.apiServiceService.getUsers()
+        this.closeModal()
+      }
+    })
+
+  }
   async createUser() {
-    console.log('create');
-    console.log(this.roles);
-    const promise = await this.apiServiceService.createUser(
+
+    await this.apiServiceService.createUser(
       this.username,
       this.login,
       this.password
     );
-    if (promise.error) {
-      this.error = promise.message;
-      this.apiServiceService.error.next(String(this.error));
-    } else {
-      await this.apiServiceService.getUsers();
-      this.apiServiceService.responseOK.next('Пользователь успешно создан');
-      this.closeModal();
-    }
+    
+
+
   }
   closeModal() {
     const modal = document.getElementById('usersAddModal');
@@ -42,6 +48,7 @@ export class UsersAddModalComponent implements OnInit {
     this.password = undefined;
     this.login = undefined;
     this.roleLabel = 'Выберите роль';
+
   }
 
   selectRole(event) {

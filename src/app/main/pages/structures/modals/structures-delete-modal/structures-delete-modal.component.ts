@@ -13,33 +13,39 @@ export class StructuresDeleteModalComponent implements OnInit {
 
   @Input() department
 
-  constructor(private router: Router,private api: ApiServiceService) { }
-  departmentID:string
+  constructor(private router: Router, private api: ApiServiceService) { }
+  departmentID: string
   error: string = ''
 
   ngOnInit(): void {
   }
-  closeModal(){
+  closeModal() {
     const modal = document.getElementById('departmentDelModal')
     modal.style.display = "none";
   }
-  async deleteDepartment(){
+  async deleteDepartment() {
 
     this.departmentID = this.department.id
+    console.log(this,)
+    await this.api.deleteDepartment(this.departmentID)
 
-    const promise = await this.api.deleteDepartment(this.departmentID)
 
-    if(promise.error){
-      this.error = promise.message
-      this.api.error.next(String(this.error))
-    }else{
-      await this.api.getDepartments()
-      const firstDepartmentId = this.api.departments[0].id
-      console.log(firstDepartmentId)
-      this.router.navigate(['main/structures/'+firstDepartmentId]);
-      this.api.responseOK.next('Структура успешно удалена')
-      this.closeModal()
-    }
+    this.api.structure$.subscribe((data) => {
+      if (data.error) {
+        this.error = data.error.message
+        this.api.error.next(String(this.error))
+      } else {
+        this.api.getDepartments()
+        this.api.departments$.subscribe((data)=>{
+          const firstDepartmentId = data[0].id
+          this.router.navigate(['main/structures/' + firstDepartmentId]);
+        })
+        
+        
+        this.api.responseOK.next(data.message)
+        this.closeModal()
+      }
+    })
   }
 
 }

@@ -9,7 +9,7 @@ import { StructuresRoutingService } from "src/app/shared/structures-routing.serv
 })
 export class SubDepartmentsAddModalComponent implements OnInit {
 
-  constructor(private apiServiceService: ApiServiceService, private structureRouting: StructuresRoutingService) { }
+  constructor(private api: ApiServiceService, private structureRouting: StructuresRoutingService) { }
 
   @Input() department
   subDepartmentDropdown: boolean = false
@@ -29,18 +29,19 @@ export class SubDepartmentsAddModalComponent implements OnInit {
     // this.departmentID = this.apiServiceService.selectedDepartment
     this.departmentID = this.department.id
 
-    const promise = await this.apiServiceService.createSubDepartment(this.title,this.departmentID)
-    if(promise.error){
-      this.error = promise.message
-      this.apiServiceService.error.next(String(this.error))
-    }else{
-      this.apiServiceService.responseOK.next('Подразделение успешно создано')
-      await this.apiServiceService.getDepartments()
-      this.closeModal()
-  }
-    
-    // Ниже штука, чтобы сразу отобразить изменения
-    // this.structureRouting.postData$.next('')
+    await this.api.createSubDepartment(this.title,this.departmentID)
+
+    this.api.subdepartment$.subscribe((data) => {
+      if (data.error) {
+        this.error = data.error.message
+        this.api.error.next(String(this.error))
+      } else {
+        this.api.getDepartments()
+        this.api.responseOK.next('Подразделение успешно создано')
+        this.closeModal()
+      }
+    })
+
   }
   ngOnInit(): void {
   }

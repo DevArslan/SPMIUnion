@@ -85,15 +85,19 @@ export class StructuresCardComponent implements OnInit {
       structureName.setAttribute('readonly', '')
       structureName.setAttribute('size', String(Number(this.titleLength) * 1.05))
       structureName.blur()
-      const promise = await this.apiServiceService.editStructure(this.structureName, this.proforgName, this.selectedData.id)
-      if (promise.error) {
-        let error = promise.message
-        this.apiServiceService.error.next(String(error))
-        this.selectedData.title = this.notEditStructureName
-        this.structureName = this.notEditStructureName
-      } else {
-        this.apiServiceService.responseOK.next('Название успешно изменено')
-      }
+      await this.apiServiceService.editStructure(this.structureName, this.proforgName, this.selectedData.id)
+
+      this.apiServiceService.structure$.subscribe((data) => {
+        if (data.error) {
+          let error = data.error.message
+          this.apiServiceService.error.next(String(error))
+          this.selectedData.title = this.notEditStructureName
+          this.structureName = this.notEditStructureName
+        } else {
+          console.log(data)
+          this.apiServiceService.responseOK.next('Название структуры успешно изменено')
+        }
+      })
       structureNameP.style.display = 'block'
       structureName.style.display = 'none'
     } else {
@@ -111,18 +115,19 @@ export class StructuresCardComponent implements OnInit {
       proforgName.setAttribute('readonly', '')
       proforgName.setAttribute('size', String(Number(this.proforgNameLength) * 1.05))
       proforgName.blur()
-      const promise = await this.apiServiceService.editStructure(this.structureName, this.proforgName, this.selectedData.id)
+      await this.apiServiceService.editStructure(this.structureName, this.proforgName, this.selectedData.id)
 
-      if (promise.error) {
-        let error = promise.message
-
-        this.apiServiceService.error.next(String(error))
-        this.selectedData.proforg = this.notEditProforgName
-        this.proforgName = this.notEditProforgName
-
-      } else {
-        this.apiServiceService.responseOK.next('ФИО профорга успешно изменено')
-      }
+      this.apiServiceService.structure$.subscribe((data) => {
+        if (data.error) {
+          let error = data.error.message
+          this.apiServiceService.error.next(String(error))
+          this.selectedData.proforg = this.notEditProforgName
+          this.proforgName = this.notEditProforgName
+        } else {
+          console.log(data)
+          this.apiServiceService.responseOK.next('ФИО профорга успешно изменено')
+        }
+      })
       proforgNameP.style.display = 'block'
       proforgName.style.display = 'none'
     } else {
@@ -269,8 +274,8 @@ export class StructuresCardComponent implements OnInit {
 
   async getStats(nowDateMinusOneYear, nowDate, subID) {
     this.apiServiceService.getStats(nowDateMinusOneYear, nowDate, subID)
-    this.apiServiceService.stats$.subscribe(() => {
-      this.stats = this.apiServiceService.stats.stats
+    this.apiServiceService.stats$.subscribe((data) => {
+      this.stats = data.stats
     })
   }
 
@@ -278,14 +283,15 @@ export class StructuresCardComponent implements OnInit {
 
   ngOnInit(): void {
     // Подписка для того, чтобы дождаться загрузки данных о структурах. Иначе при обновлении страницы, она будет пустой (данные еще не будут подгружены с backend-а)
-    this.apiServiceService.departments$.subscribe(() => {
+    this.apiServiceService.departments$.subscribe((data) => {
+      this.data = data
       // Подписка на изменение параметров (id) в маршруте
       this.route.params.subscribe(async (params) => {
         this.dynamics.length = 0
         this.subDepartmentsForCharts.length = 0
         this.selectedSubDepartments.length = 0
 
-        this.data = this.apiServiceService.departments
+        // this.data = this.apiServiceService.departments
 
         this.data.forEach(async (element: any) => {
           if (params.id == element.id) {
@@ -312,38 +318,40 @@ export class StructuresCardComponent implements OnInit {
 
             }
 
-
-
-
-            // Фильтрация подразделения под конкретную структуру
-            this.subDepartments = (await this.getSubDepartmentsData()).subdepartments
-
-            this.selectedSubDepartments.length = 0
-            this.subDepartments.forEach((element: any) => {
-              if (element.head_department_id == this.selectedData.id) {
-                this.selectedSubDepartments.push(element)
-              }
-            });
-            console.log(this.selectedSubDepartments)
-            this.selectedSubDepartmentsIds.length = 0
-            this.selectedSubDepartments.forEach((element: any) => {
-              this.selectedSubDepartmentsIds.push(element.id)
-
-            });
-
-            const nowDate = this.formatDate(new Date())
-            const nowDateMinusOneYear = (this.formatDate(new Date()).slice(0, -4)) + Number(new Date().getFullYear() - 1)
-            await this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
-
-
-            this.apiServiceService.stats$.subscribe(() => {
-              this.selectedSubDepartmentsIds.forEach((id) => {
-                this.getDynamic(id)
-              })
-              this.updateCharts(structureChart, structureChart2)
-            })
           }
         })
+        // Фильтрация подразделения под конкретную структуру
+
+        this.apiServiceService.subdepartments$.subscribe((data) => {
+          console.log('123')
+          this.subDepartments = data.subdepartments
+
+          this.selectedSubDepartments.length = 0
+          this.subDepartments.forEach((element: any) => {
+            if (element.head_department_id == this.selectedData.id) {
+              this.selectedSubDepartments.push(element)
+            }
+          });
+          console.log(this.selectedSubDepartments)
+          this.selectedSubDepartmentsIds.length = 0
+          this.selectedSubDepartments.forEach((element: any) => {
+            this.selectedSubDepartmentsIds.push(element.id)
+
+          });
+
+          const nowDate = this.formatDate(new Date())
+          const nowDateMinusOneYear = (this.formatDate(new Date()).slice(0, -4)) + Number(new Date().getFullYear() - 1)
+          this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
+
+
+          this.apiServiceService.stats$.subscribe(() => {
+            this.selectedSubDepartmentsIds.forEach((id) => {
+              this.getDynamic(id)
+            })
+            this.updateCharts(structureChart, structureChart2)
+          })
+        })
+        await this.getSubDepartmentsData()
 
 
       })

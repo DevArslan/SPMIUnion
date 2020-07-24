@@ -28,7 +28,7 @@ export class MembersComponent implements OnInit {
   memberID: number
 
   error: string = 'Сначала выберите участника'
-  
+
 
   @ViewChild('inputPage') input: ElementRef;
   @ViewChild('usernameInput') inputUsername: ElementRef;
@@ -59,34 +59,39 @@ export class MembersComponent implements OnInit {
 
     if (this.membersID.length != 0) {
       this.error = ''
-      const promise = await this.apiServiceService.blockMembers(this.membersID)
+      await this.apiServiceService.blockMembers(this.membersID)
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
       selectAllCheckbox.checked = false
-      if (promise.error) {
-        this.error = promise.message
-        this.apiServiceService.error.next(String(this.error))
-      } else {
-        this.apiServiceService.responseOK.next('Участники успешно заблокированы')
-        this.getMembersByPage()
-        this.error = 'Сначала выберите участника'
-        this.membersID.length = 0
-      }
+
+      this.apiServiceService.member$.subscribe((data) => {
+        if (data.error) {
+          this.error = data.error.message
+          this.apiServiceService.error.next(String(this.error))
+        } else {
+          this.apiServiceService.responseOK.next('Участники успешно заблокированы')
+          this.getMembersByPage()
+          this.error = 'Сначала выберите участника'
+          this.membersID.length = 0
+        }
+      })
 
     } else if (this.memberID) {
       this.error = ''
       const memberID = []
       memberID.push(this.memberID)
-      const promise = await this.apiServiceService.blockMembers(memberID)
+      await this.apiServiceService.blockMembers(memberID)
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
       selectAllCheckbox.checked = false
-      if (promise.error) {
-        this.apiServiceService.error.next(String(this.error))
-      } {
-        this.getMembersByPage()
-        this.apiServiceService.responseOK.next('Участник успешно заблокирован')
-        this.error = 'Сначала выберите участника'
-        this.memberID = undefined
-      }
+      this.apiServiceService.member$.subscribe((data) => {
+        if (data.error) {
+          this.error = data.error.message
+          this.apiServiceService.error.next(String(this.error))
+        } else {
+          this.apiServiceService.responseOK.next('Участник успешно заблокирован')
+          this.error = 'Сначала выберите участника'
+          this.memberID = undefined
+        }
+      })
 
     }
 
@@ -95,16 +100,17 @@ export class MembersComponent implements OnInit {
 
     if (this.membersID.length != 0) {
       this.error = ''
-      const promise = await this.apiServiceService.activateMembers(this.membersID)
-      if (promise.error) {
-        this.error = promise.message
-        this.apiServiceService.error.next(String(this.error))
-      } else {
-        this.apiServiceService.responseOK.next('Участники успешно активированы')
-      }
+      await this.apiServiceService.activateMembers(this.membersID)
+      this.apiServiceService.member$.subscribe((data) => {
+        if (data.error) {
+          this.error = data.error.message
+          this.apiServiceService.error.next(String(this.error))
+        } else {
+          this.apiServiceService.responseOK.next('Участники успешно активированы')
+        }
+      })
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
       selectAllCheckbox.checked = false
-      console.log(promise)
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
       this.membersID.length = 0
@@ -112,18 +118,20 @@ export class MembersComponent implements OnInit {
       this.error = ''
       const memberID = []
       memberID.push(this.memberID)
-      const promise = await this.apiServiceService.activateMembers(memberID)
-      if (promise.error) {
-        this.error = promise.message
-        this.apiServiceService.error.next(String(this.error))
-      } else {
-        this.apiServiceService.responseOK.next('Участник успешно активирован')
-      }
+      await this.apiServiceService.activateMembers(memberID)
+      this.apiServiceService.member$.subscribe((data) => {
+        if (data.error) {
+          this.error = data.error.message
+          this.apiServiceService.error.next(String(this.error))
+        } else {
+          this.apiServiceService.responseOK.next('Участник успешно активирован')
+        }
+      })
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
       this.memberID = undefined
     }
-
+    
 
   }
 
@@ -169,6 +177,7 @@ export class MembersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getMembersByPage()
+
 
 
     this.apiServiceService.members$.subscribe((dataFromApi: any) => {

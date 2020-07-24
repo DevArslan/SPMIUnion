@@ -17,17 +17,18 @@ export class SubDepartmentsDelModalComponent implements OnInit {
   }
   async deleteSubDepartment(){
 
-    const promise = await this.api.deleteSubDepartment(this.subDepartmentId)
-    if(promise.error){
-      this.error = promise.message
-      this.api.error.next(String(this.error))
-      
-    }else{
-      await this.api.getDepartments()
-      this.api.responseOK.next('Поздразделение успешно удалено')
-      this.closeModal()
-    }
-    
+    await this.api.deleteSubDepartment(this.subDepartmentId)
+
+    this.api.subdepartment$.subscribe((data) => {
+      if (data.error) {
+        this.error = data.error.message
+        this.api.error.next(String(this.error))
+      } else {
+        this.api.getDepartments()
+        this.api.responseOK.next('Подразделение успешно удалено')
+        this.closeModal()
+      }
+    })  
 
     // Ниже штука, чтобы сразу отобразить изменения
     // this.structureRouting.postData$.next('')
