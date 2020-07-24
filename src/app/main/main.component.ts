@@ -16,7 +16,6 @@ export class MainComponent implements OnInit {
 
     /* NOTE: Перед продом console.log надо будет убрать или закомментить */
     this.api.error.subscribe((error) => {
-      console.log(error);
       this.snackBar.open(error, 'OK', {
         duration: 2000,
         panelClass: ['mat-warn', 'mat-warn'],
@@ -24,7 +23,6 @@ export class MainComponent implements OnInit {
     });
 
     this.api.responseOK.subscribe((response) => {
-      console.log(response);
       this.snackBar.open(response, 'OK', {
         duration: 2000,
         panelClass: ['mat-primary'],

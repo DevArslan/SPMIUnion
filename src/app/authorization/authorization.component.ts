@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/shared/auth.service';
   styleUrls: ['./authorization.component.scss'],
 })
 export class AuthorizationComponent implements OnInit {
-  /* NOTE: Лучше переменные объявлять в наччале Компонента */
+  /* NOTE: Лучше переменные объявлять в начале Компонента */
   login: string = '';
   password: string = '';
   remember: boolean = false;
