@@ -1,76 +1,72 @@
-.tableWrapper{
-  margin-top: 1rem;
-  width: 100%;
-  border-collapse: collapse;
-  margin-left: -0.5rem;
-  .tableHeader{
-    padding-left: 0.5rem;
-    table{
-      width: 100%;
-      tr{
-        padding: 1rem 0 1rem 0; 
-      }
-    }
-    
-  }
-  .tableBody{
-    direction:rtl;
-    overflow-y: scroll;
-    padding-left: 0.5rem;
-    max-height: 20vh;
-    border: none;
-    margin-left: -12px;
-    table{
-      width: 100%;
-      direction: ltr;
-      tr{
-        border: 1px solid #ccc;
-        td{
+
+
+  .tableWrapper {
+    margin-top: 1rem;
+    width: 100%;
+    border-collapse: collapse;
+    margin-left: -0.5rem;
+    .tableHeader {
+      padding-left: 0.5rem;
+      table {
+        width: 100%;
+        tr {
           padding: 1rem 0 1rem 0;
-          word-wrap: break-word;
         }
       }
-      
+    }
+    .tableBody {
+      direction: rtl;
+      overflow-y: scroll;
+      padding-left: 0.5rem;
+      max-height: 20vh;
+      border: none;
+      margin-left: -12px;
+      table {
+        width: 100%;
+        direction: ltr;
+        tr {
+          border: 1px solid #ccc;
+          td {
+            padding: 1rem 0 1rem 0;
+            word-wrap: break-word;
+          }
+        }
+      }
+    }
+    .subDepartmentDelModal {
+      display: none;
+    }
+    .subDepartmentEditModal {
+      display: none;
+    }
+    th {
+      text-align: left;
+    }
+    td {
+      font-weight: normal;
+    }
+    .button {
+      opacity: 0.85;
+      padding: 0 1rem;
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 1.5rem;
+      height: 1.5rem;
+      cursor: pointer;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    .excelButton {
+      opacity: 0.85;
+      background-image: url("src/assets/icons/icons8-microsoft-excel.svg");
+    }
+    .delButton {
+      opacity: 0.7;
+      background-image: url("src/assets/icons/clear-24pxRed.svg");
+    }
+    .editButton {
+      opacity: 0.7;
+      background-image: url("src/assets/icons/create-24px.svg");
     }
   }
-  .subDepartmentDelModal{
-    display: none;
-  }
-  .subDepartmentEditModal{
-    display: none;
-  }
-  th{
-    text-align: left;
-  }
-  td{
-    
-    font-weight: normal;
-    
-  }
-  .button{
-    opacity: 0.85;
-    padding: 0 1rem;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 1.5rem;
-    height: 1.5rem;
-    cursor: pointer;
-    &:hover{
-      opacity: 1;
-    }
-  }
-  .excelButton{
-    opacity: 0.85;
-    background-image: url('src/assets/icons/icons8-microsoft-excel.svg');
-  }
-  .delButton{
-    opacity: 0.7;
-    background-image: url('src/assets/icons/clear-24pxRed.svg');
-
-  }
-  .editButton{
-    opacity: 0.7;
-    background-image: url('src/assets/icons/create-24px.svg');
-
-  }
-}
