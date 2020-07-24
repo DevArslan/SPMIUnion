@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { StructuresRoutingService } from 'src/app/shared/structures-routing.service';
 import { ApiServiceService } from 'src/app/shared/api-service.service';
 
 @Component({
@@ -15,14 +14,9 @@ export class StructuresNavComponent implements OnInit {
   departmentsData: any;
 
   constructor(
-    private structureRouting: StructuresRoutingService,
     private apiService: ApiServiceService
   ) {}
 
-  selectStructure(event) {
-    this.faculty = event.target.dataset.selectNumber;
-    this.structureRouting.postData$.next(this.faculty);
-  }
 
   showAddModal() {
     const modal = document.getElementById('structuresAddModal');

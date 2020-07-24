@@ -1,5 +1,4 @@
 import { Component, OnInit , Output, EventEmitter} from '@angular/core';
-import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { Input } from "@angular/core";
 import { of } from 'rxjs';
@@ -12,7 +11,7 @@ export class MembersEditModalComponent implements OnInit {
 
   @Input() dataForModal: {}[] = []
   @Input() data:{}[] = []
-  constructor(private structureRouting: StructuresRoutingService, private API: ApiServiceService) { }
+  constructor(private API: ApiServiceService) { }
 
   structureDropdown: boolean = false
   facultyDropdown: boolean = false

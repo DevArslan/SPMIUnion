@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
 import { Input } from "@angular/core";
 import { ApiServiceService } from "src/app/shared/api-service.service";
 @Component({

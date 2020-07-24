@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { Input } from "@angular/core";
-import { StructuresRoutingService } from "src/app/shared/structures-routing.service";
 @Component({
   selector: 'app-sub-departments-add-modal',
   templateUrl: './sub-departments-add-modal.component.html',
@@ -9,7 +8,7 @@ import { StructuresRoutingService } from "src/app/shared/structures-routing.serv
 })
 export class SubDepartmentsAddModalComponent implements OnInit {
 
-  constructor(private api: ApiServiceService, private structureRouting: StructuresRoutingService) { }
+  constructor(private api: ApiServiceService) { }
 
   @Input() department
   subDepartmentDropdown: boolean = false
