@@ -47,8 +47,6 @@ export class MembersAddModalComponent implements OnInit {
       this.facultyDropdown = false
       this.membersDropdown = false
     }
-
-    // event.stopPropagation()
   }
 
   searchInAKSP(name) {

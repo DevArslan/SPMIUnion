@@ -1,4 +1,7 @@
 <div class="members">
+
+  
+  <app-modal (childEvent)="getMembersByPage()" [dataForModal]='dataForModal'></app-modal>
   <app-members-add-modal (childEvent)="getMembersByPage()" [dataForModal]='dataForModal' class="membersAddModal" id="membersAddModal"></app-members-add-modal>
   <app-members-delete-modal (childEvent)="getMembersByPage()" class="membersDelModal" id="membersDelModal"></app-members-delete-modal>
   <app-members-edit-modal (childEvent)="getMembersByPage()" [data]='data' [dataForModal]='dataForModal' class="membersEditModal" id="membersEditModal"></app-members-edit-modal>
@@ -6,7 +9,7 @@
     <div class="members-search">
       <input class="searchInput" type="text" placeholder="Поиск" [(ngModel)]="username" #usernameInput>
     </div>
-    <div class="members-nav-add" (click) = "showAddModal()">
+    <div class="members-nav-add" (click) = "showAddModal('Добавить участника', 'createMember')">
       <i class="plusIcon"></i>
     </div>
     <div class="members-nav-edit" (click) = "showEditModal()"  title="{{error}}">

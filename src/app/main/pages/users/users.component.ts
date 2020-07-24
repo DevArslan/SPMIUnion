@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from 'src/app/shared/api-service.service';
 import { AuthService } from 'src/app/shared/auth.service';
+import { ModalService } from "../../../ui-components/modal/modal.service";
 import { STORAGE_KEY } from '../../../CONFIG';
 @Component({
   selector: 'app-users',
@@ -10,7 +11,8 @@ import { STORAGE_KEY } from '../../../CONFIG';
 export class UsersComponent implements OnInit {
   constructor(
     private apiServiceService: ApiServiceService,
-    private authService: AuthService
+    private authService: AuthService,
+    private modalService: ModalService
   ) {}
   roles: any;
   user: any;
@@ -20,6 +22,12 @@ export class UsersComponent implements OnInit {
   error: string = 'Сначала выберите пользователя';
   userID: any;
   roleIsAdmin: boolean;
+
+  title: string = ''
+
+  changeModal(title,action){
+    this.modalService.modalParams.next({title,action})
+  }
 
   ngOnInit(): void {
 
@@ -46,24 +54,25 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  showAddModal() {
-    const modal = document.getElementById('usersAddModal');
-    modal.style.display = 'block';
+  showAddModal(title,action) {
+    // const modal = document.getElementById('usersAddModal');
+    // modal.style.display = 'block';
+    this.modalService.modalParams.next({title,action})
   }
-  showEditModal() {
+  showEditModal(title,action) {
     if (this.userID) {
       this.error = '';
-      const modal = document.getElementById('usersEditModal');
-      modal.style.display = 'block';
+
       this.error = 'Сначала выберите пользователя';
+      this.modalService.modalParams.next({title,action})
     }
   }
-  showDelModal() {
+  showDelModal(title,action) {
     if (this.userID) {
       this.error = '';
-      const modal = document.getElementById('usersDelModal');
-      modal.style.display = 'block';
+
       this.error = 'Сначала выберите пользователя';
+      this.modalService.modalParams.next({title,action})
     }
   }
 }

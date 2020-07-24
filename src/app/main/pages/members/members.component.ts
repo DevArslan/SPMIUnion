@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
+import { ModalService } from "../../../ui-components/modal/modal.service";
 import { promise } from 'protractor';
 
 @Component({
@@ -11,7 +12,7 @@ import { promise } from 'protractor';
 })
 export class MembersComponent implements OnInit {
 
-  constructor(private apiServiceService: ApiServiceService) { }
+  constructor(private apiServiceService: ApiServiceService, private modalService: ModalService) { }
 
   username: string = ''
   membersID: number[] = []
@@ -135,9 +136,11 @@ export class MembersComponent implements OnInit {
 
   }
 
-  showAddModal() {
-    const modal = document.getElementById('membersAddModal')
-    modal.style.display = "block";
+  showAddModal(title,action) {
+    // const modal = document.getElementById('membersAddModal')
+    // modal.style.display = "block";
+    console.log(title,action)
+    this.modalService.modalParams.next({title,action})
   }
   showEditModal() {
     console.log(this.membersID.length)

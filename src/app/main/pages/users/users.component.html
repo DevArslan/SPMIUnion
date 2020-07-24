@@ -1,24 +1,24 @@
 <div class="users">
-  <div class="users-nav" >
+  <div class="users-nav">
     <div class="users-search">
       <input class="searchInput" type="text" placeholder="Поиск" [(ngModel)]="username">
     </div>
-    <div class="users-nav-add" (click) = "showAddModal()">
+    <div class="users-nav-add" (click)="showAddModal('Добавить пользователя','createUser')">
       <i class="plusIcon"></i>
     </div>
-    <div class="users-nav-edit" (click) = "showEditModal()"  title="{{error}}">
+    <div class="users-nav-edit" (click)="showEditModal('Изменить данные пользователя','editUser')" title="{{error}}">
       <i class="editIcon" [ngClass]="{blockModal: !userID}"></i>
     </div>
-    <div class="users-nav-remove" (click) = "showDelModal()"  title="{{error}}">
+    <div class="users-nav-remove" (click)="showDelModal('Удалить пользователя','delUser')" title="{{error}}">
       <i class="removeIcon" [ngClass]="{blockModal: !userID}"></i>
     </div>
     <div class="users-nav-excel"></div>
     <div class="users-nav-pdf"></div>
 
   </div>
-  <app-users-add-modal [roles]='roles' id="usersAddModal" class="usersAddModal"></app-users-add-modal>
-  <app-users-delete-modal id="usersDelModal" class="usersDelModal"></app-users-delete-modal>
-  <app-users-edit-modal [roles]='roles' id="usersEditModal" class="usersEditModal"></app-users-edit-modal>
+  
   <app-users-table class="users-table" [users]='users | filter:username'></app-users-table>
-</div>
 
+
+  <app-modal [roles]='roles'></app-modal>
+</div>
