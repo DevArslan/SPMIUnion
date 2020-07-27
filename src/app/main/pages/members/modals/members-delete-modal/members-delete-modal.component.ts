@@ -23,7 +23,7 @@ export class MembersDeleteModalComponent implements OnInit {
     this.apiServiceService.titleForDeleteModal$.subscribe((title) => {
       this.title = title
     })
-    this.apiServiceService.member$.subscribe((data) => {
+    this.apiServiceService.deleteMember$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.apiServiceService.error.next(String(this.error))

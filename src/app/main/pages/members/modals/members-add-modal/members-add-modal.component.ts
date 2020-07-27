@@ -130,7 +130,7 @@ export class MembersAddModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.apiServiceService.member$.subscribe((data) => {
+    this.apiServiceService.createMember$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.apiServiceService.error.next(String(this.error))

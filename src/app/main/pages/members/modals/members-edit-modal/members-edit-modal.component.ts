@@ -29,7 +29,7 @@ export class MembersEditModalComponent implements OnInit {
 
   @Output() childEvent = new EventEmitter();
   ngOnInit(): void {
-    this.API.member$.subscribe((data) => {
+    this.API.editMember$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.API.error.next(String(this.error))

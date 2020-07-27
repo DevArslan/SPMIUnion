@@ -34,6 +34,9 @@ export class ApiServiceService {
 
   user$ = new Subject<any>()
   member$ = new Subject<any>()
+  createMember$ = new Subject<any>()
+  editMember$ = new Subject<any>()
+  deleteMember$ = new Subject<any>()
   structure$ = new Subject<any>()
   subdepartment$ = new Subject<any>()
   // Observable member data
@@ -258,10 +261,11 @@ export class ApiServiceService {
 
     this.http.post(BASE_URL + 'members', data).subscribe(
       (res) => {
-        this.member$.next(res)
+        console.log(res)
+        this.createMember$.next(res)
       },
       (err) => {
-        this.member$.next(err)
+        this.createMember$.next(err)
       }
     );
   }
@@ -272,7 +276,14 @@ export class ApiServiceService {
       members: membersID,
     };
 
-    const token = JSON.parse(sessionStorage.getItem(STORAGE_KEY)).token
+    let token
+
+    if(JSON.parse(sessionStorage.getItem(STORAGE_KEY)) != null){
+      token = JSON.parse(sessionStorage.getItem(STORAGE_KEY)).token
+    }else{
+      token = JSON.parse(localStorage.getItem(STORAGE_KEY)).token
+    }
+
 
     const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members';
 
@@ -285,7 +296,7 @@ export class ApiServiceService {
       },
       body: JSON.stringify(data),
     }).then((res) => {
-      this.member$.next(res.json())
+      this.deleteMember$.next(res.json())
       return res.json();
     });
   }
@@ -302,10 +313,11 @@ export class ApiServiceService {
 
     this.http.put(BASE_URL + 'members/' + memberID, data).subscribe(
       (res) => {
-        this.member$.next(res)
+        this.responseOK.next('Участник успешно изменен')
+        this.editMember$.next(res)
       },
       (err) => {
-        this.member$.next(err)
+        this.editMember$.next(err)
       }
     );
 

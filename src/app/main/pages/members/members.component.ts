@@ -85,14 +85,7 @@ export class MembersComponent implements OnInit {
     if (this.membersID.length != 0) {
       this.error = ''
       await this.apiServiceService.activateMembers(this.membersID)
-      this.apiServiceService.member$.subscribe((data) => {
-        if (data.error) {
-          this.error = data.error.message
-          this.apiServiceService.error.next(String(this.error))
-        } else {
-          this.apiServiceService.responseOK.next('Участники успешно активированы')
-        }
-      })
+      
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
       selectAllCheckbox.checked = false
       this.getMembersByPage()
@@ -103,14 +96,6 @@ export class MembersComponent implements OnInit {
       const memberID = []
       memberID.push(this.memberID)
       await this.apiServiceService.activateMembers(memberID)
-      this.apiServiceService.member$.subscribe((data) => {
-        if (data.error) {
-          this.error = data.error.message
-          this.apiServiceService.error.next(String(this.error))
-        } else {
-          this.apiServiceService.responseOK.next('Участник успешно активирован')
-        }
-      })
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
       this.memberID = undefined
@@ -170,7 +155,6 @@ export class MembersComponent implements OnInit {
 
 
     this.apiServiceService.member$.subscribe((data) => {
-      console.log(data)
       if (data.error) {
         this.error = data.error.message
         this.apiServiceService.error.next(String(this.error))
