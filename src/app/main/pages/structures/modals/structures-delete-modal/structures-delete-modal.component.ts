@@ -29,13 +29,18 @@ export class StructuresDeleteModalComponent implements OnInit {
         this.api.error.next(String(this.error))
       } else {
         this.api.responseOK.next(data.message)
-        if(this.departmentID != this.api.departments[0].id){
-          const firstDepartmentId = this.api.departments[0].id
-          this.router.navigate(['main/structures/' + firstDepartmentId]);
+        if(this.api.departments.length > 1){
+          if(this.departmentID != this.api.departments[0].id){
+            const firstDepartmentId = this.api.departments[0].id
+            this.router.navigate(['main/structures/' + firstDepartmentId]);
+          }else{
+            const firstDepartmentId = this.api.departments[1].id
+            this.router.navigate(['main/structures/' + firstDepartmentId]);
+          }
         }else{
-          const firstDepartmentId = this.api.departments[1].id
-          this.router.navigate(['main/structures/' + firstDepartmentId]);
+          this.router.navigate(['main/members']);
         }
+        
         this.api.getDepartments()
         this.closeModal()
       }
