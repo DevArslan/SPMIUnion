@@ -21,6 +21,7 @@ export class ApiServiceService {
   selectedDepartment$ = new Subject<{}>();
   users$ = new Subject<any>();
   departments$ = new Subject<any>();
+  departments$$ = new Subject<any>();
   members$ = new Subject<any>();
   roles$ = new Subject<any>();
   postData$ = new Subject<{}[]>();
@@ -51,7 +52,7 @@ export class ApiServiceService {
 
   selectedAllmembers = new Subject<boolean>();
   // Получение данных о структурах
-  getDepartments() {
+  async getDepartments() {
 
     /* NOTE: Примерно так выглядит более корректный подход. */
     this.http.get(BASE_URL + 'departments').subscribe(

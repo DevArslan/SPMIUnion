@@ -18,22 +18,25 @@ export class StructuresDeleteModalComponent implements OnInit {
   error: string = ''
   private subscription: Subscription = new Subscription();
   ngOnDestroy(): void {
-    
+
     this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    const structureSub  = this.api.structure$.subscribe((data) => {
+    const structureSub = this.api.structure$.subscribe(async(data) => {
       if (data.error) {
         this.error = data.error.message
         this.api.error.next(String(this.error))
       } else {
-        this.api.getDepartments()
-        this.api.departments$.subscribe((data)=>{
-          const firstDepartmentId = data[0].id
-          this.router.navigate(['main/structures/' + firstDepartmentId]);
-        })
         this.api.responseOK.next(data.message)
+        if(this.departmentID != this.api.departments[0].id){
+          const firstDepartmentId = this.api.departments[0].id
+          this.router.navigate(['main/structures/' + firstDepartmentId]);
+        }else{
+          const firstDepartmentId = this.api.departments[1].id
+          this.router.navigate(['main/structures/' + firstDepartmentId]);
+        }
+        this.api.getDepartments()
         this.closeModal()
       }
     })
@@ -46,11 +49,11 @@ export class StructuresDeleteModalComponent implements OnInit {
   async deleteDepartment() {
 
     this.departmentID = this.department.id
-    
+
     await this.api.deleteDepartment(this.departmentID)
 
 
-   
+
   }
 
 }

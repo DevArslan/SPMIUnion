@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from "src/app/shared/api-service.service";
-import {ActivatedRoute} from '@angular/router';
+
 
 @Component({
   selector: 'app-structures',
@@ -12,12 +12,12 @@ import {ActivatedRoute} from '@angular/router';
 
 export class StructuresComponent implements OnInit {
 
-  constructor(private apiServiceService: ApiServiceService,private activatedRoute: ActivatedRoute) { }
+  constructor(private apiServiceService: ApiServiceService) { }
   active: boolean = false;
   loadingCompleted: boolean = false;
   data: {}[] = []
   ngOnInit(): void {
-    this.apiServiceService.getDepartments()
+    // this.apiServiceService.getDepartments()
     // this.apiServiceService.departments$.subscribe(()=>{
     //   this.data = this.activatedRoute.snapshot.data['departments'];
     // })

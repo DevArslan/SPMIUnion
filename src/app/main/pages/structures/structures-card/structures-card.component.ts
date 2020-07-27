@@ -345,7 +345,7 @@ export class StructuresCardComponent implements OnInit {
       this.subDepartmentsForCharts.length = 0
       this.selectedSubDepartments.length = 0
       this.data = data
-      console.log(this.selectedStructureId)
+
       this.data.forEach(async (element: any) => {
         if (this.selectedStructureId == element.id) {
           this.equalID = true
