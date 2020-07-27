@@ -18,6 +18,7 @@ export class StructuresCardComponent implements OnInit {
     console.log(this.route)
     // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
   }
+  private subscription: Subscription = new Subscription();
 
   selectedData: any = {}
   selectedDataStructures: string[] = []
@@ -274,19 +275,62 @@ export class StructuresCardComponent implements OnInit {
 
   async getStats(nowDateMinusOneYear, nowDate, subID) {
     this.apiServiceService.getStats(nowDateMinusOneYear, nowDate, subID)
+    
+  }
+  ngOnChanges(): void{
+    
+    this.subscription.unsubscribe();
+  }
+  ngOnDestroy(): void {
+    
+    this.subscription.unsubscribe();
+  }
+
+  ngOnInit(): void {
     this.apiServiceService.stats$.subscribe((data) => {
       this.stats = data.stats
     })
-  }
+    // Фильтрация подразделения под конкретную структуру
+
+    const subdepSub = this.apiServiceService.subdepartments$.subscribe((data) => {
+      console.log('123')
+      this.subDepartments = data.subdepartments
+      
+      this.selectedSubDepartments.length = 0
+      this.subDepartments.forEach((element: any) => {
+        if (element.head_department_id == this.selectedData.id) {
+          this.selectedSubDepartments.push(element)
+        }
+      });
+      console.log(this.selectedSubDepartments)
+      this.selectedSubDepartmentsIds.length = 0
+      this.selectedSubDepartments.forEach((element: any) => {
+        this.selectedSubDepartmentsIds.push(element.id)
+
+      });
+
+      const nowDate = this.formatDate(new Date())
+      const nowDateMinusOneYear = (this.formatDate(new Date()).slice(0, -4)) + Number(new Date().getFullYear() - 1)
+      this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
 
 
+      
+    })
+    this.subscription.add(subdepSub)
 
-  ngOnInit(): void {
+    const statsSub = this.apiServiceService.stats$.subscribe(() => {
+      this.selectedSubDepartmentsIds.forEach((id) => {
+        this.getDynamic(id)
+      })
+      this.updateCharts(structureChart, structureChart2)
+    })
+    this.subscription.add(statsSub)
+
     // Подписка для того, чтобы дождаться загрузки данных о структурах. Иначе при обновлении страницы, она будет пустой (данные еще не будут подгружены с backend-а)
-    this.apiServiceService.departments$.subscribe((data) => {
+    const departmentSub = this.apiServiceService.departments$.subscribe((data) => {
       this.data = data
       // Подписка на изменение параметров (id) в маршруте
-      this.route.params.subscribe(async (params) => {
+      const routerSub = this.route.params.subscribe(async (params) => {
         this.dynamics.length = 0
         this.subDepartmentsForCharts.length = 0
         this.selectedSubDepartments.length = 0
@@ -320,41 +364,14 @@ export class StructuresCardComponent implements OnInit {
 
           }
         })
-        // Фильтрация подразделения под конкретную структуру
 
-        this.apiServiceService.subdepartments$.subscribe((data) => {
-          console.log('123')
-          this.subDepartments = data.subdepartments
-
-          this.selectedSubDepartments.length = 0
-          this.subDepartments.forEach((element: any) => {
-            if (element.head_department_id == this.selectedData.id) {
-              this.selectedSubDepartments.push(element)
-            }
-          });
-          console.log(this.selectedSubDepartments)
-          this.selectedSubDepartmentsIds.length = 0
-          this.selectedSubDepartments.forEach((element: any) => {
-            this.selectedSubDepartmentsIds.push(element.id)
-
-          });
-
-          const nowDate = this.formatDate(new Date())
-          const nowDateMinusOneYear = (this.formatDate(new Date()).slice(0, -4)) + Number(new Date().getFullYear() - 1)
-          this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
-
-
-          this.apiServiceService.stats$.subscribe(() => {
-            this.selectedSubDepartmentsIds.forEach((id) => {
-              this.getDynamic(id)
-            })
-            this.updateCharts(structureChart, structureChart2)
-          })
-        })
+        
+        console.log(this.subscription)
         await this.getSubDepartmentsData()
 
 
       })
+      this.subscription.add(routerSub);
       if (this.equalID == true) {
 
       } else {
@@ -362,6 +379,7 @@ export class StructuresCardComponent implements OnInit {
         this.equalID = true
       }
     })
+    this.subscription.add(departmentSub);
 
     var structureChart = new Chart('structureChart', {
       type: 'bar',

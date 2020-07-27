@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angula
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { promise } from 'protractor';
 
 @Component({
@@ -12,6 +13,8 @@ import { promise } from 'protractor';
 export class MembersComponent implements OnInit {
 
   constructor(private apiServiceService: ApiServiceService) { }
+
+  private subscription: Subscription = new Subscription();
 
   username: string = ''
   membersID: number[] = []
@@ -63,17 +66,7 @@ export class MembersComponent implements OnInit {
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
       selectAllCheckbox.checked = false
 
-      this.apiServiceService.member$.subscribe((data) => {
-        if (data.error) {
-          this.error = data.error.message
-          this.apiServiceService.error.next(String(this.error))
-        } else {
-          this.apiServiceService.responseOK.next('Участники успешно заблокированы')
-          this.getMembersByPage()
-          this.error = 'Сначала выберите участника'
-          this.membersID.length = 0
-        }
-      })
+      
 
     } else if (this.memberID) {
       this.error = ''
@@ -82,16 +75,7 @@ export class MembersComponent implements OnInit {
       await this.apiServiceService.blockMembers(memberID)
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
       selectAllCheckbox.checked = false
-      this.apiServiceService.member$.subscribe((data) => {
-        if (data.error) {
-          this.error = data.error.message
-          this.apiServiceService.error.next(String(this.error))
-        } else {
-          this.apiServiceService.responseOK.next('Участник успешно заблокирован')
-          this.error = 'Сначала выберите участника'
-          this.memberID = undefined
-        }
-      })
+
 
     }
 
@@ -175,12 +159,33 @@ export class MembersComponent implements OnInit {
 
   }
 
+
+  ngOnDestroy(): void {    
+    console.log(this.subscription)
+    this.subscription.unsubscribe();
+  }
+
   ngOnInit(): void {
     this.getMembersByPage()
 
 
+    this.apiServiceService.member$.subscribe((data) => {
+      console.log(data)
+      if (data.error) {
+        this.error = data.error.message
+        this.apiServiceService.error.next(String(this.error))
+      } else {
+        this.apiServiceService.responseOK.next(data.message)
+        this.getMembersByPage()
+        this.error = 'Сначала выберите участника'
+        this.membersID.length = 0
+        this.memberID = undefined
+      }
+    })
 
-    this.apiServiceService.members$.subscribe((dataFromApi: any) => {
+
+
+    const membersSub = this.apiServiceService.members$.subscribe((dataFromApi: any) => {
       this.data = dataFromApi.members
       this.membersCount = dataFromApi.total
       if (!this.maxPageNumber) {
@@ -190,8 +195,9 @@ export class MembersComponent implements OnInit {
       }
 
     })
+    this.subscription.add(membersSub)
 
-    this.apiServiceService.selectedMemberId$.subscribe((id) => {
+    const selectedMemberSub = this.apiServiceService.selectedMemberId$.subscribe((id) => {
       this.memberID = id
       if (this.memberID) {
         this.error = ''
@@ -199,7 +205,8 @@ export class MembersComponent implements OnInit {
         this.error = 'Сначала выберите участников'
       }
     })
-    this.apiServiceService.selectedMembersId$.subscribe((apiData) => {
+    this.subscription.add(selectedMemberSub)
+    const selectedMembersSub = this.apiServiceService.selectedMembersId$.subscribe((apiData) => {
       this.membersID = apiData
       if (this.membersID.length != 0) {
         this.error = ''
@@ -208,10 +215,12 @@ export class MembersComponent implements OnInit {
       }
 
     })
+    this.subscription.add(selectedMembersSub)
 
-    this.apiServiceService.departments$.subscribe((dataFromApi) => {
+    const departmentsSub = this.apiServiceService.departments$.subscribe((dataFromApi) => {
       this.dataForModal = dataFromApi
     })
+    this.subscription.add(departmentsSub)
     this.apiServiceService.getDepartments()
 
     this.getMembersByPage()

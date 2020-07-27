@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiServiceService } from 'src/app/shared/api-service.service';
 import { AuthService } from 'src/app/shared/auth.service';
+import { Subscription, of } from 'rxjs';
 import { STORAGE_KEY } from '../../../CONFIG';
 @Component({
   selector: 'app-users',
@@ -12,6 +13,9 @@ export class UsersComponent implements OnInit {
     private apiServiceService: ApiServiceService,
     private authService: AuthService
   ) {}
+
+  private subscription: Subscription = new Subscription();
+
   roles: any;
   user: any;
   users: any;
@@ -21,22 +25,29 @@ export class UsersComponent implements OnInit {
   userID: any;
   roleIsAdmin: boolean;
 
+  ngOnDestroy(): void {    
+    console.log(this.subscription)
+    this.subscription.unsubscribe();
+  }
+
   ngOnInit(): void {
 
     this.apiServiceService.getRoles();
-    this.apiServiceService.roles$.subscribe((dataFromApi: any) => {
+    const rolesSub = this.apiServiceService.roles$.subscribe((dataFromApi: any) => {
       
       this.roles = dataFromApi.roles;
       console.log(this.roles)
     });
+    this.subscription.add(rolesSub)
 
     this.apiServiceService.getUsers()
-    this.apiServiceService.users$.subscribe((dataFromApi: any) => {
+    const usersSub = this.apiServiceService.users$.subscribe((dataFromApi: any) => {
       this.users = dataFromApi.users
       console.log(this.users)
     })
+    this.subscription.add(usersSub)
 
-    this.apiServiceService.selectedUserId$.subscribe((data) => {
+    const userSub =  this.apiServiceService.selectedUserId$.subscribe((data) => {
       this.userID = data;
       if (this.userID) {
         this.error = '';
@@ -44,6 +55,7 @@ export class UsersComponent implements OnInit {
         this.error = 'Сначала выберите пользователя';
       }
     });
+    this.subscription.add(userSub)
   }
 
   showAddModal() {

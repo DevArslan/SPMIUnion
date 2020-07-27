@@ -320,6 +320,7 @@ export class ApiServiceService {
 
     this.http.patch(BASE_URL + 'members/enter', data).subscribe(
       (res) => {
+        console.log(res)
         this.member$.next(res)
       },
       (err) => {
@@ -336,6 +337,7 @@ export class ApiServiceService {
 
     this.http.patch(BASE_URL + 'members/quit', data).subscribe(
       (res) => {
+        console.log(res)
         this.member$.next(res)
       },
       (err) => {
