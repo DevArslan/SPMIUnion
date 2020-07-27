@@ -9,7 +9,7 @@ import { ApiServiceService } from 'src/app/shared/api-service.service';
 })
 export class MainComponent implements OnInit {
   constructor(public snackBar: MatSnackBar, public api: ApiServiceService) {}
-
+  
   ngOnInit(): void {
     /*NOTE: Теперь все правильно - если юзер залогинился и попал сюда, то вызывается метод*/
     this.api.getDepartments();

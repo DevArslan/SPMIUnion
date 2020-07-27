@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import Chart from 'chart.js';
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, of } from 'rxjs';
 import { Router } from '@angular/router';
+import { async } from '@angular/core/testing';
 @Component({
   selector: 'app-structures-card',
   templateUrl: './structures-card.component.html',
@@ -19,7 +20,7 @@ export class StructuresCardComponent implements OnInit {
     // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
   }
   private subscription: Subscription = new Subscription();
-
+  selectedStructureId: number
   selectedData: any = {}
   selectedDataStructures: string[] = []
   selectedDataStructuresUsers: string[] = []
@@ -272,30 +273,34 @@ export class StructuresCardComponent implements OnInit {
   async getSubDepartmentsData() {
     return await this.apiServiceService.getSubDepartments();
   }
-
+  async getDepartmentsData(){
+    await this.apiServiceService.getDepartments();
+  }
   async getStats(nowDateMinusOneYear, nowDate, subID) {
     this.apiServiceService.getStats(nowDateMinusOneYear, nowDate, subID)
-    
+
   }
-  ngOnChanges(): void{
-    
+
+  ngOnChanges(): void {
     this.subscription.unsubscribe();
   }
   ngOnDestroy(): void {
-    
+
     this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
+
+    
+
     this.apiServiceService.stats$.subscribe((data) => {
       this.stats = data.stats
     })
     // Фильтрация подразделения под конкретную структуру
-
     const subdepSub = this.apiServiceService.subdepartments$.subscribe((data) => {
       console.log('123')
       this.subDepartments = data.subdepartments
-      
+
       this.selectedSubDepartments.length = 0
       this.subDepartments.forEach((element: any) => {
         if (element.head_department_id == this.selectedData.id) {
@@ -314,7 +319,7 @@ export class StructuresCardComponent implements OnInit {
       this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
 
 
-      
+
     })
     this.subscription.add(subdepSub)
 
@@ -327,18 +332,66 @@ export class StructuresCardComponent implements OnInit {
     this.subscription.add(statsSub)
 
     // Подписка для того, чтобы дождаться загрузки данных о структурах. Иначе при обновлении страницы, она будет пустой (данные еще не будут подгружены с backend-а)
-    const departmentSub = this.apiServiceService.departments$.subscribe((data) => {
+    // const departmentSub = this.apiServiceService.departments$.subscribe((data) => {
+    //   this.data = data
+    //   console.log('DATASFASF')
+    // })
+    // this.subscription.add(departmentSub);
+
+   
+    this.data = this.apiServiceService.departments
+    const departmentSub = this.apiServiceService.departments$.subscribe(async(data) => {
+      this.dynamics.length = 0
+      this.subDepartmentsForCharts.length = 0
+      this.selectedSubDepartments.length = 0
       this.data = data
-      // Подписка на изменение параметров (id) в маршруте
-      const routerSub = this.route.params.subscribe(async (params) => {
-        this.dynamics.length = 0
-        this.subDepartmentsForCharts.length = 0
-        this.selectedSubDepartments.length = 0
+      console.log(this.selectedStructureId)
+      this.data.forEach(async (element: any) => {
+        if (this.selectedStructureId == element.id) {
+          this.equalID = true
+          this.selectedData = element;
+          this.proforgName = this.selectedData.proforg
+          this.structureName = this.selectedData.title
+          // Костыль для редактирования названия структуры и имени профорга. При неправильном вводе, возвращается не изменённое значение
+          this.notEditStructureName = this.selectedData.title
+          this.notEditProforgName = this.selectedData.proforg
+          try {
+            this.titleLength = String(this.selectedData.title.length * 20)
+            const structureName = <HTMLInputElement>document.getElementById('structureName')
+            structureName.style.width = this.titleLength + 'px'
+            // structureName.setAttribute('size', this.titleLength)
+          } catch (error) {
 
-        // this.data = this.apiServiceService.departments
+          }
+          try {
+            this.proforgNameLength = String(this.selectedData.proforg.length * 20)
+            const proforgName = document.getElementById('proforgName')
+            proforgName.setAttribute('size', this.proforgNameLength)
+          } catch (error) {
 
+          }
+
+        }
+      })
+      await this.getSubDepartmentsData()  
+      if (this.equalID == true) {
+  
+      } else {
+        this.ROUTER.navigate(['main/members']);
+        this.equalID = true
+      }
+      
+    })
+     // Подписка на изменение параметров (id) в маршруте
+    const routerSub = this.route.params.subscribe(async (params) => {
+      this.dynamics.length = 0
+      this.subDepartmentsForCharts.length = 0
+      this.selectedSubDepartments.length = 0
+      this.selectedStructureId = params.id
+      // this.data = this.apiServiceService.departments
+      console.log(this.data)
         this.data.forEach(async (element: any) => {
-          if (params.id == element.id) {
+          if (this.selectedStructureId == element.id) {
             this.equalID = true
             this.selectedData = element;
             this.proforgName = this.selectedData.proforg
@@ -352,34 +405,33 @@ export class StructuresCardComponent implements OnInit {
               structureName.style.width = this.titleLength + 'px'
               // structureName.setAttribute('size', this.titleLength)
             } catch (error) {
-
+  
             }
             try {
               this.proforgNameLength = String(this.selectedData.proforg.length * 20)
               const proforgName = document.getElementById('proforgName')
               proforgName.setAttribute('size', this.proforgNameLength)
             } catch (error) {
-
+  
             }
-
+  
           }
         })
-
-        
+  
+  
         console.log(this.subscription)
         await this.getSubDepartmentsData()
-
-
-      })
-      this.subscription.add(routerSub);
-      if (this.equalID == true) {
-
-      } else {
-        this.ROUTER.navigate(['main/members']);
-        this.equalID = true
-      }
+        if (this.equalID == true) {
+  
+        } else {
+          this.ROUTER.navigate(['main/members']);
+          this.equalID = true
+        }
     })
+    this.subscription.add(routerSub);
     this.subscription.add(departmentSub);
+    
+    
 
     var structureChart = new Chart('structureChart', {
       type: 'bar',

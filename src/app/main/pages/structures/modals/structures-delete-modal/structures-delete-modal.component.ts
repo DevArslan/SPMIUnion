@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Input } from "@angular/core";
 import { Router } from '@angular/router';
 import { ApiServiceService } from "src/app/shared/api-service.service";
-import { of } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 
 @Component({
   selector: 'app-structures-delete-modal',
@@ -16,21 +16,14 @@ export class StructuresDeleteModalComponent implements OnInit {
   constructor(private router: Router, private api: ApiServiceService) { }
   departmentID: string
   error: string = ''
+  private subscription: Subscription = new Subscription();
+  ngOnDestroy(): void {
+    
+    this.subscription.unsubscribe();
+  }
 
   ngOnInit(): void {
-  }
-  closeModal() {
-    const modal = document.getElementById('departmentDelModal')
-    modal.style.display = "none";
-  }
-  async deleteDepartment() {
-
-    this.departmentID = this.department.id
-    console.log(this,)
-    await this.api.deleteDepartment(this.departmentID)
-
-
-    this.api.structure$.subscribe((data) => {
+    const structureSub  = this.api.structure$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.api.error.next(String(this.error))
@@ -40,12 +33,24 @@ export class StructuresDeleteModalComponent implements OnInit {
           const firstDepartmentId = data[0].id
           this.router.navigate(['main/structures/' + firstDepartmentId]);
         })
-        
-        
         this.api.responseOK.next(data.message)
         this.closeModal()
       }
     })
+    this.subscription.add(structureSub)
+  }
+  closeModal() {
+    const modal = document.getElementById('departmentDelModal')
+    modal.style.display = "none";
+  }
+  async deleteDepartment() {
+
+    this.departmentID = this.department.id
+    
+    await this.api.deleteDepartment(this.departmentID)
+
+
+   
   }
 
 }

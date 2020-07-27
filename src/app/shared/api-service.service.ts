@@ -58,6 +58,7 @@ export class ApiServiceService {
       (res) => {
         this.departments$.next(res['departments']);
         this.departments = res['departments']
+        return res['departments']
       },
       (err) => this.departments$.next(err)
     );
@@ -98,6 +99,7 @@ export class ApiServiceService {
     this.http.post(BASE_URL + 'departments', data).subscribe(
       (res) => {
         this.structure$.next(res)
+        this.responseOK.next("Подразделение успешно создано")
       },
       (err) => {
         this.structure$.next(err)
@@ -107,13 +109,17 @@ export class ApiServiceService {
 
   // Удаление структуры
   async deleteDepartment(departmentID) {
+    console.log('DELETE')
     this.http.delete(BASE_URL + 'departments/' + departmentID).subscribe(
       (res) => {
+        
         this.structure$.next(res)
+        
       },
       (err) => {
+  
         this.structure$.next(err)
-
+        
       }
     );
 
@@ -146,7 +152,7 @@ export class ApiServiceService {
         this.subdepartments$.next(res)
         // this.departments$.next(res['departments']);
       },
-      (err) => this.departments$.next(err)
+      (err) => this.subdepartments$.next(err)
     );
   }
 

@@ -31,7 +31,7 @@ export class StructuresAddModalComponent implements OnInit {
       }else{
         console.log(data)
         this.api.getDepartments()
-        this.api.responseOK.next('Структура успешно создана')
+        this.api.responseOK.next('Подразделение успешно создано')
         this.closeModal()
       }
     })
