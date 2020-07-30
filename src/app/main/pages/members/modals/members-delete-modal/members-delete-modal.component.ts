@@ -57,7 +57,6 @@ export class MembersDeleteModalComponent implements OnInit {
       const emptyArray = []
       this.apiServiceService.selectedMembersId$.next(emptyArray)
 
-
     } else if (this.memberID) {
       const promise = await this.apiServiceService.deleteMember(this.membersID)
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
@@ -65,8 +64,6 @@ export class MembersDeleteModalComponent implements OnInit {
       this.apiServiceService.selectedMemberId$.next(undefined)
 
     }
-
-
 
   }
 }

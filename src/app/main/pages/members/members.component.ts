@@ -4,6 +4,8 @@ import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators'
 import { fromEvent } from 'rxjs';
 import { Subscription, of } from 'rxjs';
 import { promise } from 'protractor';
+import { ModalService } from "./shared/modal.service";
+import { DeleteService } from "../../shared/delete.service";
 
 @Component({
   selector: 'app-members',
@@ -12,7 +14,7 @@ import { promise } from 'protractor';
 })
 export class MembersComponent implements OnInit {
 
-  constructor(private apiServiceService: ApiServiceService) { }
+  constructor(private apiServiceService: ApiServiceService, private modalService: ModalService, private deleteService : DeleteService) { }
 
   private subscription: Subscription = new Subscription();
 
@@ -66,7 +68,7 @@ export class MembersComponent implements OnInit {
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
       selectAllCheckbox.checked = false
 
-      
+
 
     } else if (this.memberID) {
       this.error = ''
@@ -85,7 +87,7 @@ export class MembersComponent implements OnInit {
     if (this.membersID.length != 0) {
       this.error = ''
       await this.apiServiceService.activateMembers(this.membersID)
-      
+
       const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
       selectAllCheckbox.checked = false
       this.getMembersByPage()
@@ -100,20 +102,26 @@ export class MembersComponent implements OnInit {
       this.error = 'Сначала выберите участника'
       this.memberID = undefined
     }
-    
+
 
   }
 
   showAddModal() {
-    const modal = document.getElementById('membersAddModal')
-    modal.style.display = "block";
+    this.modalService.action$.next('add')
+    this.modalService.stateOpen$.next(true)
+    this.modalService.modalTitle$.next('Добавить участника')
+    // const modal = document.getElementById('membersAddModal')
+    // modal.style.display = "block";
   }
   showEditModal() {
     console.log(this.membersID.length)
     if (this.memberID && this.membersID.length < 2) {
       this.error = ''
-      const modal = document.getElementById('membersEditModal')
-      modal.style.display = "block";
+      // const modal = document.getElementById('membersEditModal')
+      // modal.style.display = "block";
+      this.modalService.action$.next('edit')
+      this.modalService.stateOpen$.next(true)
+      this.modalService.modalTitle$.next('Изменить данные участника')
       this.error = 'Сначала выберите участника'
     }
 
@@ -121,14 +129,18 @@ export class MembersComponent implements OnInit {
   showDelModal() {
     if (this.membersID.length != 0) {
       this.error = ''
-      const modal = document.getElementById('membersDelModal')
-      modal.style.display = "block";
+      // const modal = document.getElementById('membersDelModal')
+      // modal.style.display = "block";
+      this.deleteService.stateOpen$.next(true)
+      this.deleteService.modalTitle$.next('Удалить участника')
       this.error = 'Сначала выберите участника'
       this.membersID.length = 0
     } else if (this.memberID) {
       this.error = ''
-      const modal = document.getElementById('membersDelModal')
-      modal.style.display = "block";
+      // const modal = document.getElementById('membersDelModal')
+      // modal.style.display = "block";
+      this.deleteService.stateOpen$.next(true)
+      this.deleteService.modalTitle$.next('Удалить участника')
       this.error = 'Сначала выберите участника'
     }
   }
@@ -145,7 +157,7 @@ export class MembersComponent implements OnInit {
   }
 
 
-  ngOnDestroy(): void {    
+  ngOnDestroy(): void {
     console.log(this.subscription)
     this.subscription.unsubscribe();
   }
@@ -171,6 +183,7 @@ export class MembersComponent implements OnInit {
 
     const membersSub = this.apiServiceService.members$.subscribe((dataFromApi: any) => {
       this.data = dataFromApi.members
+      
       this.membersCount = dataFromApi.total
       if (!this.maxPageNumber) {
 
@@ -202,6 +215,7 @@ export class MembersComponent implements OnInit {
     this.subscription.add(selectedMembersSub)
 
     const departmentsSub = this.apiServiceService.departments$.subscribe((dataFromApi) => {
+      this.modalService.data$.next(dataFromApi)
       this.dataForModal = dataFromApi
     })
     this.subscription.add(departmentsSub)

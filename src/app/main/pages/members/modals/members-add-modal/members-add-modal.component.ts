@@ -126,7 +126,6 @@ export class MembersAddModalComponent implements OnInit {
     this.membersDropdown = !this.membersDropdown
     this.structureDropdown = false
     this.facultyDropdown = false
-
   }
 
   ngOnInit(): void {
