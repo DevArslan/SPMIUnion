@@ -1,63 +1,115 @@
-<div class="modalWrapper" id="modal" *ngIf="stateOpen">
-    <div class="modal" (click) = "closeAllDropdown($event)" id="modalBack">
-      <div class="modal-header">
-        <p>{{modalTitle}}</p>
-        <app-close-button (click)="closeModal()"></app-close-button>
-      </div>
-      <div class="modal-content">
-        <form action="">
-          <div class="memberName">
-            <input class="memberName-input" maxlength="64" type="text" name="name" placeholder="ФИО" [(ngModel)]="name" #inputName>
-            <div class="loadingio-spinner-rolling-16sntvlkiknj" id="preloader" *ngIf="preloader && action == 'add'" >
-              <div class="ldio-d7d2560npw">
-                <div></div>
-              </div>
+<div class="modalWrapper" id="modal" [hidden]="!stateOpen">
+  <div class="modal" (click)="closeAllDropdown($event)" id="modalBack">
+    <div class="modal-header">
+      <p>{{ modalTitle }}</p>
+      <app-close-button (click)="closeModal()"></app-close-button>
+    </div>
+    <div class="modal-content">
+      <form action="">
+        <div class="memberName">
+          <input
+            class="memberName-input"
+            maxlength="64"
+            type="text"
+            name="name"
+            placeholder="ФИО"
+            [(ngModel)]="name"
+            #inputName
+          />
+          <div
+            class="loadingio-spinner-rolling-16sntvlkiknj"
+            id="preloader"
+            *ngIf="preloader && action == 'add'"
+          >
+            <div class="ldio-d7d2560npw">
+              <div></div>
             </div>
           </div>
-  
-          <div class="membersDropdown" [ngClass]="{'dropdown': membersDropdown}" *ngIf="action == 'add'">
-            <ul>
-              <li *ngFor="let item of members.users" attr.data-select-name="{{item.name}}"
-                attr.data-select-card="{{item.card}}" attr.data-select-card-number="{{item.card_number}}"
-                (click)="selectMember($event)">
-                <p>{{item.name}}</p>
-                <i class="cardNumber">Номер карты: {{item.card_number}}</i>
-              </li>
-            </ul>
-          </div>
-            <div class="memberCard">
-              <input type="text" class="memberCard-input" name="card" id="cardNumber" placeholder="№ чип карты"
-            [(ngModel)]="card">
-          <p class="cardNumber">{{cardNumber}}</p>
-            </div>
-          
-        </form>
-        <div class="faculty" (click)='dropDownFaculty()'>
-          <p id="faculty-placeholder" class="faculty-placeholder">{{faculty}}</p>
-          <i class="arrowIcon" [ngClass]="{'dropdownIcon': facultyDropdown}"></i>
         </div>
-        <div class="facultyDropdown" [ngClass]="{'dropdown': facultyDropdown}">
+
+        <div
+          class="membersDropdown"
+          [ngClass]="{ dropdown: membersDropdown }"
+          *ngIf="action == 'add'"
+        >
           <ul>
-            <li *ngFor="let item of dataForModal" attr.data-select-faculty="{{item.title}}"
-              (click)="selectFaculty($event)">{{item.title}}</li>
+            <li
+              *ngFor="let item of members.users"
+              attr.data-select-name="{{ item.name }}"
+              attr.data-select-card="{{ item.card }}"
+              attr.data-select-card-number="{{ item.card_number }}"
+              (click)="selectMember($event)"
+            >
+              <p>{{ item.name }}</p>
+              <i class="cardNumber">Номер карты: {{ item.card_number }}</i>
+            </li>
           </ul>
         </div>
-        <div class="structure" (click)='dropDownStructure()'>
-          <p class="structure-placeholder">{{structure}}</p>
-          <i class="arrowIcon" [ngClass]="{'dropdownIcon': structureDropdown}"></i>
+        <div class="memberCard">
+          <input
+            type="text"
+            class="memberCard-input"
+            name="card"
+            id="cardNumber"
+            placeholder="№ чип карты"
+            [(ngModel)]="card"
+          />
+          <p class="cardNumber">{{ cardNumber }}</p>
         </div>
-        <div class="structureDropdown" [ngClass]="{'dropdown': structureDropdown}">
-          <ul>
-            <li *ngFor="let item of structures" attr.data-select-structure="{{item.title}}"
-              attr.data-select-id="{{item.id}}" (click)="selectStructure($event)">{{item.title}}</li>
-          </ul>
-        </div>
-        <div class="checkStudent">
-          <input type="checkbox" name="isStudent" id="" [(ngModel)]="isStudent">
-          <p>Обучающийся</p>
-        </div>
-        <button class="addButton" (click)="createMember()" *ngIf="action == 'add'">Добавить</button>
-        <button class="addButton" (click)="editMember()" *ngIf="action == 'edit'">Изменить</button>
+      </form>
+      <div class="faculty" (click)="dropDownFaculty()">
+        <p id="faculty-placeholder" class="faculty-placeholder">
+          {{ faculty }}
+        </p>
+        <i class="arrowIcon" [ngClass]="{ dropdownIcon: facultyDropdown }"></i>
       </div>
+      <div class="facultyDropdown" [ngClass]="{ dropdown: facultyDropdown }">
+        <ul>
+          <li
+            *ngFor="let item of dataForModal"
+            attr.data-select-faculty="{{ item.title }}"
+            (click)="selectFaculty($event)"
+          >
+            {{ item.title }}
+          </li>
+        </ul>
+      </div>
+      <div class="structure" (click)="dropDownStructure()">
+        <p class="structure-placeholder">{{ structure }}</p>
+        <i
+          class="arrowIcon"
+          [ngClass]="{ dropdownIcon: structureDropdown }"
+        ></i>
+      </div>
+      <div
+        class="structureDropdown"
+        [ngClass]="{ dropdown: structureDropdown }"
+      >
+        <ul>
+          <li
+            *ngFor="let item of structures"
+            attr.data-select-structure="{{ item.title }}"
+            attr.data-select-id="{{ item.id }}"
+            (click)="selectStructure($event)"
+          >
+            {{ item.title }}
+          </li>
+        </ul>
+      </div>
+      <div class="checkStudent">
+        <input type="checkbox" name="isStudent" id="" [(ngModel)]="isStudent" />
+        <p>Обучающийся</p>
+      </div>
+      <button
+        class="addButton"
+        (click)="createMember()"
+        *ngIf="action == 'add'"
+      >
+        Добавить
+      </button>
+      <button class="addButton" (click)="editMember()" *ngIf="action == 'edit'">
+        Изменить
+      </button>
     </div>
   </div>
+</div>

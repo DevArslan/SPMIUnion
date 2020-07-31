@@ -276,6 +276,8 @@ export class ApiServiceService {
       }
     );
   }
+
+  // NOTE: Это переделать под http тоже нужно
   // Удаление участников из профсоюза
   async deleteMember(membersID) {
 
