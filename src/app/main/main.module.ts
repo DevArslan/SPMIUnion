@@ -12,9 +12,6 @@ import { StructuresComponent } from './pages/structures/structures.component';
 import { StructuresCardComponent } from './pages/structures/structures-card/structures-card.component';
 // import { MembersComponent } from './pages/members/members.component';
 import { StructuresAddModalComponent } from './pages/structures/modals/structures-add-modal/structures-add-modal.component';
-import { MembersAddModalComponent } from './pages/members/modals/members-add-modal/members-add-modal.component';
-import { MembersDeleteModalComponent } from './pages/members/modals/members-delete-modal/members-delete-modal.component';
-import { MembersEditModalComponent } from './pages/members/modals/members-edit-modal/members-edit-modal.component';
 import { MembersTableComponent } from './pages/members/members-table/members-table.component';
 import { MembersComponent } from "./pages/members/members.component";
 import { CloseButtonComponent } from '../ui-components/close-button/close-button.component';
@@ -36,6 +33,7 @@ import { SubDepartmentsEditModalComponent } from './pages/structures/subdepartme
 import { MembersModalComponent } from './pages/members/members-modal/members-modal.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import { UsersModalComponent } from './pages/users/users-modal/users-modal.component';
 @NgModule({
   declarations: [
     ProfileComponent,
@@ -55,10 +53,6 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
     UsersComponent,
     UsersTableComponent,
     SubDepartmentsAddModalComponent,
-    MembersAddModalComponent,
-    MembersDeleteModalComponent,
-    MembersEditModalComponent,
-
     UsersAddModalComponent,
     UsersDeleteModalComponent,
     UsersEditModalComponent,
@@ -66,6 +60,7 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
     SubDepartmentsDelModalComponent,
     SubDepartmentsEditModalComponent,
     DeleteModalComponent,
+    UsersModalComponent,
     // ModalComponent,
   ],
   imports: [MainRoutingModule, FormsModule, MatSnackBarModule, CommonModule],

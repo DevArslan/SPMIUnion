@@ -4,6 +4,7 @@ import { AuthService } from 'src/app/shared/auth.service';
 import { Subscription, of } from 'rxjs';
 import { STORAGE_KEY } from '../../../CONFIG';
 import { DeleteService } from "../../shared/delete.service";
+import { ModalService } from "./shared/modal.service";
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -14,6 +15,7 @@ export class UsersComponent implements OnInit {
     private apiServiceService: ApiServiceService,
     private authService: AuthService,
     private deleteService: DeleteService,
+    private modalService: ModalService,
   ) { }
 
   private subscription: Subscription = new Subscription();
@@ -36,7 +38,7 @@ export class UsersComponent implements OnInit {
 
     this.apiServiceService.getRoles();
     const rolesSub = this.apiServiceService.roles$.subscribe((dataFromApi: any) => {
-
+      this.modalService.data$.next(dataFromApi.roles)
       this.roles = dataFromApi.roles;
       console.log(this.roles)
     });
@@ -61,14 +63,23 @@ export class UsersComponent implements OnInit {
   }
 
   showAddModal() {
-    const modal = document.getElementById('usersAddModal');
-    modal.style.display = 'block';
+
+    this.modalService.stateOpen$.next(true)
+    this.modalService.action$.next('add')
+    this.modalService.modalTitle$.next('Добавить пользователя')
+
+    // const modal = document.getElementById('usersAddModal');
+    // modal.style.display = 'block';
   }
   showEditModal() {
+    console.log('edit')
     if (this.userID) {
       this.error = '';
-      const modal = document.getElementById('usersEditModal');
-      modal.style.display = 'block';
+      // const modal = document.getElementById('usersEditModal');
+      // modal.style.display = 'block';
+      this.modalService.stateOpen$.next(true)
+      this.modalService.action$.next('edit')
+      this.modalService.modalTitle$.next('Изменить пользователя')
       this.error = 'Сначала выберите пользователя';
     }
   }

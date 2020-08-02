@@ -1,0 +1,27 @@
+<div class="modalWrapper" id="modal" [hidden] = "!stateOpen">
+    <div class="modal">
+      <div class="modal-header">
+        <p>{{modalTitle}}</p>
+        <app-close-button (click)="closeModal()"></app-close-button>
+      </div>
+      <div class="modal-content">
+        <form action="" [hidden]="action == 'edit'">
+          <input type="text" name="name" placeholder="ФИО" [(ngModel)]="username">
+          <input type="text" name="card" placeholder="Логин" [(ngModel)]="login">
+          <input type="password" name="card" placeholder="Пароль" [(ngModel)]="password">
+        </form>
+        <div class="role"  (click) = 'dropDownRole()'>
+          <p id="role-placeholder" class="role-placeholder">{{roleLabel}}</p>
+          <i class="arrowIcon" [ngClass]="{'dropdownIcon': roleDropdown}"></i>
+        </div>
+        <div class="roleDropdown" [ngClass]="{'dropdown': roleDropdown}">
+          <ul>
+            <li *ngFor="let item of roles" attr.data-select-role="{{item.label}}" attr.data-role-id="{{item.id}}" (click)="selectRole($event)">{{item.label}}</li>
+          </ul>
+        </div>
+  
+        <button class="addButton" (click)="createUser()" *ngIf="action == 'add'">Добавить</button>
+        <button class="addButton" (click)="editUser()" *ngIf="action == 'edit'">Изменить</button>
+      </div>
+    </div>
+  </div>
