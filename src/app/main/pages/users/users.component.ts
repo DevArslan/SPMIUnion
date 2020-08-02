@@ -3,6 +3,7 @@ import { ApiServiceService } from 'src/app/shared/api-service.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { Subscription, of } from 'rxjs';
 import { STORAGE_KEY } from '../../../CONFIG';
+import { DeleteService } from "../../shared/delete.service";
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
@@ -11,8 +12,9 @@ import { STORAGE_KEY } from '../../../CONFIG';
 export class UsersComponent implements OnInit {
   constructor(
     private apiServiceService: ApiServiceService,
-    private authService: AuthService
-  ) {}
+    private authService: AuthService,
+    private deleteService: DeleteService,
+  ) { }
 
   private subscription: Subscription = new Subscription();
 
@@ -25,7 +27,7 @@ export class UsersComponent implements OnInit {
   userID: any;
   roleIsAdmin: boolean;
 
-  ngOnDestroy(): void {    
+  ngOnDestroy(): void {
     console.log(this.subscription)
     this.subscription.unsubscribe();
   }
@@ -34,7 +36,7 @@ export class UsersComponent implements OnInit {
 
     this.apiServiceService.getRoles();
     const rolesSub = this.apiServiceService.roles$.subscribe((dataFromApi: any) => {
-      
+
       this.roles = dataFromApi.roles;
       console.log(this.roles)
     });
@@ -47,7 +49,7 @@ export class UsersComponent implements OnInit {
     })
     this.subscription.add(usersSub)
 
-    const userSub =  this.apiServiceService.selectedUserId$.subscribe((data) => {
+    const userSub = this.apiServiceService.selectedUserId$.subscribe((data) => {
       this.userID = data;
       if (this.userID) {
         this.error = '';
@@ -73,9 +75,13 @@ export class UsersComponent implements OnInit {
   showDelModal() {
     if (this.userID) {
       this.error = '';
-      const modal = document.getElementById('usersDelModal');
-      modal.style.display = 'block';
+      // const modal = document.getElementById('usersDelModal');
+      // modal.style.display = 'block';
+      this.deleteService.stateOpen$.next(true)
+      this.deleteService.type$.next('user')
+      this.deleteService.modalTitle$.next('Удалить пользователя')
       this.error = 'Сначала выберите пользователя';
     }
+    this.error = 'Сначала выберите участника'
   }
 }

@@ -10,6 +10,8 @@ export class DeleteService {
   stateOpen$ = new Subject<boolean>()
   modalTitle$ = new Subject<string>()
   data$ = new Subject<any>()
+  type$ = new Subject<any>()
+
 
   constructor() { }
 }

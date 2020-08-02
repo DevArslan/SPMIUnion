@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { async } from '@angular/core/testing';
+import { DeleteService } from "../../../shared/delete.service";
 @Component({
   selector: 'app-structures-card',
   templateUrl: './structures-card.component.html',
@@ -15,7 +16,7 @@ export class StructuresCardComponent implements OnInit {
 
   id: number;
 
-  constructor(private ROUTER: Router, private apiServiceService: ApiServiceService, private route: ActivatedRoute) {
+  constructor(private ROUTER: Router, private apiServiceService: ApiServiceService, private route: ActivatedRoute, private deleteService: DeleteService) {
     console.log(this.route)
     // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
   }
@@ -163,8 +164,11 @@ export class StructuresCardComponent implements OnInit {
     modal.style.display = 'block'
   }
   showDelModal() {
-    const modal = document.getElementById('departmentDelModal')
-    modal.style.display = 'block'
+    // const modal = document.getElementById('departmentDelModal')
+    // modal.style.display = 'block'
+    this.deleteService.stateOpen$.next(true)
+    this.deleteService.type$.next('structure')
+    this.deleteService.modalTitle$.next('Удалить структуру')
   }
 
   sortBySubID(arr) {
@@ -273,7 +277,7 @@ export class StructuresCardComponent implements OnInit {
   async getSubDepartmentsData() {
     return await this.apiServiceService.getSubDepartments();
   }
-  async getDepartmentsData(){
+  async getDepartmentsData() {
     await this.apiServiceService.getDepartments();
   }
   async getStats(nowDateMinusOneYear, nowDate, subID) {
@@ -291,7 +295,7 @@ export class StructuresCardComponent implements OnInit {
 
   ngOnInit(): void {
 
-    
+
 
     this.apiServiceService.stats$.subscribe((data) => {
       this.stats = data.stats
@@ -338,9 +342,9 @@ export class StructuresCardComponent implements OnInit {
     // })
     // this.subscription.add(departmentSub);
 
-   
+
     this.data = this.apiServiceService.departments
-    const departmentSub = this.apiServiceService.departments$.subscribe(async(data) => {
+    const departmentSub = this.apiServiceService.departments$.subscribe(async (data) => {
       this.dynamics.length = 0
       this.subDepartmentsForCharts.length = 0
       this.selectedSubDepartments.length = 0
@@ -350,6 +354,8 @@ export class StructuresCardComponent implements OnInit {
         if (this.selectedStructureId == element.id) {
           this.equalID = true
           this.selectedData = element;
+          this.deleteService.data$.next(element)
+
           this.proforgName = this.selectedData.proforg
           this.structureName = this.selectedData.title
           // Костыль для редактирования названия структуры и имени профорга. При неправильном вводе, возвращается не изменённое значение
@@ -373,16 +379,16 @@ export class StructuresCardComponent implements OnInit {
 
         }
       })
-      await this.getSubDepartmentsData()  
+      await this.getSubDepartmentsData()
       if (this.equalID == true) {
-  
+
       } else {
         this.ROUTER.navigate(['main/members']);
         this.equalID = true
       }
-      
+
     })
-     // Подписка на изменение параметров (id) в маршруте
+    // Подписка на изменение параметров (id) в маршруте
     const routerSub = this.route.params.subscribe(async (params) => {
       this.dynamics.length = 0
       this.subDepartmentsForCharts.length = 0
@@ -390,48 +396,50 @@ export class StructuresCardComponent implements OnInit {
       this.selectedStructureId = params.id
       // this.data = this.apiServiceService.departments
       console.log(this.data)
-        this.data.forEach(async (element: any) => {
-          if (this.selectedStructureId == element.id) {
-            this.equalID = true
-            this.selectedData = element;
-            this.proforgName = this.selectedData.proforg
-            this.structureName = this.selectedData.title
-            // Костыль для редактирования названия структуры и имени профорга. При неправильном вводе, возвращается не изменённое значение
-            this.notEditStructureName = this.selectedData.title
-            this.notEditProforgName = this.selectedData.proforg
-            try {
-              this.titleLength = String(this.selectedData.title.length * 20)
-              const structureName = <HTMLInputElement>document.getElementById('structureName')
-              structureName.style.width = this.titleLength + 'px'
-              // structureName.setAttribute('size', this.titleLength)
-            } catch (error) {
-  
-            }
-            try {
-              this.proforgNameLength = String(this.selectedData.proforg.length * 20)
-              const proforgName = document.getElementById('proforgName')
-              proforgName.setAttribute('size', this.proforgNameLength)
-            } catch (error) {
-  
-            }
-  
-          }
-        })
-  
-  
-        console.log(this.subscription)
-        await this.getSubDepartmentsData()
-        if (this.equalID == true) {
-  
-        } else {
-          this.ROUTER.navigate(['main/members']);
+      this.data.forEach(async (element: any) => {
+        if (this.selectedStructureId == element.id) {
           this.equalID = true
+          this.selectedData = element;
+          this.selectedData = element;
+          this.deleteService.data$.next(element)
+          this.proforgName = this.selectedData.proforg
+          this.structureName = this.selectedData.title
+          // Костыль для редактирования названия структуры и имени профорга. При неправильном вводе, возвращается не изменённое значение
+          this.notEditStructureName = this.selectedData.title
+          this.notEditProforgName = this.selectedData.proforg
+          try {
+            this.titleLength = String(this.selectedData.title.length * 20)
+            const structureName = <HTMLInputElement>document.getElementById('structureName')
+            structureName.style.width = this.titleLength + 'px'
+            // structureName.setAttribute('size', this.titleLength)
+          } catch (error) {
+
+          }
+          try {
+            this.proforgNameLength = String(this.selectedData.proforg.length * 20)
+            const proforgName = document.getElementById('proforgName')
+            proforgName.setAttribute('size', this.proforgNameLength)
+          } catch (error) {
+
+          }
+
         }
+      })
+
+
+      console.log(this.subscription)
+      await this.getSubDepartmentsData()
+      if (this.equalID == true) {
+
+      } else {
+        this.ROUTER.navigate(['main/members']);
+        this.equalID = true
+      }
     })
     this.subscription.add(routerSub);
     this.subscription.add(departmentSub);
-    
-    
+
+
 
     var structureChart = new Chart('structureChart', {
       type: 'bar',

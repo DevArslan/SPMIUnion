@@ -4,10 +4,7 @@
     <p class="textareaCard"  readonly id="structureNameP" maxlength="120">{{structureName}}</p>
     <i class="editIcon" (click)="showEditStructureNameForm()"></i>
   </div>
-  <!-- <div class="saveForm" id="structureNameInput" action="" [ngClass]="{dropdown: structureNameInputDrop}">
-    <input type="text"  placeholder="Введите название структуры" [(ngModel)]="structureName">
-    <button class="saveButton" (click)="saveStructureName()">Сохранить</button>
-  </div> -->
+
   <div class="structureCard-info">
     <div class="structureCard-organizer">
       <span>Профорг:&nbsp;</span>
@@ -15,10 +12,7 @@
       <p class="textareaProf" readonly id="proforgNameP" maxlength="120" contenteditable >{{proforgName}}</p>
       <i class="editIcon" (click)="showEditProforgNameForm()"></i>
     </div>
-    <!-- <div class="saveForm" id="proforgNameInput" action="" [ngClass]="{dropdown: proforgNameInputDrop}">
-      <input type="text"  placeholder="Введите ФИО профорга" [(ngModel)]="proforgName">
-      <button class="saveButton" (click)="saveProforgName()">Сохранить</button>
-    </div> -->
+ 
     
     <div class="departmentsInfo">
       <div class="departmentsInfo-usersCount">
@@ -47,5 +41,6 @@
     <div class="structureCard-nav-del" (click)="showDelModal()">Удалить структуру</div>
   </div>
   <app-sub-departments-add-modal [department]='selectedData' class="subDepartmentAddModal" id="subDepartmentAddModal"></app-sub-departments-add-modal>
-  <app-structures-delete-modal [department]='selectedData' class="departmentDelModal" id="departmentDelModal"></app-structures-delete-modal>
+  <!-- <app-structures-delete-modal [department]='selectedData' class="departmentDelModal" id="departmentDelModal"></app-structures-delete-modal> -->
+  <app-delete-modal></app-delete-modal>
 </div>

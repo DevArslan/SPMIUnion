@@ -132,6 +132,7 @@ export class MembersComponent implements OnInit {
       // const modal = document.getElementById('membersDelModal')
       // modal.style.display = "block";
       this.deleteService.stateOpen$.next(true)
+      this.deleteService.type$.next('member')
       this.deleteService.modalTitle$.next('Удалить участника')
       this.error = 'Сначала выберите участника'
       this.membersID.length = 0
@@ -140,6 +141,7 @@ export class MembersComponent implements OnInit {
       // const modal = document.getElementById('membersDelModal')
       // modal.style.display = "block";
       this.deleteService.stateOpen$.next(true)
+      this.deleteService.type$.next('member')
       this.deleteService.modalTitle$.next('Удалить участника')
       this.error = 'Сначала выберите участника'
     }

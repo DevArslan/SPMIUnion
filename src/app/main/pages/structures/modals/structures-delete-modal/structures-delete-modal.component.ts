@@ -54,10 +54,7 @@ export class StructuresDeleteModalComponent implements OnInit {
   async deleteDepartment() {
 
     this.departmentID = this.department.id
-
     await this.api.deleteDepartment(this.departmentID)
-
-
 
   }
 
