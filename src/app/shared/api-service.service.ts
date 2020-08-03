@@ -280,34 +280,18 @@ export class ApiServiceService {
   // NOTE: Это переделать под http тоже нужно
   // Удаление участников из профсоюза
   async deleteMember(membersID) {
-
-    const data = {
-      members: membersID,
-    };
-
-    let token
-
-    if(JSON.parse(sessionStorage.getItem(STORAGE_KEY)) != null){
-      token = JSON.parse(sessionStorage.getItem(STORAGE_KEY)).token
-    }else{
-      token = JSON.parse(localStorage.getItem(STORAGE_KEY)).token
+    const options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json'
+      }),
+      body: {
+        members: membersID,
+      }
     }
 
-
-    const url = 'https://digital.spmi.ru/profsouz_test/api/v1/members';
-
-
-    return fetch(url, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${token}`
-      },
-      body: JSON.stringify(data),
-    }).then((res) => {
-      this.deleteMember$.next(res.json())
-      return res.json();
-    });
+    this.http.delete(BASE_URL + 'members', options).subscribe(res => {
+      this.deleteMember$.next(res)
+    })
   }
 
   // Редактирование участника профсоюза
