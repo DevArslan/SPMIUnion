@@ -53,7 +53,7 @@ export class MembersModalComponent implements OnInit {
   constructor(
     private modalService: ModalService,
     private API: ApiService
-  ) {}
+  ) { }
 
   /* NOTE: 
     Если ты отдельно создаешь метод createMember и Subject createMember$, то и используй этот функционал.
@@ -194,7 +194,12 @@ export class MembersModalComponent implements OnInit {
     this.API.createMember$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message;
-        this.API.error.next(String(this.error));
+        if (this.error.slice(0, 50) == 'Ошибка обновления базы системы социального питания') {
+          this.API.error.next('Участник с таким именем уже есть в системе социального питания');
+        } else {
+          this.API.error.next(String(this.error));
+        }
+
       } else {
         this.API.responseOK.next('Участник успешно добавлен');
         /* NOTE:
@@ -222,7 +227,8 @@ export class MembersModalComponent implements OnInit {
     // Почему не используешь колбэк для ошибки в подписке?
     this.API.membersAKPS$.subscribe((dataFromAPI: any) => {
       if (dataFromAPI.error) {
-        this.error = dataFromAPI.message;
+        // this.error = dataFromAPI.message;
+        this.error = 'Пользователи не найдены'
         this.API.error.next(String(this.error));
       } else {
         this.members = dataFromAPI;

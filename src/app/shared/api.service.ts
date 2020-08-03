@@ -248,7 +248,6 @@ export class ApiService {
     this.preloader$.next(true);
     this.http.get(BASE_URL + 'members/akps?query=' + query).subscribe(
       (res) => {
-        console.log(res)
         this.preloader$.next(false);
         this.membersAKPS$.next(res)
       },
