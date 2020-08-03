@@ -3,6 +3,7 @@ import { Input } from "@angular/core";
 import { ApiServiceService } from "src/app/shared/api-service.service";
 import { Subscription, of } from 'rxjs';
 import { DeleteService } from "../../../shared/delete.service";
+import { ModalService } from "../subdepartments/shared/modal.service";
 @Component({
   selector: 'app-structures-table',
   templateUrl: './structures-table.component.html',
@@ -12,12 +13,12 @@ export class StructuresTableComponent implements OnInit {
   @Input() selectedSubDepartments: {}[]
   @Input() dynamics: { 'subID': number, 'dynamic': number }[]
   subDepartmentId: number
-  data: {}[]
+  data: {id: number, subTitle: string, title:string, modalData: {}[]}
   dataForModal: {}[] = []
   currentSubDynamic: number
   departmentTitle: string = ''
   subDepartmentTitle: string = ''
-  constructor(private apiServiceService: ApiServiceService, private deleteService : DeleteService) { }
+  constructor(private apiServiceService: ApiServiceService, private deleteService : DeleteService, private modalService: ModalService) { }
   private subscription: Subscription = new Subscription();
   getDynamic(id) {
 
@@ -33,24 +34,26 @@ export class StructuresTableComponent implements OnInit {
     this.apiServiceService.downloadExcelSubDepartment(subID, title)
   }
   showDelModal(event) {
-    console.log(event.target.parentElement)
     this.subDepartmentId = event.target.parentElement.dataset.subdepartmentId
     this.deleteService.data$.next(this.subDepartmentId)
     this.deleteService.stateOpen$.next(true)
     this.deleteService.type$.next('subdepartmnet')
     this.deleteService.modalTitle$.next('Удалить подразделение')
-    // const modal = document.getElementById('subDepartmentDelModal')
-    // modal.style.display = 'block'
   }
   showEditModal(event) {
-    console.log(event.target.parentElement)
     this.subDepartmentId = event.target.parentElement.dataset.subdepartmentId
     this.subDepartmentTitle = event.target.parentElement.dataset.title
     this.departmentTitle = event.target.parentElement.dataset.departmentTitle
+    
+    this.data = {id: this.subDepartmentId, subTitle: this.subDepartmentTitle, title: this.departmentTitle, modalData: this.dataForModal}
+    
+    
     this.apiServiceService.departmentForEditModal$.next(this.departmentTitle)
-    console.log(this.subDepartmentTitle)
-    const modal = document.getElementById('subDepartmentEditModal')
-    modal.style.display = 'block'
+
+    this.modalService.data$.next(this.data)
+    this.modalService.action$.next('edit')
+    this.modalService.stateOpen$.next(true)
+    this.modalService.modalTitle$.next('Изменить подразделение')
   }
 
   ngOnDestroy(): void {

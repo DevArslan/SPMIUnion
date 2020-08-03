@@ -34,6 +34,7 @@ import { MembersModalComponent } from './pages/members/members-modal/members-mod
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 import { UsersModalComponent } from './pages/users/users-modal/users-modal.component';
+import { SubdepartmentsModalComponent } from './pages/structures/subdepartments/subdepartments-modal/subdepartments-modal.component';
 @NgModule({
   declarations: [
     ProfileComponent,
@@ -61,6 +62,7 @@ import { UsersModalComponent } from './pages/users/users-modal/users-modal.compo
     SubDepartmentsEditModalComponent,
     DeleteModalComponent,
     UsersModalComponent,
+    SubdepartmentsModalComponent,
     // ModalComponent,
   ],
   imports: [MainRoutingModule, FormsModule, MatSnackBarModule, CommonModule],

@@ -6,6 +6,7 @@ import { Subscription, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { async } from '@angular/core/testing';
 import { DeleteService } from "../../../shared/delete.service";
+import { ModalService } from '../../structures/subdepartments/shared/modal.service';
 @Component({
   selector: 'app-structures-card',
   templateUrl: './structures-card.component.html',
@@ -16,7 +17,7 @@ export class StructuresCardComponent implements OnInit {
 
   id: number;
 
-  constructor(private ROUTER: Router, private apiServiceService: ApiServiceService, private route: ActivatedRoute, private deleteService: DeleteService) {
+  constructor(private ROUTER: Router, private apiServiceService: ApiServiceService, private route: ActivatedRoute, private deleteService: DeleteService, private modalService: ModalService) {
     console.log(this.route)
     // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
   }
@@ -160,8 +161,13 @@ export class StructuresCardComponent implements OnInit {
 
 
   showAddModal() {
-    const modal = document.getElementById('subDepartmentAddModal')
-    modal.style.display = 'block'
+    // const modal = document.getElementById('subDepartmentAddModal')
+    // modal.style.display = 'block'
+    // this.modalService.data$.next(this.data)
+    this.modalService.data$.next(this.selectedData)
+    this.modalService.action$.next('add')
+    this.modalService.stateOpen$.next(true)
+    this.modalService.modalTitle$.next('Добавить подразделение')
   }
   showDelModal() {
     // const modal = document.getElementById('departmentDelModal')
@@ -355,6 +361,7 @@ export class StructuresCardComponent implements OnInit {
           this.equalID = true
           this.selectedData = element;
           this.deleteService.data$.next(element)
+          this.modalService.data$.next(element)
 
           this.proforgName = this.selectedData.proforg
           this.structureName = this.selectedData.title
