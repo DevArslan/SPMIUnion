@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from "../shared/modal.service";
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ApiService } from "src/app/shared/api.service";
 
 @Component({
   selector: 'app-subdepartments-modal',
@@ -21,7 +21,7 @@ export class SubdepartmentsModalComponent implements OnInit {
   facultyDropdown: boolean = false
   faculty: string = 'Факультет'
 
-  constructor(private modalService: ModalService, private API: ApiServiceService) { }
+  constructor(private modalService: ModalService, private API: ApiService) { }
 
   async addSubDepartment() {
     await this.API.createSubDepartment(this.title, this.dataForModal.id)

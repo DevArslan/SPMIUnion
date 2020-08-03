@@ -7,7 +7,7 @@ import { STORAGE_KEY } from '../CONFIG';
 @Injectable({
   providedIn: 'root',
 })
-export class ApiServiceService {
+export class ApiService {
   constructor(private authService: AuthService, private http: HttpClient) { }
   selectedDepartment: string;
   departments: any;

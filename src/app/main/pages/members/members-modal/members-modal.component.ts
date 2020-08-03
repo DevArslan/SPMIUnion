@@ -16,7 +16,7 @@ import {
 } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { ModalService } from '../shared/modal.service';
-import { ApiServiceService } from '../../../../shared/api-service.service';
+import { ApiService } from '../../../../shared/api.service';
 
 @Component({
   selector: 'app-members-modal',
@@ -52,7 +52,7 @@ export class MembersModalComponent implements OnInit {
 
   constructor(
     private modalService: ModalService,
-    private API: ApiServiceService
+    private API: ApiService
   ) {}
 
   /* NOTE: 

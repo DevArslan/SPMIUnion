@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ApiService } from "src/app/shared/api.service";
 @Component({
   selector: 'app-structures-add-modal',
   templateUrl: './structures-add-modal.component.html',
@@ -11,7 +11,7 @@ export class StructuresAddModalComponent implements OnInit {
   proforg: string;
 
   error = ''
-  constructor(private api: ApiServiceService) { }
+  constructor(private api: ApiService) { }
 
   
   ngOnInit(): void {

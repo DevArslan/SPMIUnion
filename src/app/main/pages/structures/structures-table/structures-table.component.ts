@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from "@angular/core";
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ApiService } from "src/app/shared/api.service";
 import { Subscription, of } from 'rxjs';
 import { DeleteService } from "../../../shared/delete.service";
 import { ModalService } from "../subdepartments/shared/modal.service";
@@ -18,7 +18,7 @@ export class StructuresTableComponent implements OnInit {
   currentSubDynamic: number
   departmentTitle: string = ''
   subDepartmentTitle: string = ''
-  constructor(private apiServiceService: ApiServiceService, private deleteService : DeleteService, private modalService: ModalService) { }
+  constructor(private apiServiceService: ApiService, private deleteService : DeleteService, private modalService: ModalService) { }
   private subscription: Subscription = new Subscription();
   getDynamic(id) {
 

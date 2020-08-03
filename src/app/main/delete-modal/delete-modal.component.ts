@@ -1,6 +1,6 @@
 import { DeleteService } from "../shared/delete.service";
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ApiService } from "src/app/shared/api.service";
 import { Input } from "@angular/core";
 import { Router } from '@angular/router';
 import { Subscription, of } from 'rxjs';
@@ -30,7 +30,7 @@ export class DeleteModalComponent implements OnInit {
 
   private subscription: Subscription = new Subscription();
 
-  constructor(private router: Router, private deleteService: DeleteService, private API: ApiServiceService) { }
+  constructor(private router: Router, private deleteService: DeleteService, private API: ApiService) { }
 
   closeModal() {
     this.deleteService.stateOpen$.next(false)

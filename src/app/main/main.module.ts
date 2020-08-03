@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { MainComponent } from './main.component';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ApiServiceService } from '../shared/api-service.service';
+import { ApiService } from '../shared/api.service';
 import { MainRoutingModule } from './main-router.module';
 import { ProfileComponent } from './profile/profile.component';
 import { ControlPanelComponent } from './nav/control-panel/control-panel.component';
@@ -49,7 +49,7 @@ import { SubdepartmentsModalComponent } from './pages/structures/subdepartments/
   imports: [MainRoutingModule, FormsModule, MatSnackBarModule, CommonModule],
   /* А вот ApiService уже здесь регистрируется, потому что
     он будет использовать только в этом модуле */
-  providers: [ApiServiceService],
+  providers: [ApiService],
   bootstrap: [MainComponent],
 })
 export class MainModule {}

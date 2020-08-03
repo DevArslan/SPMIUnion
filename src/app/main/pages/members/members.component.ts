@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ApiService } from "src/app/shared/api.service";
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { Subscription, of } from 'rxjs';
@@ -14,7 +14,7 @@ import { DeleteService } from "../../shared/delete.service";
 })
 export class MembersComponent implements OnInit {
 
-  constructor(private apiServiceService: ApiServiceService, private modalService: ModalService, private deleteService : DeleteService) { }
+  constructor(private apiServiceService: ApiService, private modalService: ModalService, private deleteService : DeleteService) { }
 
   private subscription: Subscription = new Subscription();
 

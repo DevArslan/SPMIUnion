@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiServiceService } from 'src/app/shared/api-service.service';
+import { ApiService } from 'src/app/shared/api.service';
 import { AuthService } from 'src/app/shared/auth.service';
 import { Subscription, of } from 'rxjs';
 import { STORAGE_KEY } from '../../../CONFIG';
@@ -12,7 +12,7 @@ import { ModalService } from "./shared/modal.service";
 })
 export class UsersComponent implements OnInit {
   constructor(
-    private apiServiceService: ApiServiceService,
+    private apiServiceService: ApiService,
     private authService: AuthService,
     private deleteService: DeleteService,
     private modalService: ModalService,

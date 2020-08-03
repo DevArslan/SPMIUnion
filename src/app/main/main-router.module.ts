@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ApiServiceService } from "src/app/shared/api-service.service";
 import { StructuresComponent } from './pages/structures/structures.component';
 import { MembersComponent } from './pages/members/members.component';
 import { MainComponent } from './main.component';

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiServiceService } from "../../../../shared/api-service.service";
+import { ApiService } from "../../../../shared/api.service";
 import { ModalService } from '../shared/modal.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { ModalService } from '../shared/modal.service';
 })
 export class UsersModalComponent implements OnInit {
 
-  constructor(private API: ApiServiceService, private modalService: ModalService) { }
+  constructor(private API: ApiService, private modalService: ModalService) { }
 
   roleDropdown: boolean = false;
   roleLabel: string = 'Выберите роль';

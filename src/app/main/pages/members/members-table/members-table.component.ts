@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from "@angular/core";
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ApiService } from "src/app/shared/api.service";
 import { subscribeOn } from 'rxjs/operators';
 
 
@@ -13,7 +13,7 @@ export class MembersTableComponent implements OnInit {
 
   @Input() data: {}[] = []
   selectedAll: boolean =  true
-  constructor(private api: ApiServiceService) { }
+  constructor(private api: ApiService) { }
 
   titleForDeleteModal: string = ''
 

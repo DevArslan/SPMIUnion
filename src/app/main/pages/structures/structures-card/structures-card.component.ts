@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import Chart from 'chart.js';
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ApiService } from "src/app/shared/api.service";
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, of } from 'rxjs';
 import { Router } from '@angular/router';
@@ -17,7 +17,7 @@ export class StructuresCardComponent implements OnInit {
 
   id: number;
 
-  constructor(private ROUTER: Router, private apiServiceService: ApiServiceService, private route: ActivatedRoute, private deleteService: DeleteService, private modalService: ModalService) {
+  constructor(private ROUTER: Router, private apiServiceService: ApiService, private route: ActivatedRoute, private deleteService: DeleteService, private modalService: ModalService) {
     console.log(this.route)
     // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
   }

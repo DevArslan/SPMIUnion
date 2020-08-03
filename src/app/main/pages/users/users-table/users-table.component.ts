@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from '@angular/core';
-import { ApiServiceService } from 'src/app/shared/api-service.service';
+import { ApiService } from 'src/app/shared/api.service';
 
 @Component({
   selector: 'app-users-table',
@@ -9,7 +9,7 @@ import { ApiServiceService } from 'src/app/shared/api-service.service';
 })
 export class UsersTableComponent implements OnInit {
   @Input() users: {}[] = [];
-  constructor(private api: ApiServiceService) {}
+  constructor(private api: ApiService) {}
 
   selectedUserId: number;
 

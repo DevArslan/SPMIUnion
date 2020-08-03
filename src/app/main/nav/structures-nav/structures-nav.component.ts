@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiServiceService } from 'src/app/shared/api-service.service';
+import { ApiService } from 'src/app/shared/api.service';
 
 @Component({
   selector: 'app-structures-nav',
@@ -14,7 +14,7 @@ export class StructuresNavComponent implements OnInit {
   departmentsData: any;
 
   constructor(
-    private apiService: ApiServiceService
+    private apiService: ApiService
   ) {}
 
 
