@@ -35,7 +35,7 @@ export class MembersModalComponent implements OnInit {
   modalTitle: string;
   dataForModal: {}[] = [];
 
-  data: {}[] = [];
+  data: any[] = [];
   memberID: number;
   membersDropdown: boolean = false;
   structureDropdown: boolean = false;
@@ -106,8 +106,8 @@ export class MembersModalComponent implements OnInit {
 
   // NOTE: Что это за фукнция?)
   searchInAKSP(name) {
-    if(this.action == 'add')
-    this.API.getMembersAKPS(name);
+    if (this.action == 'add')
+      this.API.getMembersAKPS(name);
   }
 
   selectFaculty(event) {
@@ -210,11 +210,14 @@ export class MembersModalComponent implements OnInit {
         TODO: Замени this.childEvent.emit() на добавление участника в массив members. А потом передай этот
         массив в members$. Убери лишнюю логику в род компоненте тоже.
         */
-        this.childEvent.emit();
+        this.data.push(data.member)
+        const membersData = {
+          members: this.data,
+          total: this.data.length
+        }
+        this.API.members$.next(membersData)
         this.closeModal();
       }
-      // NOTE: Теперь эта логика здесь. Но вообще говоря, я не понял зачем это здесь нужно?
-      // TODO: Убери если это бесполезно
       const selectAllCheckbox = <HTMLInputElement>(
         document.getElementById('selectAllCheckbox')
       );
@@ -245,6 +248,22 @@ export class MembersModalComponent implements OnInit {
         this.error = data.error.message;
         this.API.error.next(String(this.error));
       } else {
+        console.log(this.data)
+        console.log(data)
+        
+
+        const newData = this.data.map(o => {
+          if (o.id === data.member.id) {
+            return data.member;
+          }
+          return o;
+        });
+        const membersData = {
+          members: newData,
+          total: this.data.length
+        }
+
+        this.API.members$.next(membersData)
         this.API.responseOK.next('Участник успешно изменен');
         this.childEvent.emit();
         this.API.selectedMemberId$.next(undefined);
@@ -260,7 +279,7 @@ export class MembersModalComponent implements OnInit {
         if (element.id == this.memberID) {
 
           this.name = element.name;
-  
+
           this.card = element.card;
           this.structure = element.subdepartment;
           this.isStudent = element.is_student;
@@ -290,21 +309,21 @@ export class MembersModalComponent implements OnInit {
     // Вообще мне очень не нравится этот код, нужно его переработать
     // Зачем таймайт на 4 секунды?
     // NOTE: 
-      fromEvent(this.input.nativeElement, 'keyup')
-        .pipe(
-          filter(Boolean),
-          debounceTime(400),
-          distinctUntilChanged(),
-          tap((text) => {
-            const memberName = <HTMLInputElement>this.input.nativeElement.value;
-            // NOTE: Вот это здесь зачем например? и async тогда не нужен.
-            if (String(memberName) != '') {
-              this.searchInAKSP(memberName);
-            } else {
-              this.membersDropdown = false;
-            }
-          })
-        )
-        .subscribe();
+    fromEvent(this.input.nativeElement, 'keyup')
+      .pipe(
+        filter(Boolean),
+        debounceTime(400),
+        distinctUntilChanged(),
+        tap((text) => {
+          const memberName = <HTMLInputElement>this.input.nativeElement.value;
+          // NOTE: Вот это здесь зачем например? и async тогда не нужен.
+          if (String(memberName) != '') {
+            this.searchInAKSP(memberName);
+          } else {
+            this.membersDropdown = false;
+          }
+        })
+      )
+      .subscribe();
   }
 }

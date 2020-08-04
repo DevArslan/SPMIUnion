@@ -19,6 +19,7 @@ export class DeleteModalComponent implements OnInit {
   dataForModal: any;
   type: string
   // для участников
+  members: any
   title: string
   membersID: number[] = []
   memberID: number[] = []
@@ -132,12 +133,15 @@ export class DeleteModalComponent implements OnInit {
         this.error = data.error.message
         this.API.error.next(String(this.error))
       } else {
+        console.log(data)
         this.API.responseOK.next('Участник успешно удален')
         this.childEvent.emit();
         this.closeModal()
       }
     })
-
+    // const membersSub = this.API.members$.subscribe((dataFromApi: any) => {
+    //   this.members = dataFromApi.members;
+    // });
     const structureSub = this.API.structure$.subscribe(async (data) => {
       if (data.error) {
         this.error = data.error.message
