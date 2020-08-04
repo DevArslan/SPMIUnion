@@ -106,6 +106,7 @@ export class MembersModalComponent implements OnInit {
 
   // NOTE: Что это за фукнция?)
   searchInAKSP(name) {
+    if(this.action == 'add')
     this.API.getMembersAKPS(name);
   }
 

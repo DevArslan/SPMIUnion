@@ -42,7 +42,7 @@
             <tbody id="membersTableBody">
 
               <tr  *ngFor="let item of data" class="membersTableDataRow unselectable" (click)="selectMember($event)"  
-                attr.data-member-id={{item.id}}>
+                attr.data-member-id={{item.id}} >
                 <td>
                   <input class="memberCheckbox" type="checkbox" value="{{item.id}}" name="memberCheckbox" id="memberCheckbox+{{item.id}}"
                     (click)=selectMembersByCheckbox($event)>

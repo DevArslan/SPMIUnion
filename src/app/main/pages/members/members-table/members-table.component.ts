@@ -57,7 +57,8 @@ export class MembersTableComponent implements OnInit {
 
   selectMember(event) {
     this.selectedAll = false
-   
+    this.selectedMemberId = undefined
+    console.log(this.selectedMemberId)
     this.selectAllCheckbox.nativeElement.checked = false
     const rows = document.querySelectorAll('.membersTableDataRow')
     rows.forEach(element => {this.checkedCheckboxes = 0
