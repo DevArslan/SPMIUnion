@@ -30,7 +30,7 @@ export class UsersComponent implements OnInit {
   roleIsAdmin: boolean;
 
   ngOnDestroy(): void {
-    console.log(this.subscription)
+
     this.subscription.unsubscribe();
   }
 
@@ -40,14 +40,14 @@ export class UsersComponent implements OnInit {
     const rolesSub = this.apiServiceService.roles$.subscribe((dataFromApi: any) => {
       this.modalService.data$.next(dataFromApi.roles)
       this.roles = dataFromApi.roles;
-      console.log(this.roles)
+
     });
     this.subscription.add(rolesSub)
 
     this.apiServiceService.getUsers()
     const usersSub = this.apiServiceService.users$.subscribe((dataFromApi: any) => {
       this.users = dataFromApi.users
-      console.log(this.users)
+
     })
     this.subscription.add(usersSub)
 
@@ -68,15 +68,11 @@ export class UsersComponent implements OnInit {
     this.modalService.action$.next('add')
     this.modalService.modalTitle$.next('Добавить пользователя')
 
-    // const modal = document.getElementById('usersAddModal');
-    // modal.style.display = 'block';
   }
   showEditModal() {
-    console.log('edit')
+
     if (this.userID) {
       this.error = '';
-      // const modal = document.getElementById('usersEditModal');
-      // modal.style.display = 'block';
       this.modalService.stateOpen$.next(true)
       this.modalService.action$.next('edit')
       this.modalService.modalTitle$.next('Изменить пользователя')
@@ -86,8 +82,6 @@ export class UsersComponent implements OnInit {
   showDelModal() {
     if (this.userID) {
       this.error = '';
-      // const modal = document.getElementById('usersDelModal');
-      // modal.style.display = 'block';
       this.deleteService.stateOpen$.next(true)
       this.deleteService.type$.next('user')
       this.deleteService.modalTitle$.next('Удалить пользователя')

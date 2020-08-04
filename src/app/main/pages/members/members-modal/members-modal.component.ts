@@ -26,7 +26,9 @@ import { ApiService } from '../../../../shared/api.service';
 export class MembersModalComponent implements OnInit {
   @Output() childEvent = new EventEmitter();
   @ViewChild('inputName') input: ElementRef;
-
+  @ViewChild('cardNumberInput') cardNumberInput: ElementRef;
+  @ViewChild('modal') modal: ElementRef;
+  @ViewChild('modalBack') modalBack: ElementRef;
   // Приходит с сервиса modalService
   action: string = '';
   stateOpen: boolean = false;
@@ -86,7 +88,7 @@ export class MembersModalComponent implements OnInit {
   }
 
   selectMember(event) {
-    console.log(event);
+
 
     this.name = event.currentTarget.dataset.selectName;
     event.target.placeholder = this.name;
@@ -96,10 +98,7 @@ export class MembersModalComponent implements OnInit {
       'номер карты: ' +
       String(event.currentTarget.dataset.selectCardNumber).toUpperCase();
     // TODO: Все что document.getElementById переделать в ViewChild
-    const cardInputElement = <HTMLInputElement>(
-      document.getElementById('cardNumber')
-    );
-    cardInputElement.placeholder = this.card;
+    this.cardNumberInput.nativeElement.placeholder = this.card;
 
     this.dropDownMembers();
     event.stopPropagation();
@@ -146,16 +145,14 @@ export class MembersModalComponent implements OnInit {
   }
 
   closeAllDropdownWrapper(event) {
-    if (event.target == document.getElementById('modal')) {
+    if (event.target == this.modal.nativeElement) {
       this.structureDropdown = false;
       this.facultyDropdown = false;
       this.membersDropdown = false;
     }
   }
   closeAllDropdown(event) {
-    console.log(event.target);
-    console.log(document.getElementById('modalBack'));
-    if (event.target == document.getElementById('modalBack')) {
+    if (event.target == this.modalBack.nativeElement) {
       this.structureDropdown = false;
       this.facultyDropdown = false;
       this.membersDropdown = false;
@@ -195,7 +192,7 @@ export class MembersModalComponent implements OnInit {
       if (data.error) {
         this.error = data.error.message;
         if (this.error.slice(0, 50) == 'Ошибка обновления базы системы социального питания') {
-          this.API.error.next('Участник с таким именем уже есть в системе социального питания');
+          this.API.error.next('Участник с таким именем уже есть в системе социального питанияц');
         } else {
           this.API.error.next(String(this.error));
         }
@@ -255,14 +252,14 @@ export class MembersModalComponent implements OnInit {
     });
 
     this.API.selectedMemberId$.subscribe((id) => {
-      console.log(id);
+
       this.structures.length = 0;
       this.memberID = id;
       this.data.forEach((element: any) => {
         if (element.id == this.memberID) {
-          console.log(element.name);
+
           this.name = element.name;
-          console.log(this.name);
+  
           this.card = element.card;
           this.structure = element.subdepartment;
           this.isStudent = element.is_student;
@@ -291,26 +288,22 @@ export class MembersModalComponent implements OnInit {
     // NOTE: 1.5 сек как-то много, пусть будет 400 мс
     // Вообще мне очень не нравится этот код, нужно его переработать
     // Зачем таймайт на 4 секунды?
-    setTimeout(() => {
+    // NOTE: 
       fromEvent(this.input.nativeElement, 'keyup')
         .pipe(
           filter(Boolean),
           debounceTime(400),
           distinctUntilChanged(),
-          tap(async (text) => {
-            console.log(this.input.nativeElement.value);
+          tap((text) => {
             const memberName = <HTMLInputElement>this.input.nativeElement.value;
-            const preloader = document.getElementById('preloader');
             // NOTE: Вот это здесь зачем например? и async тогда не нужен.
             if (String(memberName) != '') {
-              const data = await this.searchInAKSP(memberName);
-              console.log(data);
+              this.searchInAKSP(memberName);
             } else {
               this.membersDropdown = false;
             }
           })
         )
         .subscribe();
-    }, 4000);
   }
 }

@@ -1,5 +1,5 @@
 import { DeleteService } from "../shared/delete.service";
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { ApiService } from "src/app/shared/api.service";
 import { Input } from "@angular/core";
 import { Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { Subscription, of } from 'rxjs';
 export class DeleteModalComponent implements OnInit {
 
   @Output() childEvent = new EventEmitter();
-
+  @ViewChild('selectAllCheckbox') selectAllCheckbox: ElementRef;
   action: string = '';
   stateOpen: boolean = false;
   modalTitle: string;
@@ -80,15 +80,15 @@ export class DeleteModalComponent implements OnInit {
 
     if (this.membersID.length == 0) {
       await this.API.deleteMember(this.memberID)
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+
+      this.selectAllCheckbox.nativeElement.checked = false
       const emptyArray = []
       this.API.selectedMembersId$.next(emptyArray)
 
     } else if (this.memberID) {
       const promise = await this.API.deleteMember(this.membersID)
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+
+      this.selectAllCheckbox.nativeElement.checked = false
       this.API.selectedMemberId$.next(undefined)
 
     }
@@ -115,14 +115,14 @@ export class DeleteModalComponent implements OnInit {
       this.modalTitle = title;
     })
     this.deleteService.stateOpen$.subscribe((state) => {
-      console.log(state)
+
       this.stateOpen = state;
     })
 
     this.API.selectedMemberId$.subscribe((id) => {
       this.memberID.length = 0
       this.memberID.push(id)
-      console.log(this.memberID)
+
     })
     this.API.titleForDeleteModal$.subscribe((title) => {
       this.title = title

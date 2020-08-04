@@ -17,7 +17,7 @@ export class FilterPipe implements PipeTransform {
             dataItem.name.toUpperCase().indexOf(username.toUpperCase()) > -1
           );
         } catch (error) {
-          console.log("error");
+
         }
       }
     });

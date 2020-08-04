@@ -69,7 +69,7 @@ export class StructuresTableComponent implements OnInit {
 
     const departmentsSub = this.apiServiceService.departments$.subscribe((dataFromApi) => {
       this.dataForModal = dataFromApi
-      console.log(this.dataForModal)
+
     })
     this.subscription.add(departmentsSub)
   }

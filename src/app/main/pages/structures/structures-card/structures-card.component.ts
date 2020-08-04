@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import Chart from 'chart.js';
 import { ApiService } from "src/app/shared/api.service";
 import { ActivatedRoute } from '@angular/router';
@@ -14,11 +14,14 @@ import { ModalService } from '../../structures/subdepartments/shared/modal.servi
 })
 export class StructuresCardComponent implements OnInit {
 
-
+  @ViewChild('structureNameTextarea') structureNameTextarea: ElementRef;
+  @ViewChild('structureNameP') structureNameP: ElementRef;
+  @ViewChild('structureNameP') proforgNameTextarea: ElementRef;
+  @ViewChild('structureNameP') proforgNameP: ElementRef;
   id: number;
 
   constructor(private ROUTER: Router, private apiServiceService: ApiService, private route: ActivatedRoute, private deleteService: DeleteService, private modalService: ModalService) {
-    console.log(this.route)
+
     // this.routeSubscription = this.route.params.subscribe(params=>this.id=params['id']);
   }
   private subscription: Subscription = new Subscription();
@@ -81,8 +84,8 @@ export class StructuresCardComponent implements OnInit {
   }
 
   async saveStructureName() {
-    const structureName = <HTMLInputElement>document.getElementById('structureName')
-    const structureNameP = document.getElementById('structureNameP')
+    const structureName = this.structureNameTextarea.nativeElement
+    const structureNameP = this.structureNameP.nativeElement
     if (this.structureName) {
 
       this.titleLength = String(structureName.value.length)
@@ -98,7 +101,7 @@ export class StructuresCardComponent implements OnInit {
           this.selectedData.title = this.notEditStructureName
           this.structureName = this.notEditStructureName
         } else {
-          console.log(data)
+
           this.apiServiceService.responseOK.next('Название структуры успешно изменено')
         }
       })
@@ -112,8 +115,8 @@ export class StructuresCardComponent implements OnInit {
 
   }
   async saveProforgName() {
-    const proforgName = <HTMLInputElement>document.getElementById('proforgName')
-    const proforgNameP = document.getElementById('proforgNameP')
+    const proforgName = this.proforgNameTextarea.nativeElement
+    const proforgNameP = this.proforgNameP.nativeElement
     if (this.proforgName) {
       this.proforgNameLength = String(proforgName.value.length)
       proforgName.setAttribute('readonly', '')
@@ -128,7 +131,7 @@ export class StructuresCardComponent implements OnInit {
           this.selectedData.proforg = this.notEditProforgName
           this.proforgName = this.notEditProforgName
         } else {
-          console.log(data)
+ 
           this.apiServiceService.responseOK.next('ФИО профорга успешно изменено')
         }
       })
@@ -143,16 +146,16 @@ export class StructuresCardComponent implements OnInit {
   }
 
   showEditStructureNameForm() {
-    const structureNameP = document.getElementById('structureNameP')
-    const structureName = <HTMLInputElement>document.getElementById('structureName')
+    const structureName = this.structureNameTextarea.nativeElement
+    const structureNameP = this.structureNameP.nativeElement
     structureNameP.style.display = 'none'
     structureName.style.display = 'block'
     structureName.removeAttribute('readonly')
     structureName.focus()
   }
   showEditProforgNameForm() {
-    const proforgNameP = document.getElementById('proforgNameP')
-    const proforgName = document.getElementById('proforgName')
+    const proforgName = this.proforgNameTextarea.nativeElement
+    const proforgNameP = this.proforgNameP.nativeElement
     proforgNameP.style.display = 'none'
     proforgName.style.display = 'block'
     proforgName.removeAttribute('readonly')
@@ -161,17 +164,14 @@ export class StructuresCardComponent implements OnInit {
 
 
   showAddModal() {
-    // const modal = document.getElementById('subDepartmentAddModal')
-    // modal.style.display = 'block'
-    // this.modalService.data$.next(this.data)
+
     this.modalService.data$.next(this.selectedData)
     this.modalService.action$.next('add')
     this.modalService.stateOpen$.next(true)
     this.modalService.modalTitle$.next('Добавить подразделение')
   }
   showDelModal() {
-    // const modal = document.getElementById('departmentDelModal')
-    // modal.style.display = 'block'
+
     this.deleteService.stateOpen$.next(true)
     this.deleteService.type$.next('structure')
     this.deleteService.modalTitle$.next('Удалить структуру')
@@ -273,7 +273,7 @@ export class StructuresCardComponent implements OnInit {
     this.dropdown = !this.dropdown
   }
   downloadExcel() {
-    console.log(this.selectedData.id)
+ 
     this.apiServiceService.downloadExcelDepartment(this.selectedData.id, this.selectedData.title)
   }
 
@@ -308,7 +308,7 @@ export class StructuresCardComponent implements OnInit {
     })
     // Фильтрация подразделения под конкретную структуру
     const subdepSub = this.apiServiceService.subdepartments$.subscribe((data) => {
-      console.log('123')
+ 
       this.subDepartments = data.subdepartments
 
       this.selectedSubDepartments.length = 0
@@ -317,7 +317,7 @@ export class StructuresCardComponent implements OnInit {
           this.selectedSubDepartments.push(element)
         }
       });
-      console.log(this.selectedSubDepartments)
+
       this.selectedSubDepartmentsIds.length = 0
       this.selectedSubDepartments.forEach((element: any) => {
         this.selectedSubDepartmentsIds.push(element.id)
@@ -370,7 +370,7 @@ export class StructuresCardComponent implements OnInit {
           this.notEditProforgName = this.selectedData.proforg
           try {
             this.titleLength = String(this.selectedData.title.length * 20)
-            const structureName = <HTMLInputElement>document.getElementById('structureName')
+            const structureName = this.structureNameTextarea.nativeElement
             structureName.style.width = this.titleLength + 'px'
             // structureName.setAttribute('size', this.titleLength)
           } catch (error) {
@@ -378,7 +378,7 @@ export class StructuresCardComponent implements OnInit {
           }
           try {
             this.proforgNameLength = String(this.selectedData.proforg.length * 20)
-            const proforgName = document.getElementById('proforgName')
+            const proforgName = this.proforgNameTextarea.nativeElement
             proforgName.setAttribute('size', this.proforgNameLength)
           } catch (error) {
 
@@ -402,7 +402,7 @@ export class StructuresCardComponent implements OnInit {
       this.selectedSubDepartments.length = 0
       this.selectedStructureId = params.id
       // this.data = this.apiServiceService.departments
-      console.log(this.data)
+
       this.data.forEach(async (element: any) => {
         if (this.selectedStructureId == element.id) {
           this.equalID = true
@@ -416,7 +416,7 @@ export class StructuresCardComponent implements OnInit {
           this.notEditProforgName = this.selectedData.proforg
           try {
             this.titleLength = String(this.selectedData.title.length * 20)
-            const structureName = <HTMLInputElement>document.getElementById('structureName')
+            const structureName = this.structureNameTextarea.nativeElement
             structureName.style.width = this.titleLength + 'px'
             // structureName.setAttribute('size', this.titleLength)
           } catch (error) {
@@ -424,7 +424,7 @@ export class StructuresCardComponent implements OnInit {
           }
           try {
             this.proforgNameLength = String(this.selectedData.proforg.length * 20)
-            const proforgName = document.getElementById('proforgName')
+            const proforgName = this.proforgNameTextarea.nativeElement
             proforgName.setAttribute('size', this.proforgNameLength)
           } catch (error) {
 
@@ -434,7 +434,6 @@ export class StructuresCardComponent implements OnInit {
       })
 
 
-      console.log(this.subscription)
       await this.getSubDepartmentsData()
       if (this.equalID == true) {
 

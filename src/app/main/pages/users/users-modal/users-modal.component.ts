@@ -64,11 +64,11 @@ export class UsersModalComponent implements OnInit {
   ngOnInit(): void {
 
     this.modalService.data$.subscribe((roles)=>{
-      console.log(roles)
+
       this.roles = roles
     })
     this.modalService.stateOpen$.subscribe((state)=>{
-      console.log(this.stateOpen)
+
       this.stateOpen = state;
     })
     this.modalService.modalTitle$.subscribe((title) => {

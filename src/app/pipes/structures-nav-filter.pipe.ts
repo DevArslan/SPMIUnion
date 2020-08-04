@@ -18,7 +18,6 @@ export class StructuresNavFilterPipe implements PipeTransform {
             dataItem.title.toUpperCase().indexOf(structureName.toUpperCase()) > -1
           );
         } catch (error) {
-          console.log(error);
         }
       }
     });

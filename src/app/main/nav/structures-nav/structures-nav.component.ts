@@ -7,6 +7,8 @@ import { ApiService } from 'src/app/shared/api.service';
   styleUrls: ['./structures-nav.component.scss'],
 })
 export class StructuresNavComponent implements OnInit {
+  
+  
   faculty: string = '';
   structureName: string = '';
   departmentsTitle: string[] = [];

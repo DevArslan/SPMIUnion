@@ -1,5 +1,5 @@
-<div class="modalWrapper" id="modal" [hidden]="!stateOpen">
-  <div class="modal" (click)="closeAllDropdown($event)" id="modalBack">
+<div class="modalWrapper" id="modal" [hidden]="!stateOpen" #modal>
+  <div class="modal" (click)="closeAllDropdown($event)" id="modalBack" #modalBack> 
     <div class="modal-header">
       <p>{{ modalTitle }}</p>
       <app-close-button (click)="closeModal()"></app-close-button>
@@ -53,6 +53,7 @@
             id="cardNumber"
             placeholder="№ чип карты"
             [(ngModel)]="card"
+            #cardNumberInput
           />
           <p class="cardNumber">{{ cardNumber }}</p>
         </div>

@@ -12,7 +12,7 @@
           <col width="10%">
           <tr>
             <th>
-              <input  type="checkbox" id="selectAllCheckbox" name="selectAllCheckbox" [ngClass]="{selectNotAllCheckbox: !selectedAll}" class="selectAllCheckbox" 
+              <input  type="checkbox" id="selectAllCheckbox" name="selectAllCheckbox" [ngClass]="{selectNotAllCheckbox: !selectedAll}" class="selectAllCheckbox"  #selectAllCheckbox
               (click)=selectAllMembers($event)>
               <label for="selectAllCheckbox"></label>
             </th>

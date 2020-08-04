@@ -14,7 +14,7 @@ export class UsersTableComponent implements OnInit {
   selectedUserId: number;
 
   ngOnInit(): void {
-    console.log(this.users);
+
   }
 
   selectUser(event) {
@@ -32,7 +32,7 @@ export class UsersTableComponent implements OnInit {
       event.currentTarget.id = 'selectedMember';
       this.selectedUserId = event.currentTarget.dataset.memberId;
     }
-    console.log(this.selectedUserId);
+
     this.api.selectedUserId$.next(this.selectedUserId);
     event.stopPropagation();
   }

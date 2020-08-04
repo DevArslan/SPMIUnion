@@ -48,7 +48,7 @@ export class SubdepartmentsModalComponent implements OnInit {
   ngOnInit(): void {
     this.modalService.data$.subscribe((data) => {
       this.dataForModal = data
-      console.log(this.dataForModal)
+
       if(this.action == 'add'){
         this.title = ''
       }else{
@@ -56,7 +56,7 @@ export class SubdepartmentsModalComponent implements OnInit {
       }
     })
     this.modalService.stateOpen$.subscribe((state) => {
-      console.log(this.stateOpen)
+    
       this.stateOpen = state;
     })
     this.modalService.modalTitle$.subscribe((title) => {

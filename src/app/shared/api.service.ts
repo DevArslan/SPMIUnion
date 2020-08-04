@@ -110,7 +110,7 @@ export class ApiService {
 
   // Удаление структуры
   async deleteDepartment(departmentID) {
-    console.log('DELETE')
+
     this.http.delete(BASE_URL + 'departments/' + departmentID).subscribe(
       (res) => {
         
@@ -236,7 +236,7 @@ export class ApiService {
   async getMembersByPage(rows, page, query) {
     this.http.get(BASE_URL + 'members?rows=' + rows + '&page=' + page + '&query=' + query).subscribe(
       (res) => {
-        console.log(res)
+ 
         this.members$.next(res)
       },
       (err) => this.members$.next(err)
@@ -267,7 +267,7 @@ export class ApiService {
 
     this.http.post(BASE_URL + 'members', data).subscribe(
       (res) => {
-        console.log(res)
+
         this.createMember$.next(res)
       },
       (err) => {
@@ -324,7 +324,6 @@ export class ApiService {
 
     this.http.patch(BASE_URL + 'members/enter', data).subscribe(
       (res) => {
-        console.log(res)
         this.member$.next(res)
       },
       (err) => {
@@ -341,7 +340,6 @@ export class ApiService {
 
     this.http.patch(BASE_URL + 'members/quit', data).subscribe(
       (res) => {
-        console.log(res)
         this.member$.next(res)
       },
       (err) => {

@@ -20,7 +20,7 @@ export class StructuresAddModalComponent implements OnInit {
         this.error = data.error.message
         this.api.error.next(String(this.error))
       }else{
-        console.log(data)
+
         this.api.getDepartments()
         
         this.closeModal()
@@ -28,6 +28,7 @@ export class StructuresAddModalComponent implements OnInit {
     })
   }
   closeModal(){
+    
     const modal = document.getElementById('structuresAddModal')
     modal.style.display = "none";
     this.title = ''

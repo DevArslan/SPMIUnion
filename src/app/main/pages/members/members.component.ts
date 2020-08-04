@@ -37,6 +37,7 @@ export class MembersComponent implements OnInit {
 
   @ViewChild('inputPage') input: ElementRef;
   @ViewChild('usernameInput') inputUsername: ElementRef;
+  @ViewChild('selectAllCheckbox') selectAllCheckbox: ElementRef;
 
   changeMaxNumberPage() {
     this.maxPageNumber = Math.ceil(this.membersCount / this.rowsCount)
@@ -46,7 +47,7 @@ export class MembersComponent implements OnInit {
   changePage(event) {
     if (this.pageNumber > 0 && event.target.dataset.pageNumber != 0 && event.target.dataset.pageNumber != this.maxPageNumber + 1) {
       this.pageNumber = event.target.dataset.pageNumber
-      console.log(event.target.dataset.pageNumber)
+
       this.getMembersByPage()
     }
   }
@@ -65,8 +66,7 @@ export class MembersComponent implements OnInit {
     if (this.membersID.length != 0) {
       this.error = ''
       await this.apiServiceService.blockMembers(this.membersID)
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+      this.selectAllCheckbox.nativeElement.checked = false
 
 
 
@@ -75,8 +75,7 @@ export class MembersComponent implements OnInit {
       const memberID = []
       memberID.push(this.memberID)
       await this.apiServiceService.blockMembers(memberID)
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+      this.selectAllCheckbox.nativeElement.checked = false
 
 
     }
@@ -87,9 +86,7 @@ export class MembersComponent implements OnInit {
     if (this.membersID.length != 0) {
       this.error = ''
       await this.apiServiceService.activateMembers(this.membersID)
-
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+      this.selectAllCheckbox.nativeElement.checked = false
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
       this.membersID.length = 0
@@ -110,15 +107,13 @@ export class MembersComponent implements OnInit {
     this.modalService.action$.next('add')
     this.modalService.stateOpen$.next(true)
     this.modalService.modalTitle$.next('Добавить участника')
-    // const modal = document.getElementById('membersAddModal')
-    // modal.style.display = "block";
+
   }
   showEditModal() {
-    console.log(this.membersID.length)
+
     if (this.memberID && this.membersID.length < 2) {
       this.error = ''
-      // const modal = document.getElementById('membersEditModal')
-      // modal.style.display = "block";
+
       this.modalService.action$.next('edit')
       this.modalService.stateOpen$.next(true)
       this.modalService.modalTitle$.next('Изменить данные участника')
@@ -129,8 +124,7 @@ export class MembersComponent implements OnInit {
   showDelModal() {
     if (this.membersID.length != 0) {
       this.error = ''
-      // const modal = document.getElementById('membersDelModal')
-      // modal.style.display = "block";
+;
       this.deleteService.stateOpen$.next(true)
       this.deleteService.type$.next('member')
       this.deleteService.modalTitle$.next('Удалить участника')
@@ -138,8 +132,7 @@ export class MembersComponent implements OnInit {
       this.membersID.length = 0
     } else if (this.memberID) {
       this.error = ''
-      // const modal = document.getElementById('membersDelModal')
-      // modal.style.display = "block";
+
       this.deleteService.stateOpen$.next(true)
       this.deleteService.type$.next('member')
       this.deleteService.modalTitle$.next('Удалить участника')
@@ -147,10 +140,10 @@ export class MembersComponent implements OnInit {
     }
   }
   check(e) {
-    console.log(e.currentTarget.value)
+
     if (Number.isInteger(Number(e.currentTarget.value)) == false || Number(e.currentTarget.value) > this.maxPageNumber) {
       e.currentTarget.value = e.currentTarget.value.slice(0, -1)
-      console.log(e.currentTarget.value)
+     
     }
     if (e.currentTarget.value === '0') {
       e.currentTarget.value = '1'
@@ -160,7 +153,7 @@ export class MembersComponent implements OnInit {
 
 
   ngOnDestroy(): void {
-    console.log(this.subscription)
+ 
     this.subscription.unsubscribe();
   }
 
@@ -233,10 +226,9 @@ export class MembersComponent implements OnInit {
         debounceTime(1500),
         distinctUntilChanged(),
         tap(async (text) => {
-          // console.log(this.input.nativeElement.value)
           this.pageNumber = Number(<HTMLInputElement>this.input.nativeElement.value)
           const data = await this.getMembersByPage()
-          console.log(data)
+
         })
       )
       .subscribe();
@@ -247,7 +239,6 @@ export class MembersComponent implements OnInit {
         debounceTime(1000),
         distinctUntilChanged(),
         tap(async (text) => {
-          // console.log(this.input.nativeElement.value)
           const data = await this.getMembersByPage()
 
         })

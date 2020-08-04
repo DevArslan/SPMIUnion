@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Input } from "@angular/core";
 import { ApiService } from "src/app/shared/api.service";
 import { subscribeOn } from 'rxjs/operators';
@@ -12,6 +12,7 @@ import { subscribeOn } from 'rxjs/operators';
 export class MembersTableComponent implements OnInit {
 
   @Input() data: {}[] = []
+  @ViewChild('selectAllCheckbox') selectAllCheckbox: ElementRef;
   selectedAll: boolean =  true
   constructor(private api: ApiService) { }
 
@@ -29,9 +30,9 @@ export class MembersTableComponent implements OnInit {
     this.selectedMembersId.length = 0
     this.selectedAll = true
     this.checkedCheckboxes = 0
-    const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
+
     const checkboxes = document.querySelectorAll('.memberCheckbox')
-    if (selectAllCheckbox.checked == true) {
+    if (this.selectAllCheckbox.nativeElement.checked == true) {
       for (let index = 0; index < checkboxes.length; index++) {
         const element = <HTMLInputElement>checkboxes[index];
         element.checked = true
@@ -49,15 +50,15 @@ export class MembersTableComponent implements OnInit {
       this.checkedCheckboxes = 0
     }
 
-    console.log(this.selectedMembersId)
+
     this.api.selectedMembersId$.next(this.selectedMembersId)
     event.stopPropagation()
   }
 
   selectMember(event) {
     this.selectedAll = false
-    const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-    selectAllCheckbox.checked = false
+   
+    this.selectAllCheckbox.nativeElement.checked = false
     const rows = document.querySelectorAll('.membersTableDataRow')
     rows.forEach(element => {this.checkedCheckboxes = 0
       element.classList.remove('selectedRow')
@@ -85,8 +86,8 @@ export class MembersTableComponent implements OnInit {
     this.api.selectedMemberId$.next(this.selectedMemberId)
     this.checkedCheckboxes = 1
     if(this.checkedCheckboxes == 1 || this.checkedCheckboxes == 0){
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+    
+      this.selectAllCheckbox.nativeElement.checked = false
       this.selectedAll = true
     }
     event.stopPropagation()
@@ -97,8 +98,8 @@ export class MembersTableComponent implements OnInit {
     if (event.currentTarget.checked == true) {
       event.currentTarget.parentNode.parentNode.classList.add('selectedRow')
     } else if (event.currentTarget.parentNode.parentNode.id != 'selectedMember') {
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+     
+      this.selectAllCheckbox.nativeElement.checked = false
       event.currentTarget.parentNode.parentNode.classList.remove('selectedRow')
     }
     this.selectedMembersId.length = 0
@@ -114,8 +115,8 @@ export class MembersTableComponent implements OnInit {
     if(this.checkedCheckboxes > 1){
       this.selectedAll = false
     }else if(this.checkedCheckboxes == 1 || this.checkedCheckboxes == 0){
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+
+      this.selectAllCheckbox.nativeElement.checked = false
       this.selectedAll = true
     }
 
@@ -129,7 +130,7 @@ export class MembersTableComponent implements OnInit {
   ngOnInit(): void {
     this.api.selectedAllmembers.subscribe((data)=>{
       this.selectedAll = data
-      console.log(this.selectedAll)
+
     })
 
   }
