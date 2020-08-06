@@ -161,7 +161,7 @@ export class DeleteModalComponent implements OnInit {
       }
     }));
 
-    this.API.subdepartment$.subscribe((data) => {
+    this.subscription.add(this.API.subdepartment$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message;
         this.API.error.next(String(this.error));
@@ -170,7 +170,7 @@ export class DeleteModalComponent implements OnInit {
         this.API.responseOK.next('Подразделение успешно удалено');
         this.closeModal();
       }
-    });
+    }));
 
     this.subscription.add(this.API.selectedUserId$.subscribe((id) => {
       this.userID = id;

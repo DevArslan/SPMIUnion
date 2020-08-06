@@ -25,7 +25,7 @@ import { ApiService } from '../../../../shared/api.service';
   styleUrls: ['./members-modal.component.scss'],
 })
 export class MembersModalComponent implements OnInit, OnDestroy {
-  @Output() childEvent = new EventEmitter();
+ 
   @ViewChild('inputName') input: ElementRef;
   @ViewChild('cardNumberInput') cardNumberInput: ElementRef;
   @ViewChild('modal') modal: ElementRef;
@@ -233,16 +233,6 @@ export class MembersModalComponent implements OnInit, OnDestroy {
           }
         } else {
           this.API.responseOK.next('Участник успешно добавлен');
-          /* NOTE:
-        Вместо того, чтобы после добавления или изменения эмитить действие родительскому компоненту, нужно 
-        изменять массив members (полученный по подписке) и передать в members$ этот новый массив. 
-        Поскольку в родительском компоненте есть подписка на этот сабжект, то в нем данные обновятся.
-
-        Сейчас лишнее действие происходит и концептуально получается, что ты смешал два подхода вместе.
-
-        TODO: Замени this.childEvent.emit() на добавление участника в массив members. А потом передай этот
-        массив в members$. Убери лишнюю логику в род компоненте тоже.
-        */
           this.data.push(data.member);
           const membersData = {
             members: this.data,
@@ -306,7 +296,7 @@ export class MembersModalComponent implements OnInit, OnDestroy {
 
           this.API.members$.next(membersData);
           this.API.responseOK.next('Участник успешно изменен');
-          this.childEvent.emit();
+        
           this.API.selectedMemberId$.next(undefined);
           this.closeModal();
         }
