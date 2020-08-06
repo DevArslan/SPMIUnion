@@ -3,7 +3,6 @@ import { ApiService } from "src/app/shared/api.service";
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { Subscription, of } from 'rxjs';
-import { promise } from 'protractor';
 import { ModalService } from "./shared/modal.service";
 import { DeleteService } from "../../shared/delete.service";
 

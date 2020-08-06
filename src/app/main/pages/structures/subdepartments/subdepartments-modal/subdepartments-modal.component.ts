@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from "../shared/modal.service";
 import { ApiService } from "src/app/shared/api.service";
+import { Subscription, of } from 'rxjs';
 
 @Component({
   selector: 'app-subdepartments-modal',
@@ -21,12 +22,14 @@ export class SubdepartmentsModalComponent implements OnInit {
   facultyDropdown: boolean = false
   faculty: string = 'Факультет'
 
+  private subscription: Subscription = new Subscription();
+
   constructor(private modalService: ModalService, private API: ApiService) { }
 
   async addSubDepartment() {
     await this.API.createSubDepartment(this.title, this.dataForModal.id)
   }
-  
+
   async editSubDepartment() {
     await this.API.editSubDepartment(this.title, this.departmentID, this.dataForModal.id)
   }
@@ -45,35 +48,39 @@ export class SubdepartmentsModalComponent implements OnInit {
     this.title = ''
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
+
   ngOnInit(): void {
-    this.modalService.data$.subscribe((data) => {
+    const subData = this.modalService.data$.subscribe((data) => {
       this.dataForModal = data
 
-      if(this.action == 'add'){
+      if (this.action == 'add') {
         this.title = ''
-      }else{
+      } else {
         this.title = this.dataForModal.subTitle
       }
     })
-    this.modalService.stateOpen$.subscribe((state) => {
-    
+    const subState = this.modalService.stateOpen$.subscribe((state) => {
+
       this.stateOpen = state;
     })
-    this.modalService.modalTitle$.subscribe((title) => {
+    const subTitle = this.modalService.modalTitle$.subscribe((title) => {
       this.modalTitle = title;
     })
-    this.modalService.action$.subscribe((action) => {
+    const subAction = this.modalService.action$.subscribe((action) => {
       this.action = action
     })
-    this.API.departmentForEditModal$.subscribe(() => {
+    const subDep = this.API.departmentForEditModal$.subscribe(() => {
       this.faculty = this.API.departmentForEditModal$.getValue()
     })
-    this.API.subdepartment$.subscribe((data) => {
+    const subSubdep = this.API.subdepartment$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.API.error.next(String(this.error))
       } else {
-        this.API.getDepartments()
         if (this.action == 'add') {
           this.API.responseOK.next('Подразделение успешно создано')
         } else {
@@ -83,6 +90,14 @@ export class SubdepartmentsModalComponent implements OnInit {
         this.closeModal()
       }
     })
+
+    this.subscription.add(subAction)
+    this.subscription.add(subData)
+    this.subscription.add(subDep)
+    this.subscription.add(subState)
+    this.subscription.add(subSubdep)
+    this.subscription.add(subTitle)
+
   }
 
 }

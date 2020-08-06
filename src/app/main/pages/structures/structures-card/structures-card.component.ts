@@ -286,26 +286,21 @@ export class StructuresCardComponent implements OnInit {
   async getDepartmentsData() {
     await this.apiServiceService.getDepartments();
   }
-  async getStats(nowDateMinusOneYear, nowDate, subID) {
+  getStats(nowDateMinusOneYear, nowDate, subID) {
     this.apiServiceService.getStats(nowDateMinusOneYear, nowDate, subID)
 
   }
 
-  ngOnChanges(): void {
-    this.subscription.unsubscribe();
-  }
   ngOnDestroy(): void {
-
     this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
 
-
-
-    this.apiServiceService.stats$.subscribe((data) => {
+    const stats = this.apiServiceService.stats$.subscribe((data) => {
       this.stats = data.stats
     })
+    this.subscription.add(stats)
     // Фильтрация подразделения под конкретную структуру
     const subdepSub = this.apiServiceService.subdepartments$.subscribe((data) => {
  
@@ -327,8 +322,6 @@ export class StructuresCardComponent implements OnInit {
       const nowDate = this.formatDate(new Date())
       const nowDateMinusOneYear = (this.formatDate(new Date()).slice(0, -4)) + Number(new Date().getFullYear() - 1)
       this.getStats(nowDateMinusOneYear, nowDate, this.selectedSubDepartmentsIds)
-
-
 
     })
     this.subscription.add(subdepSub)
@@ -444,8 +437,6 @@ export class StructuresCardComponent implements OnInit {
     })
     this.subscription.add(routerSub);
     this.subscription.add(departmentSub);
-
-
 
     var structureChart = new Chart('structureChart', {
       type: 'bar',
