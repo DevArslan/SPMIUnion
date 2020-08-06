@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ApiService } from "src/app/shared/api.service";
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { Subscription, of } from 'rxjs';
-import { promise } from 'protractor';
+import { ModalService } from "./shared/modal.service";
+import { DeleteService } from "../../shared/delete.service";
 
 @Component({
   selector: 'app-members',
@@ -12,7 +13,7 @@ import { promise } from 'protractor';
 })
 export class MembersComponent implements OnInit {
 
-  constructor(private apiServiceService: ApiServiceService) { }
+  constructor(private apiServiceService: ApiService, private modalService: ModalService, private deleteService : DeleteService) { }
 
   private subscription: Subscription = new Subscription();
 
@@ -35,6 +36,7 @@ export class MembersComponent implements OnInit {
 
   @ViewChild('inputPage') input: ElementRef;
   @ViewChild('usernameInput') inputUsername: ElementRef;
+  @ViewChild('selectAllCheckbox') selectAllCheckbox: ElementRef;
 
   changeMaxNumberPage() {
     this.maxPageNumber = Math.ceil(this.membersCount / this.rowsCount)
@@ -44,7 +46,7 @@ export class MembersComponent implements OnInit {
   changePage(event) {
     if (this.pageNumber > 0 && event.target.dataset.pageNumber != 0 && event.target.dataset.pageNumber != this.maxPageNumber + 1) {
       this.pageNumber = event.target.dataset.pageNumber
-      console.log(event.target.dataset.pageNumber)
+
       this.getMembersByPage()
     }
   }
@@ -63,18 +65,16 @@ export class MembersComponent implements OnInit {
     if (this.membersID.length != 0) {
       this.error = ''
       await this.apiServiceService.blockMembers(this.membersID)
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+      this.selectAllCheckbox.nativeElement.checked = false
 
-      
+
 
     } else if (this.memberID) {
       this.error = ''
       const memberID = []
       memberID.push(this.memberID)
       await this.apiServiceService.blockMembers(memberID)
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+      this.selectAllCheckbox.nativeElement.checked = false
 
 
     }
@@ -85,9 +85,7 @@ export class MembersComponent implements OnInit {
     if (this.membersID.length != 0) {
       this.error = ''
       await this.apiServiceService.activateMembers(this.membersID)
-      
-      const selectAllCheckbox = <HTMLInputElement>document.getElementById('selectAllCheckbox')
-      selectAllCheckbox.checked = false
+      this.selectAllCheckbox.nativeElement.checked = false
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
       this.membersID.length = 0
@@ -100,20 +98,24 @@ export class MembersComponent implements OnInit {
       this.error = 'Сначала выберите участника'
       this.memberID = undefined
     }
-    
+
 
   }
 
   showAddModal() {
-    const modal = document.getElementById('membersAddModal')
-    modal.style.display = "block";
+    this.modalService.action$.next('add')
+    this.modalService.stateOpen$.next(true)
+    this.modalService.modalTitle$.next('Добавить участника')
+
   }
   showEditModal() {
-    console.log(this.membersID.length)
+
     if (this.memberID && this.membersID.length < 2) {
       this.error = ''
-      const modal = document.getElementById('membersEditModal')
-      modal.style.display = "block";
+
+      this.modalService.action$.next('edit')
+      this.modalService.stateOpen$.next(true)
+      this.modalService.modalTitle$.next('Изменить данные участника')
       this.error = 'Сначала выберите участника'
     }
 
@@ -121,22 +123,26 @@ export class MembersComponent implements OnInit {
   showDelModal() {
     if (this.membersID.length != 0) {
       this.error = ''
-      const modal = document.getElementById('membersDelModal')
-      modal.style.display = "block";
+;
+      this.deleteService.stateOpen$.next(true)
+      this.deleteService.type$.next('member')
+      this.deleteService.modalTitle$.next('Удалить участника')
       this.error = 'Сначала выберите участника'
       this.membersID.length = 0
     } else if (this.memberID) {
       this.error = ''
-      const modal = document.getElementById('membersDelModal')
-      modal.style.display = "block";
+
+      this.deleteService.stateOpen$.next(true)
+      this.deleteService.type$.next('member')
+      this.deleteService.modalTitle$.next('Удалить участника')
       this.error = 'Сначала выберите участника'
     }
   }
   check(e) {
-    console.log(e.currentTarget.value)
+
     if (Number.isInteger(Number(e.currentTarget.value)) == false || Number(e.currentTarget.value) > this.maxPageNumber) {
       e.currentTarget.value = e.currentTarget.value.slice(0, -1)
-      console.log(e.currentTarget.value)
+     
     }
     if (e.currentTarget.value === '0') {
       e.currentTarget.value = '1'
@@ -145,8 +151,8 @@ export class MembersComponent implements OnInit {
   }
 
 
-  ngOnDestroy(): void {    
-    console.log(this.subscription)
+  ngOnDestroy(): void {
+ 
     this.subscription.unsubscribe();
   }
 
@@ -171,6 +177,7 @@ export class MembersComponent implements OnInit {
 
     const membersSub = this.apiServiceService.members$.subscribe((dataFromApi: any) => {
       this.data = dataFromApi.members
+      
       this.membersCount = dataFromApi.total
       if (!this.maxPageNumber) {
 
@@ -202,6 +209,7 @@ export class MembersComponent implements OnInit {
     this.subscription.add(selectedMembersSub)
 
     const departmentsSub = this.apiServiceService.departments$.subscribe((dataFromApi) => {
+      this.modalService.data$.next(dataFromApi)
       this.dataForModal = dataFromApi
     })
     this.subscription.add(departmentsSub)
@@ -217,10 +225,9 @@ export class MembersComponent implements OnInit {
         debounceTime(1500),
         distinctUntilChanged(),
         tap(async (text) => {
-          // console.log(this.input.nativeElement.value)
           this.pageNumber = Number(<HTMLInputElement>this.input.nativeElement.value)
           const data = await this.getMembersByPage()
-          console.log(data)
+
         })
       )
       .subscribe();
@@ -231,7 +238,6 @@ export class MembersComponent implements OnInit {
         debounceTime(1000),
         distinctUntilChanged(),
         tap(async (text) => {
-          // console.log(this.input.nativeElement.value)
           const data = await this.getMembersByPage()
 
         })

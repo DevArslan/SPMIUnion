@@ -1,5 +1,10 @@
 <div class="modalWrapper" id="modal" [hidden]="!stateOpen" #modal>
-  <div class="modal" (click)="closeAllDropdown($event)" id="modalBack" #modalBack> 
+  <div
+    class="modal"
+    (click)="closeAllDropdown($event)"
+    id="modalBack"
+    #modalBack
+  >
     <div class="modal-header">
       <p>{{ modalTitle }}</p>
       <app-close-button (click)="closeModal()"></app-close-button>
@@ -19,7 +24,7 @@
           <div
             class="loadingio-spinner-rolling-16sntvlkiknj"
             id="preloader"
-            *ngIf="preloader && action == 'add'"
+            *ngIf="waitingForMembersServerResponse && action == 'add'"
           >
             <div class="ldio-d7d2560npw">
               <div></div>
@@ -30,7 +35,7 @@
         <div
           class="membersDropdown"
           [ngClass]="{ dropdown: membersDropdown }"
-          *ngIf="action == 'add'"
+          *ngIf="action == 'add' && members.users && members.users.length"
         >
           <ul>
             <li
@@ -105,10 +110,16 @@
         class="addButton"
         (click)="createMember()"
         *ngIf="action == 'add'"
+        [disabled]="waitingForServerResponse || waitingForMembersServerResponse"
       >
         Добавить
       </button>
-      <button class="addButton" (click)="editMember()" *ngIf="action == 'edit'">
+      <button
+        class="addButton"
+        (click)="editMember()"
+        *ngIf="action == 'edit'"
+        [disabled]="waitingForServerResponse || waitingForMembersServerResponse"
+      >
         Изменить
       </button>
     </div>

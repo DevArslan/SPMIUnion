@@ -487,7 +487,7 @@ export class ApiService {
   }
 
   // Статистика по датам
-  async getStats(fromData, toData, subID) {
+  getStats(fromData, toData, subID) {
 
     const data = {
       subdepartments: subID,

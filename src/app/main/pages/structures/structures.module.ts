@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { StructuresRoutingModule } from './structures-routing.module';
 
 
+
 @NgModule({
   declarations: [],
   imports: [

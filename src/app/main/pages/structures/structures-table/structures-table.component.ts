@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Input } from "@angular/core";
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ApiService } from "src/app/shared/api.service";
 import { Subscription, of } from 'rxjs';
+import { DeleteService } from "../../../shared/delete.service";
+import { ModalService } from "../subdepartments/shared/modal.service";
 @Component({
   selector: 'app-structures-table',
   templateUrl: './structures-table.component.html',
@@ -9,43 +11,49 @@ import { Subscription, of } from 'rxjs';
 })
 export class StructuresTableComponent implements OnInit {
   @Input() selectedSubDepartments: {}[]
-  @Input() dynamics: {'subID':number, 'dynamic':number}[]
+  @Input() dynamics: { 'subID': number, 'dynamic': number }[]
   subDepartmentId: number
-  data: {}[]
+  data: {id: number, subTitle: string, title:string, modalData: {}[]}
   dataForModal: {}[] = []
   currentSubDynamic: number
   departmentTitle: string = ''
   subDepartmentTitle: string = ''
-  constructor(private apiServiceService: ApiServiceService) {}
+  constructor(private apiServiceService: ApiService, private deleteService : DeleteService, private modalService: ModalService) { }
   private subscription: Subscription = new Subscription();
-  getDynamic(id){
-    
-    this.dynamics.forEach((item)=>{
-      if(id == item.subID){
-        this.currentSubDynamic =  item.dynamic
+  getDynamic(id) {
+
+    this.dynamics.forEach((item) => {
+      if (id == item.subID) {
+        this.currentSubDynamic = item.dynamic
       }
     })
   }
-  downloadExcel(event){
-    const subID =  event.target.parentElement.dataset.subdepartmentId
+  downloadExcel(event) {
+    const subID = event.target.parentElement.dataset.subdepartmentId
     const title = event.target.parentElement.dataset.subdepartmentTitle
-    this.apiServiceService.downloadExcelSubDepartment(subID,title)
+    this.apiServiceService.downloadExcelSubDepartment(subID, title)
   }
-  showDelModal(event){
-    console.log(event.target.parentElement)
-    this.subDepartmentId =  event.target.parentElement.dataset.subdepartmentId
-    const modal = document.getElementById('subDepartmentDelModal')
-    modal.style.display = 'block'
+  showDelModal(event) {
+    this.subDepartmentId = event.target.parentElement.dataset.subdepartmentId
+    this.deleteService.data$.next(this.subDepartmentId)
+    this.deleteService.stateOpen$.next(true)
+    this.deleteService.type$.next('subdepartmnet')
+    this.deleteService.modalTitle$.next('Удалить подразделение')
   }
-  showEditModal(event){
-    console.log(event.target.parentElement)
-    this.subDepartmentId =  event.target.parentElement.dataset.subdepartmentId
+  showEditModal(event) {
+    this.subDepartmentId = event.target.parentElement.dataset.subdepartmentId
     this.subDepartmentTitle = event.target.parentElement.dataset.title
-    this.departmentTitle =  event.target.parentElement.dataset.departmentTitle
+    this.departmentTitle = event.target.parentElement.dataset.departmentTitle
+    
+    this.data = {id: this.subDepartmentId, subTitle: this.subDepartmentTitle, title: this.departmentTitle, modalData: this.dataForModal}
+    
+    
     this.apiServiceService.departmentForEditModal$.next(this.departmentTitle)
-    console.log(this.subDepartmentTitle)
-    const modal = document.getElementById('subDepartmentEditModal')
-    modal.style.display = 'block'
+
+    this.modalService.data$.next(this.data)
+    this.modalService.action$.next('edit')
+    this.modalService.stateOpen$.next(true)
+    this.modalService.modalTitle$.next('Изменить подразделение')
   }
 
   ngOnDestroy(): void {
@@ -54,14 +62,13 @@ export class StructuresTableComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if(this.apiServiceService.departments){
-      this.apiServiceService.getDepartments()
-    }
+    // if (!this.apiServiceService.departments) {
+    //   this.apiServiceService.getDepartments()
+    // }
 
-    
+
     const departmentsSub = this.apiServiceService.departments$.subscribe((dataFromApi) => {
       this.dataForModal = dataFromApi
-      console.log(this.dataForModal)
     })
     this.subscription.add(departmentsSub)
   }

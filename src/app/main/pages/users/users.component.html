@@ -16,9 +16,12 @@
     <div class="users-nav-pdf"></div>
 
   </div>
-  <app-users-add-modal [roles]='roles' id="usersAddModal" class="usersAddModal"></app-users-add-modal>
-  <app-users-delete-modal id="usersDelModal" class="usersDelModal"></app-users-delete-modal>
-  <app-users-edit-modal [roles]='roles' id="usersEditModal" class="usersEditModal"></app-users-edit-modal>
+  <app-delete-modal></app-delete-modal>
+  <!-- <app-users-add-modal [roles]='roles' id="usersAddModal" class="usersAddModal"></app-users-add-modal> -->
+  <!-- <app-users-delete-modal id="usersDelModal" class="usersDelModal"></app-users-delete-modal> -->
+  <!-- <app-users-edit-modal [roles]='roles' id="usersEditModal" class="usersEditModal"></app-users-edit-modal> -->
+  <app-users-modal></app-users-modal>
   <app-users-table class="users-table" [users]='users | filter:username'></app-users-table>
+  
 </div>
 

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ApiServiceService } from 'src/app/shared/api-service.service';
+import { ApiService } from 'src/app/shared/api.service';
 
 @Component({
   selector: 'app-main',
@@ -8,7 +8,7 @@ import { ApiServiceService } from 'src/app/shared/api-service.service';
   styleUrls: ['./main.component.scss'],
 })
 export class MainComponent implements OnInit {
-  constructor(public snackBar: MatSnackBar, public api: ApiServiceService) {}
+  constructor(public snackBar: MatSnackBar, public api: ApiService) {}
   
   ngOnInit(): void {
     /*NOTE: Теперь все правильно - если юзер залогинился и попал сюда, то вызывается метод*/

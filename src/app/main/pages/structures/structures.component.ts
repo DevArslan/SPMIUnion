@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiServiceService } from "src/app/shared/api-service.service";
+import { ApiService } from "src/app/shared/api.service";
 
 
 @Component({
@@ -12,7 +12,7 @@ import { ApiServiceService } from "src/app/shared/api-service.service";
 
 export class StructuresComponent implements OnInit {
 
-  constructor(private apiServiceService: ApiServiceService) { }
+  constructor(private apiServiceService: ApiService) { }
   active: boolean = false;
   loadingCompleted: boolean = false;
   data: {}[] = []
