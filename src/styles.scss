@@ -8,11 +8,11 @@ html {
   body {
     // background-color: #2c2c2c;
     word-wrap: break-word;
-    .mat-warn{
+    .mat-warn {
       background-color: #d50000;
       color: white;
     }
-    .mat-primary{
+    .mat-primary {
       background-color: #00c853;
       color: white;
     }
@@ -34,7 +34,7 @@ html {
 
   ::-webkit-scrollbar-thumb {
     position: relative;
-    background: #E5E5E5;
+    background: #e5e5e5;
     width: 9px;
     border-radius: 4px;
     top: 0;
@@ -45,5 +45,17 @@ html {
   }
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// #NOTE: Свойство для иконок
+i,
+input {
+  background-size: contain !important;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
