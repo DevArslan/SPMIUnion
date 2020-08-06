@@ -58,7 +58,9 @@ export class MembersModalComponent implements OnInit, OnDestroy {
   subdepartmentID: number;
   isStudent: boolean;
 
-  constructor(private modalService: ModalService, private API: ApiService) {}
+  editData: { name: string, card: string, structure: string, student: boolean }
+
+  constructor(private modalService: ModalService, private API: ApiService) { }
 
   /* NOTE: 
     Если ты отдельно создаешь метод createMember и Subject createMember$, то и используй этот функционал.
@@ -167,6 +169,14 @@ export class MembersModalComponent implements OnInit, OnDestroy {
 
   closeModal() {
     this.modalService.stateOpen$.next(false);
+    if(this.action == 'add'){
+      this.name = this.editData.name;
+    this.card = this.editData.card;
+    this.structure = this.editData.structure;
+    this.isStudent = this.editData.student;
+    }
+  }
+  resetParams() {
     this.faculty = 'Факультет';
     this.structure = 'Подразделение';
     this.name = '';
@@ -181,6 +191,9 @@ export class MembersModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription.add(
       this.modalService.action$.subscribe((action) => {
+        if (action == 'add') {
+          this.resetParams()
+        }
         this.action = action;
       })
     );
@@ -237,6 +250,7 @@ export class MembersModalComponent implements OnInit, OnDestroy {
             total: this.data.length,
           };
           this.API.members$.next(membersData);
+          this.resetParams()
           this.closeModal();
         }
         const selectAllCheckbox = <HTMLInputElement>(
@@ -308,10 +322,10 @@ export class MembersModalComponent implements OnInit, OnDestroy {
         this.data.forEach((element: any) => {
           if (element.id == this.memberID) {
             this.name = element.name;
-
             this.card = element.card;
             this.structure = element.subdepartment;
             this.isStudent = element.is_student;
+            this.editData = { name: this.name, card: this.card, structure: this.structure, student: this.isStudent }
           }
         });
 
