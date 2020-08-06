@@ -6,6 +6,7 @@ import {
   AfterViewInit,
   Output,
   EventEmitter,
+  OnDestroy,
 } from '@angular/core';
 import { Input } from '@angular/core';
 import {
@@ -14,7 +15,7 @@ import {
   distinctUntilChanged,
   tap,
 } from 'rxjs/operators';
-import { fromEvent } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { ModalService } from '../shared/modal.service';
 import { ApiService } from '../../../../shared/api.service';
 
@@ -23,12 +24,17 @@ import { ApiService } from '../../../../shared/api.service';
   templateUrl: './members-modal.component.html',
   styleUrls: ['./members-modal.component.scss'],
 })
-export class MembersModalComponent implements OnInit {
+export class MembersModalComponent implements OnInit, OnDestroy {
   @Output() childEvent = new EventEmitter();
   @ViewChild('inputName') input: ElementRef;
   @ViewChild('cardNumberInput') cardNumberInput: ElementRef;
   @ViewChild('modal') modal: ElementRef;
   @ViewChild('modalBack') modalBack: ElementRef;
+
+  subscription: Subscription = new Subscription();
+  waitingForMembersServerResponse: Boolean = null;
+  waitingForServerResponse: Boolean = null;
+
   // Приходит с сервиса modalService
   action: string = '';
   stateOpen: boolean = false;
@@ -52,10 +58,7 @@ export class MembersModalComponent implements OnInit {
   subdepartmentID: number;
   isStudent: boolean;
 
-  constructor(
-    private modalService: ModalService,
-    private API: ApiService
-  ) { }
+  constructor(private modalService: ModalService, private API: ApiService) {}
 
   /* NOTE: 
     Если ты отдельно создаешь метод createMember и Subject createMember$, то и используй этот функционал.
@@ -75,21 +78,22 @@ export class MembersModalComponent implements OnInit {
       this.subdepartmentID,
       this.isStudent
     );
+    this.waitingForServerResponse = true;
   }
 
-  async editMember() {
-    await this.API.editMember(
+  // #NOTE: Зачем здесь async был?
+  editMember() {
+    this.API.editMember(
       this.name,
       this.card,
       this.subdepartmentID,
       this.isStudent,
       this.memberID
     );
+    this.waitingForServerResponse = true;
   }
 
   selectMember(event) {
-
-
     this.name = event.currentTarget.dataset.selectName;
     event.target.placeholder = this.name;
 
@@ -104,10 +108,11 @@ export class MembersModalComponent implements OnInit {
     event.stopPropagation();
   }
 
-  // NOTE: Что это за фукнция?)
   searchInAKSP(name) {
-    if (this.action == 'add')
+    if (this.action == 'add') {
       this.API.getMembersAKPS(name);
+      this.waitingForMembersServerResponse = true;
+    }
   }
 
   selectFaculty(event) {
@@ -174,33 +179,49 @@ export class MembersModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.modalService.action$.subscribe((action) => {
-      this.action = action;
-    });
-    this.modalService.stateOpen$.subscribe((state) => {
-      this.stateOpen = state;
-    });
-    this.modalService.modalTitle$.subscribe((title) => {
-      this.modalTitle = title;
-    });
-    this.modalService.data$.subscribe((data) => {
-      this.dataForModal = data;
-    });
-    const membersSub = this.API.members$.subscribe((dataFromApi: any) => {
-      this.data = dataFromApi.members;
-    });
-    this.API.createMember$.subscribe((data) => {
-      if (data.error) {
-        this.error = data.error.message;
-        if (this.error.slice(0, 50) == 'Ошибка обновления базы системы социального питания') {
-          this.API.error.next('Участник с таким именем уже есть в системе социального питанияц');
+    this.subscription.add(
+      this.modalService.action$.subscribe((action) => {
+        this.action = action;
+      })
+    );
+    this.subscription.add(
+      this.modalService.stateOpen$.subscribe((state) => {
+        this.stateOpen = state;
+      })
+    );
+    this.subscription.add(
+      this.modalService.modalTitle$.subscribe((title) => {
+        this.modalTitle = title;
+      })
+    );
+    this.subscription.add(
+      this.modalService.data$.subscribe((data) => {
+        this.dataForModal = data;
+      })
+    );
+    this.subscription.add(
+      this.API.members$.subscribe((dataFromApi: any) => {
+        this.data = dataFromApi.members;
+      })
+    );
+    this.subscription.add(
+      this.API.createMember$.subscribe((data) => {
+        this.waitingForServerResponse = false;
+        if (data.error) {
+          this.error = data.error.message;
+          if (
+            this.error.slice(0, 50) ==
+            'Ошибка обновления базы системы социального питания'
+          ) {
+            this.API.error.next(
+              'Участник с таким именем уже есть в системе социального питанияц'
+            );
+          } else {
+            this.API.error.next(String(this.error));
+          }
         } else {
-          this.API.error.next(String(this.error));
-        }
-
-      } else {
-        this.API.responseOK.next('Участник успешно добавлен');
-        /* NOTE:
+          this.API.responseOK.next('Участник успешно добавлен');
+          /* NOTE:
         Вместо того, чтобы после добавления или изменения эмитить действие родительскому компоненту, нужно 
         изменять массив members (полученный по подписке) и передать в members$ этот новый массив. 
         Поскольку в родительском компоненте есть подписка на этот сабжект, то в нем данные обновятся.
@@ -210,109 +231,118 @@ export class MembersModalComponent implements OnInit {
         TODO: Замени this.childEvent.emit() на добавление участника в массив members. А потом передай этот
         массив в members$. Убери лишнюю логику в род компоненте тоже.
         */
-        this.data.push(data.member)
-        const membersData = {
-          members: this.data,
-          total: this.data.length
+          this.data.push(data.member);
+          const membersData = {
+            members: this.data,
+            total: this.data.length,
+          };
+          this.API.members$.next(membersData);
+          this.closeModal();
         }
-        this.API.members$.next(membersData)
-        this.closeModal();
-      }
-      const selectAllCheckbox = <HTMLInputElement>(
-        document.getElementById('selectAllCheckbox')
-      );
-      selectAllCheckbox.checked = false;
-    });
+        const selectAllCheckbox = <HTMLInputElement>(
+          document.getElementById('selectAllCheckbox')
+        );
+        selectAllCheckbox.checked = false;
+      })
+    );
 
     // NOTE: Не совсем понимаю почему именно так ошибку обрабатываешь здесь (и в других подписках тоже)
     // Почему не используешь колбэк для ошибки в подписке?
-    this.API.membersAKPS$.subscribe((dataFromAPI: any) => {
-      if (dataFromAPI.error) {
-        // this.error = dataFromAPI.message;
-        this.error = 'Пользователи не найдены'
-        this.API.error.next(String(this.error));
-      } else {
-        this.members = dataFromAPI;
-      }
-      this.membersDropdown = true;
-    });
+    this.subscription.add(
+      this.API.membersAKPS$.subscribe((dataFromAPI: any) => {
+        this.waitingForMembersServerResponse = false;
+        if (dataFromAPI.error) {
+          // this.error = dataFromAPI.message;
+          this.error = 'Пользователи не найдены';
+          this.API.error.next(String(this.error));
+        } else {
+          this.members = dataFromAPI;
+        }
+        this.membersDropdown = true;
+      })
+    );
 
     // NOTE: Почему preloader именно в API сервисе? По-моему лучше в отдельный сервис вынести
     // И почему он в принципе в сервисе? Разве нельзя в компоненте логику реализовать?
-    this.API.preloader$.subscribe((dataFromAPI) => {
-      this.preloader = dataFromAPI;
-    });
+    this.subscription.add(
+      this.API.preloader$.subscribe((dataFromAPI) => {
+        this.preloader = dataFromAPI;
+      })
+    );
 
-    this.API.editMember$.subscribe((data) => {
-      if (data.error) {
-        this.error = data.error.message;
-        this.API.error.next(String(this.error));
-      } else {
-        console.log(this.data)
-        console.log(data)
-        
+    this.subscription.add(
+      this.API.editMember$.subscribe((data) => {
+        this.waitingForServerResponse = false;
+        if (data.error) {
+          this.error = data.error.message;
+          this.API.error.next(String(this.error));
+        } else {
+          //console.log(this.data);
+          //console.log(data);
 
-        const newData = this.data.map(o => {
-          if (o.id === data.member.id) {
-            return data.member;
-          }
-          return o;
-        });
-        const membersData = {
-          members: newData,
-          total: this.data.length
-        }
-
-        this.API.members$.next(membersData)
-        this.API.responseOK.next('Участник успешно изменен');
-        this.childEvent.emit();
-        this.API.selectedMemberId$.next(undefined);
-        this.closeModal();
-      }
-    });
-
-    this.API.selectedMemberId$.subscribe((id) => {
-
-      this.structures.length = 0;
-      this.memberID = id;
-      this.data.forEach((element: any) => {
-        if (element.id == this.memberID) {
-
-          this.name = element.name;
-
-          this.card = element.card;
-          this.structure = element.subdepartment;
-          this.isStudent = element.is_student;
-        }
-      });
-
-      this.API.departments.forEach((department: any) => {
-        department.sub_departments.forEach((subdepartment: any) => {
-          if (subdepartment.title == this.structure) {
-            this.faculty = department.title;
-          }
-        });
-      });
-      this.dataForModal.forEach((element: any) => {
-        if (this.faculty == element.title) {
-          element.sub_departments.forEach((item) => {
-            this.structures.push(item);
+          const newData = this.data.map((o) => {
+            if (o.id === data.member.id) {
+              return data.member;
+            }
+            return o;
           });
+          const membersData = {
+            members: newData,
+            total: this.data.length,
+          };
+
+          this.API.members$.next(membersData);
+          this.API.responseOK.next('Участник успешно изменен');
+          this.childEvent.emit();
+          this.API.selectedMemberId$.next(undefined);
+          this.closeModal();
         }
-      });
-    });
+      })
+    );
+
+    this.subscription.add(
+      this.API.selectedMemberId$.subscribe((id) => {
+        this.waitingForServerResponse = false;
+        this.structures.length = 0;
+        this.memberID = id;
+        this.data.forEach((element: any) => {
+          if (element.id == this.memberID) {
+            this.name = element.name;
+
+            this.card = element.card;
+            this.structure = element.subdepartment;
+            this.isStudent = element.is_student;
+          }
+        });
+
+        this.API.departments.forEach((department: any) => {
+          department.sub_departments.forEach((subdepartment: any) => {
+            if (subdepartment.title == this.structure) {
+              this.faculty = department.title;
+            }
+          });
+        });
+        this.dataForModal.forEach((element: any) => {
+          if (this.faculty == element.title) {
+            element.sub_departments.forEach((item) => {
+              this.structures.push(item);
+            });
+          }
+        });
+      })
+    );
   }
 
   ngAfterViewInit() {
     // Обращение к серверу происходит после того, как пользователь не печатает на протяжении 1.5 секунд
-    // NOTE: 1.5 сек как-то много, пусть будет 400 мс
+    // NOTE: 1.5 сек как-то много, пусть будет 800 мс
     // Вообще мне очень не нравится этот код, нужно его переработать
     // Зачем таймайт на 4 секунды?
-    // NOTE: 
+    // NOTE:
     fromEvent(this.input.nativeElement, 'keyup')
       .pipe(
         filter(Boolean),
-        debounceTime(400),
+        debounceTime(800),
         distinctUntilChanged(),
         tap((text) => {
           const memberName = <HTMLInputElement>this.input.nativeElement.value;
@@ -325,5 +355,12 @@ export class MembersModalComponent implements OnInit {
         })
       )
       .subscribe();
+  }
+
+  ngOnDestroy() {
+    // #NOTE: Отписываемся от всех событий при Destroy компонента
+    this.subscription.unsubscribe();
+    // Быстрый фикс бага
+    this.preloader = null;
   }
 }
