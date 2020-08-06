@@ -1,0 +1,25 @@
+<div class="modalWrapper" id="modal" [hidden]="!stateOpen">
+  <div class="modal">
+    <div class="modal-header">
+      <p>{{modalTitle}}</p>
+      <app-close-button (click)="closeModal()"></app-close-button>
+    </div>
+    <div class="modal-content">
+      <form action="" >
+        <input type="text" name="name" placeholder="Название" [(ngModel)]="title">
+      </form>
+      <div class="faculty" (click)='dropDownFaculty()' *ngIf="action == 'edit'">
+        <p id="faculty-placeholder" class="faculty-placeholder">{{faculty}}</p>
+        <i class="arrowIcon" [ngClass]="{'dropdownIcon': facultyDropdown}"></i>
+      </div>
+      <div class="facultyDropdown" [ngClass]="{'dropdown': facultyDropdown}" *ngIf="action == 'edit'">
+        <ul>
+          <li *ngFor="let item of dataForModal.modalData" attr.data-select-id="{{item.id}}"
+            attr.data-select-faculty="{{item.title}}" (click)="selectFaculty($event)">{{item.title}}</li>
+        </ul>
+      </div>
+      <button class="addButton" (click)="addSubDepartment()" *ngIf="action == 'add'">Добавить</button>
+      <button class="addButton" (click)="editSubDepartment()" *ngIf="action == 'edit'">Изменить</button>
+    </div>
+  </div>
+</div>
