@@ -58,8 +58,7 @@ export class MembersModalComponent implements OnInit, OnDestroy {
   subdepartmentID: number;
   isStudent: boolean;
 
-  editData: { name: string, card: string, structure: string, student: boolean }
-
+  editData: { name: string, card: string, structure: string, student: boolean } = { name: '', card: '', structure: '', student: false }
   constructor(private modalService: ModalService, private API: ApiService) { }
 
   /* NOTE: 
@@ -169,11 +168,11 @@ export class MembersModalComponent implements OnInit, OnDestroy {
 
   closeModal() {
     this.modalService.stateOpen$.next(false);
-    if(this.action == 'add'){
+    if (this.action == 'add') {
       this.name = this.editData.name;
-    this.card = this.editData.card;
-    this.structure = this.editData.structure;
-    this.isStudent = this.editData.student;
+      this.card = this.editData.card;
+      this.structure = this.editData.structure;
+      this.isStudent = this.editData.student;
     }
   }
   resetParams() {
