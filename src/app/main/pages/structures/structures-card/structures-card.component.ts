@@ -131,7 +131,7 @@ export class StructuresCardComponent implements OnInit {
           this.selectedData.proforg = this.notEditProforgName
           this.proforgName = this.notEditProforgName
         } else {
- 
+
           this.apiServiceService.responseOK.next('ФИО профорга успешно изменено')
         }
       })
@@ -273,15 +273,15 @@ export class StructuresCardComponent implements OnInit {
     this.dropdown = !this.dropdown
   }
   downloadExcel() {
- 
+
     this.apiServiceService.downloadExcelDepartment(this.selectedData.id, this.selectedData.title)
   }
 
-  async getDepartmentDataById(id) {
-    return await this.apiServiceService.getDepartmentById(id);
+  getDepartmentDataById(id) {
+    return this.apiServiceService.getDepartmentById(id);
   }
-  async getSubDepartmentsData() {
-    return await this.apiServiceService.getSubDepartments();
+  getSubDepartmentsData() {
+    return this.apiServiceService.getSubDepartments();
   }
   async getDepartmentsData() {
     await this.apiServiceService.getDepartments();
@@ -296,14 +296,13 @@ export class StructuresCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     const stats = this.apiServiceService.stats$.subscribe((data) => {
       this.stats = data.stats
     })
     this.subscription.add(stats)
     // Фильтрация подразделения под конкретную структуру
     const subdepSub = this.apiServiceService.subdepartments$.subscribe((data) => {
- 
+
       this.subDepartments = data.subdepartments
 
       this.selectedSubDepartments.length = 0
@@ -379,7 +378,7 @@ export class StructuresCardComponent implements OnInit {
 
         }
       })
-      await this.getSubDepartmentsData()
+      this.getSubDepartmentsData()
       if (this.equalID == true) {
 
       } else {
@@ -388,6 +387,7 @@ export class StructuresCardComponent implements OnInit {
       }
 
     })
+    this.subscription.add(departmentSub);
     // Подписка на изменение параметров (id) в маршруте
     const routerSub = this.route.params.subscribe(async (params) => {
       this.dynamics.length = 0
@@ -427,7 +427,7 @@ export class StructuresCardComponent implements OnInit {
       })
 
 
-      await this.getSubDepartmentsData()
+      this.getSubDepartmentsData()
       if (this.equalID == true) {
 
       } else {
@@ -436,7 +436,7 @@ export class StructuresCardComponent implements OnInit {
       }
     })
     this.subscription.add(routerSub);
-    this.subscription.add(departmentSub);
+
 
     var structureChart = new Chart('structureChart', {
       type: 'bar',

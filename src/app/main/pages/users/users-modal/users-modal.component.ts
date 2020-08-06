@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from "../../../../shared/api.service";
 import { ModalService } from '../shared/modal.service';
-
+import { Subscription, of } from 'rxjs';
 @Component({
   selector: 'app-users-modal',
   templateUrl: './users-modal.component.html',
@@ -10,7 +10,7 @@ import { ModalService } from '../shared/modal.service';
 export class UsersModalComponent implements OnInit {
 
   constructor(private API: ApiService, private modalService: ModalService) { }
-
+  private subscription: Subscription = new Subscription();
   roleDropdown: boolean = false;
   roleLabel: string = 'Выберите роль';
 
@@ -61,24 +61,28 @@ export class UsersModalComponent implements OnInit {
     this.roleDropdown = !this.roleDropdown;
   }
 
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
+
   ngOnInit(): void {
 
-    this.modalService.data$.subscribe((roles)=>{
+    this.subscription.add(this.modalService.data$.subscribe((roles)=>{
 
       this.roles = roles
-    })
-    this.modalService.stateOpen$.subscribe((state)=>{
+    }))
+    this.subscription.add(this.modalService.stateOpen$.subscribe((state)=>{
 
       this.stateOpen = state;
-    })
-    this.modalService.modalTitle$.subscribe((title) => {
+    }))
+    this.subscription.add(this.modalService.modalTitle$.subscribe((title) => {
       this.modalTitle = title;
-    })
-    this.modalService.action$.subscribe((action)=>{
+    }))
+    this.subscription.add(this.modalService.action$.subscribe((action)=>{
       this.action = action
-    })
+    }))
 
-    this.API.user$.subscribe((data) => {
+    this.subscription.add(this.API.user$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.API.error.next(String(this.error))
@@ -92,9 +96,9 @@ export class UsersModalComponent implements OnInit {
         this.closeModal()
         this.roleLabel = 'Роль';
       }
-    })
+    }))
 
-    this.API.users$.subscribe((dataFromApi: any) => {
+    this.subscription.add(this.API.users$.subscribe((dataFromApi: any) => {
       this.users = dataFromApi.users;
       this.API.selectedUserId$.subscribe((data) => {
         this.userID = data;
@@ -109,7 +113,7 @@ export class UsersModalComponent implements OnInit {
           }
         });
       });
-    });
+    }));
   }
 
 }

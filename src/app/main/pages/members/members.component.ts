@@ -160,7 +160,7 @@ export class MembersComponent implements OnInit {
     this.getMembersByPage()
 
 
-    this.apiServiceService.member$.subscribe((data) => {
+    this.subscription.add(this.apiServiceService.member$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.apiServiceService.error.next(String(this.error))
@@ -171,7 +171,7 @@ export class MembersComponent implements OnInit {
         this.membersID.length = 0
         this.memberID = undefined
       }
-    })
+    }))
 
 
 

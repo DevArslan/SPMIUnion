@@ -53,6 +53,7 @@ export class SubdepartmentsModalComponent implements OnInit {
 
 
   ngOnInit(): void {
+    
     const subData = this.modalService.data$.subscribe((data) => {
       this.dataForModal = data
 

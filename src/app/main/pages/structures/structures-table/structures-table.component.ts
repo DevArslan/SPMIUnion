@@ -61,7 +61,7 @@ export class StructuresTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+    
     // if (!this.apiServiceService.departments) {
     //   this.apiServiceService.getDepartments()
     // }

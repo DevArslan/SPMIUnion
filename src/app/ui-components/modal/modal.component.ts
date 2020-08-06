@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Output, EventEmitter, Input } from '@angular/core';
 import { ModalService } from "./modal.service";
-import { ApiServiceService } from 'src/app/shared/api-service.service';
+import { ApiService } from 'src/app/shared/api.service';
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { ChangeDetectorRef } from "@angular/core";
+import { Subscription, of } from 'rxjs';
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
@@ -49,8 +50,8 @@ export class ModalComponent implements OnInit {
   isStudent: boolean
 
   @ViewChild('inputName', { static: false }) input: ElementRef;
-
-  constructor(public modalService: ModalService, private api: ApiServiceService, private changeDetector : ChangeDetectorRef) { }
+  private subscription: Subscription = new Subscription();
+  constructor(public modalService: ModalService, private api: ApiService, private changeDetector : ChangeDetectorRef) { }
 
 
 
@@ -189,11 +190,13 @@ export class ModalComponent implements OnInit {
     this.roleDropdown = !this.roleDropdown;
   }
 
-
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
+  }
   ngOnInit(): void {
-    // Проверяем, какое моадльное окно нужно открыть
+    // Проверяем, какое модальное окно нужно открыть
     this.changeDetector.detectChanges();
-    this.modalService.modalParams.subscribe((params) => {
+    this.subscription.add(this.modalService.modalParams.subscribe((params) => {
       
       console.log(params)
       if (params.title != '') {
@@ -207,10 +210,10 @@ export class ModalComponent implements OnInit {
       this.title = params.title
       this.action = params.action
       
-    })
+    }))
 
 
-    this.api.member$.subscribe((data) => {
+    this.subscription.add(this.api.member$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.api.error.next(String(this.error))
@@ -219,9 +222,9 @@ export class ModalComponent implements OnInit {
         this.childEvent.emit();
         this.closeModal()
       }
-    })
+    }))
 
-    this.api.membersAKPS$.subscribe((dataFromAPI: any) => {
+    this.subscription.add(this.api.membersAKPS$.subscribe((dataFromAPI: any) => {
       if (dataFromAPI.error) {
         this.error = dataFromAPI.message
         this.api.error.next(String(this.error))
@@ -229,20 +232,21 @@ export class ModalComponent implements OnInit {
         this.members = dataFromAPI
       }
       this.membersDropdown = true
-    })
-    this.api.preloader$.subscribe((dataFromAPI) => {
+    }))
+
+    this.subscription.add(this.api.preloader$.subscribe((dataFromAPI) => {
       this.preloader = dataFromAPI
-    })
+    }))
 
     
 
-    this.api.selectedUserId$.subscribe((id) => {
+    this.subscription.add(this.api.selectedUserId$.subscribe((id) => {
       this.userID = id;
-    });
+    }));
 
 
 
-    this.api.user$.subscribe((data) => {
+    this.subscription.add(this.api.user$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.api.error.next(String(this.error))
@@ -251,11 +255,11 @@ export class ModalComponent implements OnInit {
         this.api.getUsers()
         this.closeModal()
       }
-    })
+    }))
 
 
 
-    this.api.user$.subscribe((data) => {
+    this.subscription.add(this.api.user$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.api.error.next(String(this.error))
@@ -264,8 +268,8 @@ export class ModalComponent implements OnInit {
         this.api.getUsers()
         this.closeModal()
       }
-    })
-    this.api.user$.subscribe((data) => {
+    }))
+    this.subscription.add(this.api.user$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message
         this.api.error.next(String(this.error))
@@ -275,11 +279,11 @@ export class ModalComponent implements OnInit {
         this.closeModal()
         this.roleLabel = 'Роль';
       }
-    })
+    }))
 
 
 
-    this.api.users$.subscribe((dataFromApi: any) => {
+    this.subscription.add(this.api.users$.subscribe((dataFromApi: any) => {
       this.users = dataFromApi.users;
       this.api.selectedUserId$.subscribe((data) => {
         this.userID = data;
@@ -294,7 +298,7 @@ export class ModalComponent implements OnInit {
           }
         });
       });
-    });
+    }));
   }
   ngAfterViewInit() {
     // Обращение к серверу происходит после того, как пользователь не печатает на протяжении 1.5 секунд

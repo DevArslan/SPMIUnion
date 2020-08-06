@@ -101,29 +101,30 @@ export class DeleteModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.deleteService.type$.subscribe((type) => {
+    
+    this.subscription.add(this.deleteService.type$.subscribe((type) => {
       this.type = type;
-    });
+    }));
 
-    this.deleteService.data$.subscribe((data) => {
+    this.subscription.add(this.deleteService.data$.subscribe((data) => {
       this.dataForModal = data;
-    });
+    }));
 
-    this.deleteService.modalTitle$.subscribe((title) => {
+    this.subscription.add(this.deleteService.modalTitle$.subscribe((title) => {
       this.modalTitle = title;
-    });
-    this.deleteService.stateOpen$.subscribe((state) => {
+    }));
+    this.subscription.add(this.deleteService.stateOpen$.subscribe((state) => {
       this.stateOpen = state;
-    });
+    }));
 
-    this.API.selectedMemberId$.subscribe((id) => {
+    this.subscription.add(this.API.selectedMemberId$.subscribe((id) => {
       this.memberID.length = 0;
       this.memberID.push(id);
-    });
-    this.API.titleForDeleteModal$.subscribe((title) => {
+    }));
+    this.subscription.add(this.API.titleForDeleteModal$.subscribe((title) => {
       this.title = title;
-    });
-    this.API.deleteMember$.subscribe((data) => {
+    }));
+    this.subscription.add(this.API.deleteMember$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message;
         this.API.error.next(String(this.error));
@@ -133,11 +134,11 @@ export class DeleteModalComponent implements OnInit {
         this.childEvent.emit();
         this.closeModal();
       }
-    });
+    }));
     // const membersSub = this.API.members$.subscribe((dataFromApi: any) => {
     //   this.members = dataFromApi.members;
     // });
-    const structureSub = this.API.structure$.subscribe(async (data) => {
+    this.subscription.add(this.API.structure$.subscribe(async (data) => {
       if (data.error) {
         this.error = data.error.message;
         this.API.error.next(String(this.error));
@@ -158,8 +159,7 @@ export class DeleteModalComponent implements OnInit {
         this.API.getDepartments();
         this.closeModal();
       }
-    });
-    this.subscription.add(structureSub);
+    }));
 
     this.API.subdepartment$.subscribe((data) => {
       if (data.error) {
@@ -172,10 +172,10 @@ export class DeleteModalComponent implements OnInit {
       }
     });
 
-    this.API.selectedUserId$.subscribe((id) => {
+    this.subscription.add(this.API.selectedUserId$.subscribe((id) => {
       this.userID = id;
-    });
-    this.API.user$.subscribe((data) => {
+    }));
+    this.subscription.add(this.API.user$.subscribe((data) => {
       if (data.error) {
         this.error = data.error.message;
         this.API.error.next(String(this.error));
@@ -184,6 +184,6 @@ export class DeleteModalComponent implements OnInit {
         this.API.getUsers();
         this.closeModal();
       }
-    });
+    }))
   }
 }
