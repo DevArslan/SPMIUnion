@@ -27,10 +27,14 @@ export class SubdepartmentsModalComponent implements OnInit {
   constructor(private modalService: ModalService, private API: ApiService) { }
 
   async addSubDepartment() {
-    await this.API.createSubDepartment(this.title, this.dataForModal.id)
+    if(this.title !== ''){
+      await this.API.createSubDepartment(this.title, this.dataForModal.id)
+    }
   }
   async editSubDepartment() {
-    await this.API.editSubDepartment(this.title, this.departmentID, this.dataForModal.id)
+    if(this.title !== ''){
+      await this.API.editSubDepartment(this.title, this.departmentID, this.dataForModal.id)
+    }
   }
 
   dropDownFaculty() {

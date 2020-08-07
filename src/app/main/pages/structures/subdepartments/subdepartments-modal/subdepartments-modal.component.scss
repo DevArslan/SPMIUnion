@@ -148,6 +148,14 @@
             background-color: darken(#3cae59, 6%);
           }
         }
+        .blockButton{
+          background-color: black;
+          opacity: 0.5;
+          &:hover{
+            background-color: black;
+            cursor: not-allowed;
+          }
+        }
       }
     }
   }

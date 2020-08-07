@@ -6,7 +6,7 @@
     </div>
     <div class="modal-content">
       <form action="" >
-        <input type="text" name="name" placeholder="Название" [(ngModel)]="title">
+        <input type="text" name="name" placeholder="Название" [(ngModel)]="title" >
       </form>
       <div class="faculty" (click)='dropDownFaculty()' *ngIf="action == 'edit'">
         <p id="faculty-placeholder" class="faculty-placeholder">{{faculty}}</p>
@@ -18,8 +18,8 @@
             attr.data-select-faculty="{{item.title}}" (click)="selectFaculty($event)">{{item.title}}</li>
         </ul>
       </div>
-      <button class="addButton" (click)="addSubDepartment()" *ngIf="action == 'add'">Добавить</button>
-      <button class="addButton" (click)="editSubDepartment()" *ngIf="action == 'edit'">Изменить</button>
+      <button class="addButton" (click)="addSubDepartment()" *ngIf="action == 'add'" [ngClass]="{blockButton: title === ''}">Добавить</button>
+      <button class="addButton" (click)="editSubDepartment()" *ngIf="action == 'edit'" [ngClass]="{blockButton: title === ''}">Изменить</button>
     </div>
   </div>
 </div>
