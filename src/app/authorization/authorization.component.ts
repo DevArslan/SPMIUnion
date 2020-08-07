@@ -45,9 +45,11 @@ export class AuthorizationComponent implements OnInit {
 
     if (!this.login) {
       this.loginError = 'Требуется указать имя';
+      this.waitingForServerResponse = false
     }
     if (!this.password) {
       this.passwordError = 'Требуется указать пароль';
+      this.waitingForServerResponse = false
     }
 
     if (this.login && this.password) {
