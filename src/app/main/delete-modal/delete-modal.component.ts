@@ -167,7 +167,9 @@ export class DeleteModalComponent implements OnInit {
         this.API.error.next(String(this.error));
       } else {
         this.API.getDepartments();
-        this.API.responseOK.next('Подразделение успешно удалено');
+        if(data.message !== undefined){
+          this.API.responseOK.next(data.message);
+        }       
         this.closeModal();
       }
     }));
