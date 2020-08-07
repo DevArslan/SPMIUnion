@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from 'src/app/shared/auth.service';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, } from '@angular/common/http';
 import { BASE_URL } from '../CONFIG';
 import { STORAGE_KEY } from '../CONFIG';
 @Injectable({
@@ -113,14 +113,14 @@ export class ApiService {
 
     this.http.delete(BASE_URL + 'departments/' + departmentID).subscribe(
       (res) => {
-        
+
         this.structure$.next(res)
-        
+
       },
       (err) => {
-  
+
         this.structure$.next(err)
-        
+
       }
     );
 
@@ -236,7 +236,7 @@ export class ApiService {
   async getMembersByPage(rows, page, query) {
     this.http.get(BASE_URL + 'members?rows=' + rows + '&page=' + page + '&query=' + query).subscribe(
       (res) => {
- 
+
         this.members$.next(res)
       },
       (err) => this.members$.next(err)
@@ -425,33 +425,48 @@ export class ApiService {
   // Скачивание данных участников профсоюза в формате excel
   async downloadExcel() {
 
-    this.http.get<Blob>(BASE_URL + 'members/xlsx', { observe: 'response', responseType: 'blob' as 'json' }).subscribe(
-      (response: any) => {
-        let dataType = response.type;
+    this.http.get<Blob>(BASE_URL + 'members/xlsx', { responseType: 'arraybuffer' as 'json' }).subscribe(
+      (res) => {
         let binaryData = [];
-        binaryData.push(response);
+        binaryData.push(res);
         let downloadLink = document.createElement('a');
-        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: 'xlsx' }));
         downloadLink.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${new Date().getMonth() + 1}_${new Date().getFullYear()}.xlsx`;
         document.body.appendChild(downloadLink);
         downloadLink.click();
       },
       (err) => {
-        this.error.next(err)
+        console.log(err)
       }
     );
+
+    // this.http.get<Blob>(BASE_URL + 'members/xlsx', { observe: 'response', responseType: 'blob' as 'json' }).subscribe(
+    //   (response: any) => {
+    //     let dataType = response.type;
+    //     let binaryData = [];
+    //     binaryData.push(response);
+    //     let downloadLink = document.createElement('a');
+    //     downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+    //     downloadLink.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${new Date().getMonth() + 1}_${new Date().getFullYear()}.xlsx`;
+    //     document.body.appendChild(downloadLink);
+    //     downloadLink.click();
+    //   },
+    //   (err) => {
+    //     this.error.next(err)
+    //   }
+    // );
   }
 
   // Скачивание данных участников профсоюза в структуре в формате excel
   async downloadExcelDepartment(depID, title) {
+    
 
-    this.http.get<Blob>(BASE_URL + 'departments/xlsx/' + depID, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(
-      (response: any) => {
-        let dataType = response.type;
+    this.http.get<Blob>(BASE_URL + 'departments/xlsx/' + depID, { responseType: 'arraybuffer' as 'json' }).subscribe(
+      (res) => {
         let binaryData = [];
-        binaryData.push(response);
+        binaryData.push(res);
         let downloadLink = document.createElement('a');
-        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: 'xlsx' }));
         downloadLink.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${
           new Date().getMonth() + 1
           }_${new Date().getFullYear()}_${title}.xlsx`;
@@ -459,7 +474,7 @@ export class ApiService {
         downloadLink.click();
       },
       (err) => {
-        this.error.next(err)
+        console.log(err)
       }
     );
   }
@@ -467,13 +482,13 @@ export class ApiService {
   // Скачивание данных участников профсоюза в подразделении в формате excel
   async downloadExcelSubDepartment(subID, title) {
 
-    this.http.get<Blob>(BASE_URL + 'departments/subdepartments/xlsx/' + subID, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(
-      (response: any) => {
-        let dataType = response.type;
+
+    this.http.get<Blob>(BASE_URL + 'departments/subdepartments/xlsx/' + subID, { responseType: 'arraybuffer' as 'json' }).subscribe(
+      (res) => {
         let binaryData = [];
-        binaryData.push(response);
+        binaryData.push(res);
         let downloadLink = document.createElement('a');
-        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+        downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: 'xlsx' }));
         downloadLink.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${
           new Date().getMonth() + 1
           }_${new Date().getFullYear()}_${title}.xlsx`;
@@ -481,9 +496,27 @@ export class ApiService {
         downloadLink.click();
       },
       (err) => {
-        this.error.next(err)
+        console.log(err)
       }
     );
+
+    // this.http.get<Blob>(BASE_URL + 'departments/subdepartments/xlsx/' + subID, { observe: 'response', responseType: 'blob' as 'json' }).subscribe(
+    //   (response: any) => {
+    //     let dataType = response.type;
+    //     let binaryData = [];
+    //     binaryData.push(response);
+    //     let downloadLink = document.createElement('a');
+    //     downloadLink.href = window.URL.createObjectURL(new Blob(binaryData, { type: dataType }));
+    //     downloadLink.download = `Выгрузка_участники_профсоюза_${new Date().getDate()}_${
+    //       new Date().getMonth() + 1
+    //       }_${new Date().getFullYear()}_${title}.xlsx`;
+    //     document.body.appendChild(downloadLink);
+    //     downloadLink.click();
+    //   },
+    //   (err) => {
+    //     this.error.next(err)
+    //   }
+    // );
   }
 
   // Статистика по датам
