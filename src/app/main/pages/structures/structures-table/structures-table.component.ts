@@ -13,12 +13,12 @@ export class StructuresTableComponent implements OnInit {
   @Input() selectedSubDepartments: {}[]
   @Input() dynamics: { 'subID': number, 'dynamic': number }[]
   subDepartmentId: number
-  data: {id: number, subTitle: string, title:string, modalData: {}[]}
+  data: { id: number, subTitle: string, title: string, modalData: {}[] }
   dataForModal: {}[] = []
   currentSubDynamic: number
   departmentTitle: string = ''
   subDepartmentTitle: string = ''
-  constructor(private apiServiceService: ApiService, private deleteService : DeleteService, private modalService: ModalService) { }
+  constructor(private apiServiceService: ApiService, private deleteService: DeleteService, private modalService: ModalService) { }
   private subscription: Subscription = new Subscription();
   getDynamic(id) {
 
@@ -29,9 +29,11 @@ export class StructuresTableComponent implements OnInit {
     })
   }
   downloadExcel(event) {
-    const subID = event.target.parentElement.dataset.subdepartmentId
-    const title = event.target.parentElement.dataset.subdepartmentTitle
-    this.apiServiceService.downloadExcelSubDepartment(subID, title)
+    if (event.target.parentElement.dataset.membersTotal != 0) {
+      const subID = event.target.parentElement.dataset.subdepartmentId
+      const title = event.target.parentElement.dataset.subdepartmentTitle
+      this.apiServiceService.downloadExcelSubDepartment(subID, title)
+    }
   }
   showDelModal(event) {
     this.subDepartmentId = event.target.parentElement.dataset.subdepartmentId
@@ -44,10 +46,10 @@ export class StructuresTableComponent implements OnInit {
     this.subDepartmentId = event.target.parentElement.dataset.subdepartmentId
     this.subDepartmentTitle = event.target.parentElement.dataset.title
     this.departmentTitle = event.target.parentElement.dataset.departmentTitle
-    
-    this.data = {id: this.subDepartmentId, subTitle: this.subDepartmentTitle, title: this.departmentTitle, modalData: this.dataForModal}
-    
-    
+
+    this.data = { id: this.subDepartmentId, subTitle: this.subDepartmentTitle, title: this.departmentTitle, modalData: this.dataForModal }
+
+
     this.apiServiceService.departmentForEditModal$.next(this.departmentTitle)
 
     this.modalService.data$.next(this.data)
@@ -61,7 +63,7 @@ export class StructuresTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
     // if (!this.apiServiceService.departments) {
     //   this.apiServiceService.getDepartments()
     // }

@@ -273,8 +273,9 @@ export class StructuresCardComponent implements OnInit {
     this.dropdown = !this.dropdown
   }
   downloadExcel() {
-
-    this.apiServiceService.downloadExcelDepartment(this.selectedData.id, this.selectedData.title)
+    if(this.selectedData.members_total != 0){
+      this.apiServiceService.downloadExcelDepartment(this.selectedData.id, this.selectedData.title)
+    }
   }
 
   getDepartmentDataById(id) {
