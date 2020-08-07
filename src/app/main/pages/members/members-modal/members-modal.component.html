@@ -2,7 +2,7 @@
   <div class="modal" (click)="closeAllDropdown($event)" id="modalBack" #modalBack>
     <div class="modal-header">
       <p>{{ modalTitle }}</p>
-      <app-close-button (click)="closeModal()"></app-close-button>
+      <app-close-button (click)="closeModal()"  *ngIf="!waitingForServerResponse"></app-close-button>
     </div>
     <div class="modal-content">
       <form action="">
