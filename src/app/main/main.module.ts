@@ -20,6 +20,7 @@ import { UsersComponent } from './pages/users/users.component';
 import { UsersTableComponent } from './pages/users/users-table/users-table.component';
 import { MembersModalComponent } from './pages/members/members-modal/members-modal.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { DeleteModalComponent } from './delete-modal/delete-modal.component';
 import { UsersModalComponent } from './pages/users/users-modal/users-modal.component';
 import { SubdepartmentsModalComponent } from './pages/structures/subdepartments/subdepartments-modal/subdepartments-modal.component';
@@ -47,9 +48,12 @@ import { SubdepartmentsModalComponent } from './pages/structures/subdepartments/
     // ModalComponent,
   ],
   imports: [MainRoutingModule, FormsModule, MatSnackBarModule, CommonModule],
+  exports: [
+    MatProgressBarModule
+  ],
   /* А вот ApiService уже здесь регистрируется, потому что
     он будет использовать только в этом модуле */
   providers: [ApiService],
   bootstrap: [MainComponent],
 })
-export class MainModule {}
+export class MainModule { }

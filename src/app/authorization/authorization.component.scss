@@ -55,13 +55,20 @@
             background-color: darken(#3cae59, 6%);
           }
         }
+        button:disabled,
+        button[disabled] {
+          background-color: #cccccc !important;
+          &:hover {
+            cursor: not-allowed !important;
+          }
+        }
       }
       .formError {
         color: red;
         font-weight: 400;
-        font-size: 0.8rem;    
+        font-size: 0.8rem;
         margin: 0;
-        p{
+        p {
           margin: 0.5rem 0;
         }
       }
@@ -74,5 +81,10 @@
         }
       }
     }
+  }
+  .progressBar{
+    display: block;
+    height: 4px;
+    width: 100%;
   }
 }

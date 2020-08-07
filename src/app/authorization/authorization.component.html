@@ -1,6 +1,9 @@
 
 <div class="auth">
   <div class="auth-header">Вход в личный кабинет</div>
+  <div class="bar" *ngIf="waitingForServerResponse">
+    <mat-progress-bar mode="indeterminate" class="progressBar" ></mat-progress-bar>
+  </div>
   <form class="auth-form" action="" >
     <ul>
       <li>
@@ -25,15 +28,10 @@
         <p >{{error}}&nbsp;</p>
       </li>
       <li>
-        <button class="submitButton" (click)="$event.preventDefault(); auth()">Войти</button>
+        <button [disabled]="waitingForServerResponse" class="submitButton" (click)="$event.preventDefault(); auth()">Войти</button>
       </li>
     </ul>
-
-
-
-
-
-
+    
   </form>
-
+  
 </div>

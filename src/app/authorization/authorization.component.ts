@@ -18,6 +18,8 @@ export class AuthorizationComponent implements OnInit {
   loginError: string = '';
   passwordError: string = '';
 
+  waitingForServerResponse: boolean = false;
+
   constructor(private router: Router, private authService: AuthService) {}
 
   ngOnInit(): void {
@@ -33,6 +35,8 @@ export class AuthorizationComponent implements OnInit {
   }
 
   auth() {
+    this.waitingForServerResponse = true
+    console.log(this.waitingForServerResponse)
     /* NOTE: Раз вынес в отдельную функцию (что правильно), то нужно и использовать) */
     this.resetErrors();
     // this.loginError = ''
@@ -51,8 +55,12 @@ export class AuthorizationComponent implements OnInit {
       this.authService
         .login(this.login, this.password, this.remember)
         .subscribe(
-          (res) => this.router.navigate(['main/members']),
+          (res) =>{
+            this.waitingForServerResponse = false
+            this.router.navigate(['main/members'])
+          } ,
           (err) => {
+            this.waitingForServerResponse = false
             this.error = 'Введен неверный пароль или логин';
             /* NOTE: Ошибка стирается только после того как придет ответ от сервака */
             setTimeout(() => {
