@@ -124,7 +124,13 @@ export class MembersTableComponent implements OnInit {
     this.titleForDeleteModal = 'Удалить участников'
     this.api.titleForDeleteModal$.next(this.titleForDeleteModal)
     this.api.selectedMembersId$.next(this.selectedMembersId)
-
+    if (this.selectedMembersId.length == 1){
+      this.selectedMemberId = this.selectedMembersId[0]
+      this.api.selectedMemberId$.next(this.selectedMemberId)
+    }else{
+      this.selectedMemberId = undefined
+      this.api.selectedMemberId$.next(this.selectedMemberId)
+    }
     event.stopPropagation()
   }
 
