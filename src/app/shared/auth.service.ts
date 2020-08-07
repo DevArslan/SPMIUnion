@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Router } from '@angular/router';
 import { User } from '../models/profile';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -28,7 +28,7 @@ export class AuthService {
   /* NOTE: Обрати внимание, что в Angular есть встроенный HttpClient, который возвращает
   Observable вместо Promise. Это несколько другой подход, связанный с реактивным программированием.
   Почитай про Observable, Subject и rxjs вообще*/
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     /* На старте приложения получаем начальное состояние */
     this.currentUserSubject = new BehaviorSubject<User>(
       JSON.parse(localStorage.getItem(STORAGE_KEY))
@@ -81,6 +81,7 @@ export class AuthService {
     // Удаляем все данные
     localStorage.removeItem(STORAGE_KEY);
     sessionStorage.removeItem(STORAGE_KEY);
+    this.router.navigate(['/auth']);
     this.currentUserValue = null;
   }
 
