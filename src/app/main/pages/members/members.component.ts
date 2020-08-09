@@ -122,16 +122,15 @@ export class MembersComponent implements OnInit {
   }
   showDelModal() {
     if (this.membersID.length != 0) {
-      this.error = ''
-;
+      this.error = '';
       this.deleteService.stateOpen$.next(true)
       this.deleteService.type$.next('member')
       this.deleteService.modalTitle$.next('Удалить участника')
       this.error = 'Сначала выберите участника'
-      this.membersID.length = 0
+      // this.membersID.length = 0
     } else if (this.memberID) {
       this.error = ''
-
+      console.log('delete')
       this.deleteService.stateOpen$.next(true)
       this.deleteService.type$.next('member')
       this.deleteService.modalTitle$.next('Удалить участника')
@@ -199,6 +198,7 @@ export class MembersComponent implements OnInit {
     this.subscription.add(selectedMemberSub)
     const selectedMembersSub = this.apiServiceService.selectedMembersId$.subscribe((apiData) => {
       this.membersID = apiData
+      console.log(this.membersID)
       if (this.membersID.length != 0) {
         this.error = ''
       } else {

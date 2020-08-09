@@ -12,10 +12,10 @@
       <i class="editIcon" [ngClass]="{blockModal:  !memberID, blockEditmodal: this.membersID.length > 1}"></i>
     </div>
     <div class="members-nav-remove" (click) = "showDelModal()"  title="{{error}}">
-      <i class="removeIcon" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}"></i>
+      <i class="removeIcon" [ngClass]="{blockModal: membersID.length == 0 && !memberID}"></i>
     </div>
-    <button (click)="blockMember()" class="blockButton" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}" title="{{error}}">Заблокировать</button>
-    <button (click)="activateMember()" class="activateButton" [ngClass]="{blockModal: membersID.length == 0}" [ngClass]="{blockModal: !memberID}" title="{{error}}">Активировать</button>
+    <button (click)="blockMember()" class="blockButton" [ngClass]="{blockModal: membersID.length == 0 && !memberID}"  title="{{error}}">Заблокировать</button>
+    <button (click)="activateMember()" class="activateButton" [ngClass]="{blockModal: membersID.length == 0 && !memberID}" title="{{error}}">Активировать</button>
     <button (click)="downloadExcel()" class="activateButton" >Excel</button>
     <div class="members-nav-excel"></div>
     <div class="members-nav-pdf"></div>
