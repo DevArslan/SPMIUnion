@@ -226,7 +226,7 @@ export class MembersModalComponent implements OnInit, OnDestroy {
             'Ошибка обновления базы системы социального питания'
           ) {
             this.API.error.next(
-              'Участник с таким именем уже есть в системе социального питанияц'
+              'Участник с таким именем уже есть в системе социального питания'
             );
           } else {
             this.API.error.next(String(this.error));
