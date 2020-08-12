@@ -32,6 +32,7 @@ export class DeleteModalComponent implements OnInit {
   error: string;
   // для структур
   departmentID: string;
+  departments: any;
   // для пользователей
   userID: number;
 
@@ -129,7 +130,7 @@ export class DeleteModalComponent implements OnInit {
         this.error = data.error.message;
         this.API.error.next(String(this.error));
       } else {
-        // console.log(data)
+       
         this.API.responseOK.next('Участник успешно удален');
         this.childEvent.emit();
         this.closeModal();
@@ -138,12 +139,19 @@ export class DeleteModalComponent implements OnInit {
     // const membersSub = this.API.members$.subscribe((dataFromApi: any) => {
     //   this.members = dataFromApi.members;
     // });
-    this.subscription.add(this.API.structure$.subscribe(async (data) => {
+
+    this.subscription.add(this.API.departments$.subscribe((departments)=>{
+      console.log(departments)
+      this.departments = departments
+    }))
+
+    this.subscription.add(this.API.delStructure$.subscribe(async (data) => {
       if (data.error) {
         this.error = data.error.message;
         this.API.error.next(String(this.error));
       } else {
         this.API.responseOK.next(data.message);
+        if(data.message)
         if (this.API.departments.length > 1) {
           if (this.departmentID != this.API.departments[0].id) {
             const firstDepartmentId = this.API.departments[0].id;
@@ -155,8 +163,17 @@ export class DeleteModalComponent implements OnInit {
         } else {
           this.router.navigate(['main/members']);
         }
+        
+        this.departments.forEach((department, index) => {
+          if(department.id == this.departmentID){
+            this.departments.splice(index,1)
+          }
+        });
 
-        this.API.getDepartments();
+        this.API.departments$.next(this.departments)
+
+
+
         this.closeModal();
       }
     }));

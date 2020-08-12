@@ -16,8 +16,8 @@ export class StructuresCardComponent implements OnInit {
 
   @ViewChild('structureNameTextarea') structureNameTextarea: ElementRef;
   @ViewChild('structureNameP') structureNameP: ElementRef;
-  @ViewChild('structureNameP') proforgNameTextarea: ElementRef;
-  @ViewChild('structureNameP') proforgNameP: ElementRef;
+  @ViewChild('proforgNameTextarea') proforgNameTextarea: ElementRef;
+  @ViewChild('proforgNameP') proforgNameP: ElementRef;
   id: number;
 
   constructor(private ROUTER: Router, private apiServiceService: ApiService, private route: ActivatedRoute, private deleteService: DeleteService, private modalService: ModalService) {
@@ -93,18 +93,6 @@ export class StructuresCardComponent implements OnInit {
       structureName.setAttribute('size', String(Number(this.titleLength) * 1.05))
       structureName.blur()
       await this.apiServiceService.editStructure(this.structureName, this.proforgName, this.selectedData.id)
-
-      this.apiServiceService.structure$.subscribe((data) => {
-        if (data.error) {
-          let error = data.error.message
-          this.apiServiceService.error.next(String(error))
-          this.selectedData.title = this.notEditStructureName
-          this.structureName = this.notEditStructureName
-        } else {
-
-          this.apiServiceService.responseOK.next('Название структуры успешно изменено')
-        }
-      })
       structureNameP.style.display = 'block'
       structureName.style.display = 'none'
     } else {
@@ -122,19 +110,9 @@ export class StructuresCardComponent implements OnInit {
       proforgName.setAttribute('readonly', '')
       proforgName.setAttribute('size', String(Number(this.proforgNameLength) * 1.05))
       proforgName.blur()
+
       await this.apiServiceService.editStructure(this.structureName, this.proforgName, this.selectedData.id)
 
-      this.apiServiceService.structure$.subscribe((data) => {
-        if (data.error) {
-          let error = data.error.message
-          this.apiServiceService.error.next(String(error))
-          this.selectedData.proforg = this.notEditProforgName
-          this.proforgName = this.notEditProforgName
-        } else {
-
-          this.apiServiceService.responseOK.next('ФИО профорга успешно изменено')
-        }
-      })
       proforgNameP.style.display = 'block'
       proforgName.style.display = 'none'
     } else {
@@ -273,7 +251,7 @@ export class StructuresCardComponent implements OnInit {
     this.dropdown = !this.dropdown
   }
   downloadExcel() {
-    if(this.selectedData.members_total != 0){
+    if (this.selectedData.members_total != 0) {
       this.apiServiceService.downloadExcelDepartment(this.selectedData.id, this.selectedData.title)
     }
   }
@@ -297,6 +275,16 @@ export class StructuresCardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const editSub = this.apiServiceService.structure$.subscribe((data) => {
+      if (data.error) {
+        let error = data.error.message
+        this.apiServiceService.error.next(String(error))
+        this.selectedData.title = this.notEditStructureName
+        this.structureName = this.notEditStructureName
+      } else {
+      }
+    })
+    this.subscription.add(editSub)
     const stats = this.apiServiceService.stats$.subscribe((data) => {
       this.stats = data.stats
     })

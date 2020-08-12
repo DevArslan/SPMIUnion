@@ -38,6 +38,8 @@ export class ApiService {
   createMember$ = new Subject<any>()
   editMember$ = new Subject<any>()
   deleteMember$ = new Subject<any>()
+  addStructure$ = new Subject<any>()
+  delStructure$ = new Subject<any>()
   structure$ = new Subject<any>()
   subdepartment$ = new Subject<any>()
   // Observable member data
@@ -101,7 +103,7 @@ export class ApiService {
 
     this.http.post(BASE_URL + 'departments', data).subscribe(
       (res) => {
-        this.structure$.next(res)
+        this.addStructure$.next(res)
         this.responseOK.next("Подразделение успешно создано")
       },
       (err) => {
@@ -116,7 +118,7 @@ export class ApiService {
     this.http.delete(BASE_URL + 'departments/' + departmentID).subscribe(
       (res) => {
 
-        this.structure$.next(res)
+        this.delStructure$.next(res)
 
       },
       (err) => {
@@ -139,6 +141,7 @@ export class ApiService {
     this.http.put(BASE_URL + 'departments/' + departmentID, data).subscribe(
       (res) => {
         this.structure$.next(res)
+        this.responseOK.next("Подразделение успешно изменено")
       },
       (err) => {
         this.structure$.next(err)
