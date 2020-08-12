@@ -5,7 +5,6 @@ import { fromEvent } from 'rxjs';
 import { Subscription, of } from 'rxjs';
 import { ModalService } from "./shared/modal.service";
 import { DeleteService } from "../../shared/delete.service";
-import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-members',
