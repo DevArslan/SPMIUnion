@@ -1,5 +1,5 @@
 <div class="members">
-  <app-members-modal  ></app-members-modal>
+  <app-members-modal [paginationParams] = "paginationParams" ></app-members-modal>
   <app-delete-modal (childEvent)="getMembersByPage()"></app-delete-modal>
   <div class="members-nav">
     <div class="members-search">

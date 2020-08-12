@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { ApiService } from "src/app/shared/api.service";
 import { filter, debounceTime, distinctUntilChanged, tap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { Subscription, of } from 'rxjs';
 import { ModalService } from "./shared/modal.service";
 import { DeleteService } from "../../shared/delete.service";
+import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'app-members',
@@ -16,11 +17,13 @@ export class MembersComponent implements OnInit {
   constructor(private apiServiceService: ApiService, private modalService: ModalService, private deleteService : DeleteService) { }
 
   private subscription: Subscription = new Subscription();
+  @Input() currentPage: any
 
   username: string = ''
   membersID: number[] = []
   data: any = []
   dataForModal: {}[] = []
+  paginationParams: any
 
   query: any = ''
   pageNumber: number = 1
@@ -54,7 +57,6 @@ export class MembersComponent implements OnInit {
   getMembersByPage() {
     this.apiServiceService.selectedAllmembers.next(true)
     this.apiServiceService.getMembersByPage(this.rowsCount, this.pageNumber, this.username)
-
   }
 
   downloadExcel() {
@@ -103,9 +105,16 @@ export class MembersComponent implements OnInit {
   }
 
   showAddModal() {
+
     this.modalService.action$.next('add')
     this.modalService.stateOpen$.next(true)
     this.modalService.modalTitle$.next('Добавить участника')
+
+    this.paginationParams = {
+      maxPage: this.maxPageNumber,
+      rowsCount: this.rowsCount,
+      username: this.username
+    }
 
   }
   showEditModal() {
@@ -175,14 +184,20 @@ export class MembersComponent implements OnInit {
 
 
     const membersSub = this.apiServiceService.members$.subscribe((dataFromApi: any) => {
+
+      if(this.paginationParams != null && this.maxPageNumber != undefined){
+        console.log(this.maxPageNumber)
+        this.pageNumber = this.maxPageNumber
+      }
       this.data = dataFromApi.members
-      
+
       this.membersCount = dataFromApi.total
       if (!this.maxPageNumber) {
 
         this.maxPageNumber = Math.ceil(Number(this.membersCount) / this.rowsCount)
 
       }
+      this.paginationParams = null
 
     })
     this.subscription.add(membersSub)

@@ -7,8 +7,8 @@ import {
   Output,
   EventEmitter,
   OnDestroy,
+  Input,
 } from '@angular/core';
-import { Input } from '@angular/core';
 import {
   filter,
   debounceTime,
@@ -25,7 +25,9 @@ import { ApiService } from '../../../../shared/api.service';
   styleUrls: ['./members-modal.component.scss'],
 })
 export class MembersModalComponent implements OnInit, OnDestroy {
- 
+
+
+  @Input() paginationParams: any
   @ViewChild('inputName') input: ElementRef;
   @ViewChild('cardNumberInput') cardNumberInput: ElementRef;
   @ViewChild('modal') modal: ElementRef;
@@ -78,7 +80,7 @@ export class MembersModalComponent implements OnInit, OnDestroy {
       this.card,
       this.subdepartmentID,
       this.isStudent
-    );
+    )
     this.waitingForServerResponse = true;
   }
 
@@ -233,12 +235,13 @@ export class MembersModalComponent implements OnInit, OnDestroy {
           }
         } else {
           this.API.responseOK.next('Участник успешно добавлен');
-          this.data.push(data.member);
-          const membersData = {
-            members: this.data,
-            total: this.data.length,
-          };
-          this.API.members$.next(membersData);
+          this.API.getMembersByPage(this.paginationParams.rowsCount, this.paginationParams.maxPage, this.paginationParams.username)
+          // this.data.push(data.member);
+          // const membersData = {
+          //   members: this.data,
+          //   total: this.data.length,
+          // };
+          // this.API.members$.next(membersData);
           this.resetParams()
           this.closeModal();
         }

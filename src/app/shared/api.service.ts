@@ -50,6 +50,8 @@ export class ApiService {
   error = new Subject<string>();
   responseOK = new Subject<string>();
 
+  paginationParams = new Subject<any>()
+
   selectedAllmembers = new Subject<boolean>();
   // Получение данных о структурах
   async getDepartments() {
@@ -267,11 +269,13 @@ export class ApiService {
 
     this.http.post(BASE_URL + 'members', data).subscribe(
       (res) => {
-
+        
         this.createMember$.next(res)
+        
       },
       (err) => {
         this.createMember$.next(err)
+        
       }
     );
   }
