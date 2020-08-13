@@ -189,7 +189,7 @@ export class MembersComponent implements OnInit {
 
 
     const membersSub = this.apiServiceService.members$.subscribe((dataFromApi: any) => {
-
+      console.log(dataFromApi)
 
       if (this.paginationParams != null && this.maxPageNumber != undefined) {
         this.pageNumber = this.maxPageNumber
@@ -198,11 +198,7 @@ export class MembersComponent implements OnInit {
       
 
       this.membersCount = dataFromApi.total
-      if (!this.maxPageNumber) {
-
-        this.maxPageNumber = Math.ceil(Number(this.membersCount) / this.rowsCount)
-
-      }
+      this.maxPageNumber = Math.ceil(Number(this.membersCount) / this.rowsCount)
       this.paginationParams = null
 
       console.log('asdasdasdas')
