@@ -45,6 +45,7 @@ export class ApiService {
   // Observable member data
   selectedMemberId$ = new Subject<number>();
   selectedMembersId$ = new Subject<number[]>();
+  selectedMembersIdAll$ = new Subject<number[]>()
 
   // Observable user data
   selectedUserId$ = new Subject<number>();

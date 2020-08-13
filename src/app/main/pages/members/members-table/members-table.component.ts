@@ -21,6 +21,7 @@ export class MembersTableComponent implements OnInit {
   selectedMemberId: number
   selectedMembersId: number[] = []
   selectedMembersId2: number[] = []
+  selectedMembersIdAll: number[] = []
 
   checkboxes: number
   checkedCheckboxes: number
@@ -58,7 +59,6 @@ export class MembersTableComponent implements OnInit {
   selectMember(event) {
     this.selectedAll = false
     this.selectedMemberId = undefined
-    console.log(this.selectedMemberId)
     this.selectAllCheckbox.nativeElement.checked = false
     const rows = document.querySelectorAll('.membersTableDataRow')
     rows.forEach(element => {this.checkedCheckboxes = 0
@@ -110,9 +110,19 @@ export class MembersTableComponent implements OnInit {
       if (element.checked) {
         this.checkedCheckboxes +=1
         this.selectedMembersId.push(Number(element.value))
+        let index = this.selectedMembersIdAll.indexOf(Number(element.value))
+        if(index==-1){
+          this.selectedMembersIdAll.push(Number(element.value))
+        }
+        
+      }else{
+        let index = this.selectedMembersIdAll.indexOf(Number(element.value))
+        if(index>-1){
+          this.selectedMembersIdAll.splice(index,1)
+        }
       }
     }
-
+    this.api.selectedMembersIdAll$.next(this.selectedMembersIdAll)
     if(this.checkedCheckboxes > 1){
       this.selectedAll = false
     }else if(this.checkedCheckboxes == 1 || this.checkedCheckboxes == 0){
@@ -124,6 +134,7 @@ export class MembersTableComponent implements OnInit {
     this.titleForDeleteModal = 'Удалить участников'
     this.api.titleForDeleteModal$.next(this.titleForDeleteModal)
     this.api.selectedMembersId$.next(this.selectedMembersId)
+    
     if (this.selectedMembersId.length == 1){
       this.selectedMemberId = this.selectedMembersId[0]
       this.api.selectedMemberId$.next(this.selectedMemberId)
@@ -135,6 +146,7 @@ export class MembersTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    
     this.api.selectedAllmembers.subscribe((data)=>{
       this.selectedAll = data
 

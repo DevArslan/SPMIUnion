@@ -1,4 +1,5 @@
 <div class="structureCard">
+  <app-delete-modal></app-delete-modal>
   <div class="structureCard-name">
     <textarea class="textareaCard"   readonly #structureNameTextarea id="structureName" maxlength="120"  value="{{selectedData.title}}" [(ngModel)]="structureName" (blur)="this.saveStructureName()" ></textarea>
     <p class="textareaCard"  readonly #structureNameP id="structureNameP" maxlength="120">{{structureName}}</p>
@@ -37,11 +38,11 @@
   </div>
   <div class="structureCard-nav">
     <div class="structureCard-nav-add" (click)="downloadExcel()" [ngClass]="{blockButton: selectedData.members_total == 0}">Excel</div>
-    <div class="structureCard-nav-add" (click)="showAddModal()">Добавить подразделение</div>
-    <div class="structureCard-nav-del" (click)="showDelModal()">Удалить структуру</div>
+    <div class="structureCard-nav-add" (click)="showAddModal()"  >Добавить подразделение</div>
+    <div class="structureCard-nav-del" (click)="showDelModal()" [ngClass]="{blockButton: !dataForDeleteModalIsDownload}">Удалить структуру</div>
   </div>
   <!-- <app-sub-departments-add-modal [department]='selectedData' class="subDepartmentAddModal" id="subDepartmentAddModal"></app-sub-departments-add-modal> -->
   <!-- <app-structures-delete-modal [department]='selectedData' class="departmentDelModal" id="departmentDelModal"></app-structures-delete-modal> -->
   <app-subdepartments-modal></app-subdepartments-modal>
-  <app-delete-modal></app-delete-modal>
+ 
 </div>

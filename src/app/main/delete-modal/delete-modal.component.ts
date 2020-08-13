@@ -108,6 +108,7 @@ export class DeleteModalComponent implements OnInit {
     }));
 
     this.subscription.add(this.deleteService.data$.subscribe((data) => {
+      console.log(data)
       this.dataForModal = data;
     }));
 
@@ -141,7 +142,7 @@ export class DeleteModalComponent implements OnInit {
     // });
 
     this.subscription.add(this.API.departments$.subscribe((departments)=>{
-      console.log(departments)
+      
       this.departments = departments
     }))
 

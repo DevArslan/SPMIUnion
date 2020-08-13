@@ -44,7 +44,7 @@ export class StructuresCardComponent implements OnInit {
   dropdown: boolean = false;
   notEditStructureName: string = ''
   notEditProforgName: string = ''
-
+  
   stats: any[] = []
   datesForDiagram: string[] = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
   currentValueForDiagram: number[] = []
@@ -52,6 +52,8 @@ export class StructuresCardComponent implements OnInit {
 
   dynamics: { 'subID': number, 'dynamic': number }[] = []
   equalID: boolean = false
+
+  dataForDeleteModalIsDownload: boolean = false
 
 
 
@@ -272,9 +274,11 @@ export class StructuresCardComponent implements OnInit {
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    this.dataForDeleteModalIsDownload = false
   }
 
   ngOnInit(): void {
+ 
     const editSub = this.apiServiceService.structure$.subscribe((data) => {
       if (data.error) {
         let error = data.error.message
@@ -331,6 +335,13 @@ export class StructuresCardComponent implements OnInit {
 
 
     this.data = this.apiServiceService.departments
+    // this.data.forEach( (element: any) => {
+    //   if (this.selectedStructureId == element.id) {
+
+    //     this.deleteService.data$.next(element)
+    //   }
+    // })
+    console.log(this.dataForDeleteModalIsDownload)
     const departmentSub = this.apiServiceService.departments$.subscribe(async (data) => {
       this.dynamics.length = 0
       this.subDepartmentsForCharts.length = 0
@@ -343,7 +354,8 @@ export class StructuresCardComponent implements OnInit {
           this.selectedData = element;
           this.deleteService.data$.next(element)
           this.modalService.data$.next(element)
-
+          console.log(this.dataForDeleteModalIsDownload)
+          this.dataForDeleteModalIsDownload = true
           this.proforgName = this.selectedData.proforg
           this.structureName = this.selectedData.title
           // Костыль для редактирования названия структуры и имени профорга. При неправильном вводе, возвращается не изменённое значение
@@ -383,7 +395,7 @@ export class StructuresCardComponent implements OnInit {
       this.subDepartmentsForCharts.length = 0
       this.selectedSubDepartments.length = 0
       this.selectedStructureId = params.id
-      // this.data = this.apiServiceService.departments
+      this.data = this.apiServiceService.departments
 
       this.data.forEach(async (element: any) => {
         if (this.selectedStructureId == element.id) {
@@ -391,6 +403,8 @@ export class StructuresCardComponent implements OnInit {
           this.selectedData = element;
           this.selectedData = element;
           this.deleteService.data$.next(element)
+          console.log(this.dataForDeleteModalIsDownload)
+          this.dataForDeleteModalIsDownload = true
           this.proforgName = this.selectedData.proforg
           this.structureName = this.selectedData.title
           // Костыль для редактирования названия структуры и имени профорга. При неправильном вводе, возвращается не изменённое значение
@@ -425,7 +439,8 @@ export class StructuresCardComponent implements OnInit {
       }
     })
     this.subscription.add(routerSub);
-
+    this.apiServiceService.getDepartments()
+    
 
     var structureChart = new Chart('structureChart', {
       type: 'bar',

@@ -13,7 +13,7 @@ import { DeleteService } from "../../shared/delete.service";
 })
 export class MembersComponent implements OnInit {
 
-  constructor(private apiServiceService: ApiService, private modalService: ModalService, private deleteService : DeleteService) { }
+  constructor(private apiServiceService: ApiService, private modalService: ModalService, private deleteService: DeleteService) { }
 
   private subscription: Subscription = new Subscription();
   @Input() currentPage: any
@@ -30,6 +30,7 @@ export class MembersComponent implements OnInit {
   rowsCount: number = 10
   maxPageNumber: number
   membersCount: number = 0
+  selectedMembersIdAll: any
 
   memberID: number
 
@@ -56,6 +57,7 @@ export class MembersComponent implements OnInit {
   getMembersByPage() {
     this.apiServiceService.selectedAllmembers.next(true)
     this.apiServiceService.getMembersByPage(this.rowsCount, this.pageNumber, this.username)
+
   }
 
   downloadExcel() {
@@ -149,7 +151,7 @@ export class MembersComponent implements OnInit {
 
     if (Number.isInteger(Number(e.currentTarget.value)) == false || Number(e.currentTarget.value) > this.maxPageNumber) {
       e.currentTarget.value = e.currentTarget.value.slice(0, -1)
-     
+
     }
     if (e.currentTarget.value === '0') {
       e.currentTarget.value = '1'
@@ -159,13 +161,17 @@ export class MembersComponent implements OnInit {
 
 
   ngOnDestroy(): void {
- 
+
     this.subscription.unsubscribe();
   }
 
   ngOnInit(): void {
     this.getMembersByPage()
 
+
+    this.subscription.add(this.apiServiceService.selectedMembersIdAll$.subscribe((data) => {
+      this.selectedMembersIdAll = data
+    }))
 
     this.subscription.add(this.apiServiceService.member$.subscribe((data) => {
       if (data.error) {
@@ -184,11 +190,12 @@ export class MembersComponent implements OnInit {
 
     const membersSub = this.apiServiceService.members$.subscribe((dataFromApi: any) => {
 
-      if(this.paginationParams != null && this.maxPageNumber != undefined){
-        console.log(this.maxPageNumber)
+
+      if (this.paginationParams != null && this.maxPageNumber != undefined) {
         this.pageNumber = this.maxPageNumber
       }
       this.data = dataFromApi.members
+      
 
       this.membersCount = dataFromApi.total
       if (!this.maxPageNumber) {
@@ -198,6 +205,21 @@ export class MembersComponent implements OnInit {
       }
       this.paginationParams = null
 
+      console.log('asdasdasdas')
+      if (this.selectedMembersIdAll != undefined) {
+        const checkboxes = document.querySelectorAll('.memberCheckbox')
+        for (let index = 0; index < checkboxes.length; index++) {
+          const element = <HTMLInputElement>checkboxes[index];
+          this.selectedMembersIdAll.forEach(item => {
+            console.log(item)
+            if (Number(element.value) == item) {
+              console.log(item)
+              console.log(Number(element.value))
+              element.checked = true
+            }
+          });
+        }
+      }
     })
     this.subscription.add(membersSub)
 
@@ -212,7 +234,6 @@ export class MembersComponent implements OnInit {
     this.subscription.add(selectedMemberSub)
     const selectedMembersSub = this.apiServiceService.selectedMembersId$.subscribe((apiData) => {
       this.membersID = apiData
-      console.log(this.membersID)
       if (this.membersID.length != 0) {
         this.error = ''
       } else {
@@ -229,7 +250,7 @@ export class MembersComponent implements OnInit {
     this.subscription.add(departmentsSub)
     this.apiServiceService.getDepartments()
 
-    this.getMembersByPage()
+
   }
   ngAfterViewInit() {
     // Обращение к серверу происходит после того, как пользователь не печатает на протяжении 1.5 секунд
