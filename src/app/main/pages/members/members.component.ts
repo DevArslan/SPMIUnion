@@ -57,7 +57,6 @@ export class MembersComponent implements OnInit {
   getMembersByPage() {
     this.apiServiceService.selectedAllmembers.next(true)
     this.apiServiceService.getMembersByPage(this.rowsCount, this.pageNumber, this.username)
-
   }
 
   downloadExcel() {
@@ -189,7 +188,6 @@ export class MembersComponent implements OnInit {
 
 
     const membersSub = this.apiServiceService.members$.subscribe((dataFromApi: any) => {
-      console.log(dataFromApi)
 
       if (this.paginationParams != null && this.maxPageNumber != undefined) {
         this.pageNumber = this.maxPageNumber
@@ -201,16 +199,12 @@ export class MembersComponent implements OnInit {
       this.maxPageNumber = Math.ceil(Number(this.membersCount) / this.rowsCount)
       this.paginationParams = null
 
-      console.log('asdasdasdas')
       if (this.selectedMembersIdAll != undefined) {
         const checkboxes = document.querySelectorAll('.memberCheckbox')
         for (let index = 0; index < checkboxes.length; index++) {
           const element = <HTMLInputElement>checkboxes[index];
           this.selectedMembersIdAll.forEach(item => {
-            console.log(item)
             if (Number(element.value) == item) {
-              console.log(item)
-              console.log(Number(element.value))
               element.checked = true
             }
           });
@@ -269,6 +263,7 @@ export class MembersComponent implements OnInit {
         debounceTime(1000),
         distinctUntilChanged(),
         tap(async (text) => {
+          this.pageNumber = 1
           const data = await this.getMembersByPage()
 
         })
