@@ -11,9 +11,10 @@ import { subscribeOn } from 'rxjs/operators';
 })
 export class MembersTableComponent implements OnInit {
 
+  @Input() membersCount: number
   @Input() data: {}[] = []
   @ViewChild('selectAllCheckbox') selectAllCheckbox: ElementRef;
-  selectedAll: boolean =  true
+  selectedAll: boolean = true
   constructor(private api: ApiService) { }
 
   titleForDeleteModal: string = ''
@@ -31,28 +32,40 @@ export class MembersTableComponent implements OnInit {
     this.selectedMembersId.length = 0
     this.selectedAll = true
     this.checkedCheckboxes = 0
-
     const checkboxes = document.querySelectorAll('.memberCheckbox')
-    if (this.selectAllCheckbox.nativeElement.checked == true) {
+    for (let index = 0; index < checkboxes.length; index++) {
+      const element = <HTMLInputElement>checkboxes[index];
+      if (element.checked == true) {
+        this.checkedCheckboxes += 1
+      }
+    }
+    console.log(this.checkedCheckboxes)
+    if (checkboxes.length != this.checkedCheckboxes) {
       for (let index = 0; index < checkboxes.length; index++) {
+        let exist = false
         const element = <HTMLInputElement>checkboxes[index];
         element.checked = true
         element.parentElement.parentElement.classList.add('selectedRow')
         this.selectedMembersId.push(Number(element.value))
-        this.checkedCheckboxes += 1
+          this.selectedMembersIdAll.push(Number(element.value))
       }
     } else {
       for (let index = 0; index < checkboxes.length; index++) {
         const element = <HTMLInputElement>checkboxes[index];
         element.checked = false
         element.parentElement.parentElement.classList.remove('selectedRow')
+        this.selectedMembersIdAll.forEach((id, index) => {
+          if (id == Number(element.value)) {
+            this.selectedMembersIdAll.splice(index, 1)
+          }
+        });
         this.selectedMembersId.length = 0
       }
       this.checkedCheckboxes = 0
     }
-
-
+    this.api.selectedMembersIdAll$.next(this.selectedMembersIdAll)
     this.api.selectedMembersId$.next(this.selectedMembersId)
+    // this.selectAllCheckbox.nativeElement.checked = false
     event.stopPropagation()
   }
 
@@ -61,7 +74,8 @@ export class MembersTableComponent implements OnInit {
     this.selectedMemberId = undefined
     this.selectAllCheckbox.nativeElement.checked = false
     const rows = document.querySelectorAll('.membersTableDataRow')
-    rows.forEach(element => {this.checkedCheckboxes = 0
+    rows.forEach(element => {
+      this.checkedCheckboxes = 0
       element.classList.remove('selectedRow')
       element.id = null
     });
@@ -85,9 +99,10 @@ export class MembersTableComponent implements OnInit {
     this.titleForDeleteModal = 'Удалить участника'
     this.api.titleForDeleteModal$.next(this.titleForDeleteModal)
     this.api.selectedMemberId$.next(this.selectedMemberId)
+    this.api.selectedMembersIdAll$.next([])
     this.checkedCheckboxes = 1
-    if(this.checkedCheckboxes == 1 || this.checkedCheckboxes == 0){
-    
+    if (this.checkedCheckboxes == 1 || this.checkedCheckboxes == 0) {
+
       this.selectAllCheckbox.nativeElement.checked = false
       this.selectedAll = true
     }
@@ -99,7 +114,7 @@ export class MembersTableComponent implements OnInit {
     if (event.currentTarget.checked == true) {
       event.currentTarget.parentNode.parentNode.classList.add('selectedRow')
     } else if (event.currentTarget.parentNode.parentNode.id != 'selectedMember') {
-     
+
       this.selectAllCheckbox.nativeElement.checked = false
       event.currentTarget.parentNode.parentNode.classList.remove('selectedRow')
     }
@@ -108,24 +123,24 @@ export class MembersTableComponent implements OnInit {
     for (let index = 0; index < checkboxes.length; index++) {
       const element = <HTMLInputElement>checkboxes[index];
       if (element.checked) {
-        this.checkedCheckboxes +=1
+        this.checkedCheckboxes += 1
         this.selectedMembersId.push(Number(element.value))
         let index = this.selectedMembersIdAll.indexOf(Number(element.value))
-        if(index==-1){
+        if (index == -1) {
           this.selectedMembersIdAll.push(Number(element.value))
         }
-        
-      }else{
+
+      } else {
         let index = this.selectedMembersIdAll.indexOf(Number(element.value))
-        if(index>-1){
-          this.selectedMembersIdAll.splice(index,1)
+        if (index > -1) {
+          this.selectedMembersIdAll.splice(index, 1)
         }
       }
     }
     this.api.selectedMembersIdAll$.next(this.selectedMembersIdAll)
-    if(this.checkedCheckboxes > 1){
+    if (this.checkedCheckboxes > 1) {
       this.selectedAll = false
-    }else if(this.checkedCheckboxes == 1 || this.checkedCheckboxes == 0){
+    } else if (this.checkedCheckboxes == 1 || this.checkedCheckboxes == 0) {
 
       this.selectAllCheckbox.nativeElement.checked = false
       this.selectedAll = true
@@ -134,11 +149,11 @@ export class MembersTableComponent implements OnInit {
     this.titleForDeleteModal = 'Удалить участников'
     this.api.titleForDeleteModal$.next(this.titleForDeleteModal)
     this.api.selectedMembersId$.next(this.selectedMembersId)
-    
-    if (this.selectedMembersId.length == 1){
+
+    if (this.selectedMembersId.length == 1) {
       this.selectedMemberId = this.selectedMembersId[0]
       this.api.selectedMemberId$.next(this.selectedMemberId)
-    }else{
+    } else {
       this.selectedMemberId = undefined
       this.api.selectedMemberId$.next(this.selectedMemberId)
     }
@@ -146,14 +161,17 @@ export class MembersTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
-    this.api.selectedAllmembers.subscribe((data)=>{
+
+    this.api.selectedAllmembers.subscribe((data) => {
       this.selectedAll = data
-
     })
-
+    this.api.selectedMembersIdAll$.subscribe((ids) => {
+      this.selectedMembersIdAll = ids
+      console.log(this.selectedMembersIdAll)
+    })
   }
 
-
-
+  ngOnChanges(): void {
+    // this.selectAllCheckbox.nativeElement.classList.remove('selectNotAllCheckbox')
+  }
 }

@@ -90,7 +90,7 @@ export class DeleteModalComponent implements OnInit {
       const emptyArray = [];
       this.API.selectedMembersId$.next(emptyArray);
     } else if (this.memberID) {
-      const promise = await this.API.deleteMember(this.membersID);
+      const promise = await this.API.deleteMember(this.dataForModal);
 
       this.selectAllCheckbox.nativeElement.checked = false;
       this.API.selectedMemberId$.next(undefined);
@@ -102,6 +102,8 @@ export class DeleteModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    
     
     this.subscription.add(this.deleteService.type$.subscribe((type) => {
       this.type = type;
@@ -131,7 +133,7 @@ export class DeleteModalComponent implements OnInit {
         this.error = data.error.message;
         this.API.error.next(String(this.error));
       } else {
-       
+        this.API.selectedMembersIdAll$.next([])
         this.API.responseOK.next('Участник успешно удален');
         this.childEvent.emit();
         this.closeModal();

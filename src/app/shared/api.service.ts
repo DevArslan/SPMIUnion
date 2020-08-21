@@ -332,6 +332,7 @@ export class ApiService {
 
     this.http.patch(BASE_URL + 'members/enter', data).subscribe(
       (res) => {
+        this.selectedMembersIdAll$.next([])
         this.member$.next(res)
       },
       (err) => {
@@ -349,6 +350,7 @@ export class ApiService {
     this.http.patch(BASE_URL + 'members/quit', data).subscribe(
       (res) => {
         this.member$.next(res)
+        this.selectedMembersIdAll$.next([])
       },
       (err) => {
         this.member$.next(err)

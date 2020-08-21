@@ -49,7 +49,6 @@ export class MembersComponent implements OnInit {
   changePage(event) {
     if (this.pageNumber > 0 && event.target.dataset.pageNumber != 0 && event.target.dataset.pageNumber != this.maxPageNumber + 1) {
       this.pageNumber = event.target.dataset.pageNumber
-
       this.getMembersByPage()
     }
   }
@@ -64,13 +63,12 @@ export class MembersComponent implements OnInit {
   }
   async blockMember() {
 
-    if (this.membersID.length != 0) {
+    if (this.selectedMembersIdAll.length != 0) {
       this.error = ''
-      await this.apiServiceService.blockMembers(this.membersID)
+      await this.apiServiceService.blockMembers(this.selectedMembersIdAll)
       this.selectAllCheckbox.nativeElement.checked = false
-
-
-
+      this.selectedMembersIdAll.length = 0
+      this.apiServiceService.selectedMembersIdAll$.next(this.selectedMembersIdAll)
     } else if (this.memberID) {
       this.error = ''
       const memberID = []
@@ -84,13 +82,14 @@ export class MembersComponent implements OnInit {
   }
   async activateMember() {
 
-    if (this.membersID.length != 0) {
+    if (this.selectedMembersIdAll.length != 0) {
       this.error = ''
-      await this.apiServiceService.activateMembers(this.membersID)
+      await this.apiServiceService.activateMembers(this.selectedMembersIdAll)
       this.selectAllCheckbox.nativeElement.checked = false
       this.getMembersByPage()
       this.error = 'Сначала выберите участника'
-      this.membersID.length = 0
+      this.selectedMembersIdAll.length = 0
+      this.apiServiceService.selectedMembersIdAll$.next(this.selectedMembersIdAll)
     } else if (this.memberID) {
       this.error = ''
       const memberID = []
@@ -135,6 +134,7 @@ export class MembersComponent implements OnInit {
       this.deleteService.stateOpen$.next(true)
       this.deleteService.type$.next('member')
       this.deleteService.modalTitle$.next('Удалить участника')
+      this.deleteService.data$.next(this.selectedMembersIdAll)
       this.error = 'Сначала выберите участника'
       // this.membersID.length = 0
     } else if (this.memberID) {
@@ -188,28 +188,29 @@ export class MembersComponent implements OnInit {
 
 
     const membersSub = this.apiServiceService.members$.subscribe((dataFromApi: any) => {
-
+      
       if (this.paginationParams != null && this.maxPageNumber != undefined) {
         this.pageNumber = this.maxPageNumber
       }
       this.data = dataFromApi.members
-      
 
       this.membersCount = dataFromApi.total
       this.maxPageNumber = Math.ceil(Number(this.membersCount) / this.rowsCount)
       this.paginationParams = null
 
-      if (this.selectedMembersIdAll != undefined) {
-        const checkboxes = document.querySelectorAll('.memberCheckbox')
-        for (let index = 0; index < checkboxes.length; index++) {
-          const element = <HTMLInputElement>checkboxes[index];
-          this.selectedMembersIdAll.forEach(item => {
-            if (Number(element.value) == item) {
-              element.checked = true
-            }
-          });
+      setTimeout(() => {
+        if (this.selectedMembersIdAll != undefined) {
+          const checkboxes = document.querySelectorAll('.memberCheckbox')
+          for (let index = 0; index < checkboxes.length; index++) {
+            const element = <HTMLInputElement>checkboxes[index];
+            this.selectedMembersIdAll.forEach(item => {
+              if (Number(element.value) == item) {
+                element.checked = true
+              }
+            });
+          }
         }
-      }
+      }, );
     })
     this.subscription.add(membersSub)
 
@@ -239,8 +240,6 @@ export class MembersComponent implements OnInit {
     })
     this.subscription.add(departmentsSub)
     this.apiServiceService.getDepartments()
-
-
   }
   ngAfterViewInit() {
     // Обращение к серверу происходит после того, как пользователь не печатает на протяжении 1.5 секунд
