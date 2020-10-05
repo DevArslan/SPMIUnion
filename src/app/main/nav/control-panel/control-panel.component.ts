@@ -20,7 +20,8 @@ export class ControlPanelComponent implements OnInit {
     // }
     /* NOTE: Вот так более корректно */
     this.authService.currentUserObservable.subscribe((user) => {
-      this.roleIsAdmin = user.role == ADMIN_ROLE ? true : false;
+      console.log(user);
+      this.roleIsAdmin = user?.role == ADMIN_ROLE ? true : false;
     });
   }
 
